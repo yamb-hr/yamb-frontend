@@ -1,0 +1,75 @@
+.table {
+    background: var(--background-form);
+    filter: brightness(150%);
+    text-align: center;
+    font-size: medium;
+    font-weight: normal;
+}
+
+.element {
+    background: var(--background-form);
+    color: var(--color-form);
+    border: var(--border-form);
+    border-radius: var(--border-radius-box);
+    padding: var(--padding-form);
+    width: var(--width-table-form);
+    height: var(--height-table-form);
+    text-align: left;
+    font-size: medium;
+    font-weight: normal;
+}
+
+.table tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+    height: 40px;
+}
+
+tbody {
+    display: block;
+    height: 450px;
+    overflow: auto;
+}
+
+.table-form {
+    background: var(--background-form);
+    color: var(--color-form);
+    border: var(--border-form);
+    border-radius: var(--border-radius-box);
+    padding: var(--padding-form);
+    width: var(--width-table-form);
+}
+
+.table, th, td {
+    border-collapse: collapse;
+}
+
+.table tr {
+    background: var(--background-form);
+}
+
+.table tbody tr:nth-child(odd) {
+    filter: brightness(70%);
+}
+
+.table tr:hover {
+    filter: brightness(150%) !important;
+    cursor: pointer;
+}
+
+label {
+    font-size: medium;
+}
+
+.page-control {
+    background: var(--background-box);
+    color: var(--color-box);
+    padding: var(--padding-play-button);
+    border: none;
+    border-radius: var(--border-radius-box);
+}
+
+.page-control:disabled {
+    border: none;
+}

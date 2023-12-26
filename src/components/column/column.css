@@ -1,0 +1,11 @@
+.column-top-section-sum {
+	grid-row-start: 8;
+}
+
+.column-middle-section-sum {
+	grid-row-start: 11;
+}
+
+.column-bottom-section-sum {
+	grid-row-start: 17;
+}

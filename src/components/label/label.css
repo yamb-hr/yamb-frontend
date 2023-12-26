@@ -1,0 +1,54 @@
+.label {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-label);
+    background: var(--background-label);
+    border: var(--border-label);
+	border-radius: var(--border-radius-label);
+	width: var(--width-label);
+	height: var(--height-label);
+}
+
+.label:hover:enabled {
+    cursor: help;
+}
+
+.sum {
+	color: var(--color-sum);
+	background: var(--background-sum);
+	border: var(--border-sum);
+}
+
+.total-sum {
+	font-size: large;
+	color: var(--color-total-sum);
+	background: var(--background-total-sum);
+	border: var(--border-total-sum);
+    grid-column-start: 3;
+}
+
+.column-symbol {
+	background: var(--background-column-symbol);
+	border: var(--border-column-symbol);
+}
+
+.column-symbol img {
+    filter: var(--filter-column-symbol);
+}
+
+img {
+    filter: var(--filter-label);
+}
+
+.tooltip {
+    top: 14px;
+    left: 8px;
+    position: relative;
+    visibility: hidden;
+    width: max-content;
+}
+
+.label:hover + .tooltip {
+    visibility: visible;
+}

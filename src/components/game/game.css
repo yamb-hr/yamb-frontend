@@ -1,0 +1,7 @@
+.dices {
+    display: inline-flex;
+    background: var(--color-background);
+    position: relative;
+    z-index: 2;
+}
+

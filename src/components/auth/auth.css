@@ -1,0 +1,27 @@
+.password-input {
+    background: var(--background-password-input);
+    color: var(--color-password-input);
+    border-bottom: var(--border-password-input);
+    border-radius: var(--border-radius-box);
+    padding: var(--padding-password-input);
+    margin: var(--margin-password-input);
+}
+
+.register-button {
+    background: var(--background-register-button);
+    color: var(--color-register-button);
+    border: var(--border-register-button);
+    border-radius: var(--border-radius-box);
+    padding: var(--padding-register-button);
+    margin: var(--margin-register-button);
+}
+
+.login-button {
+    background: var(--background-login-button);
+    color: var(--color-login-button);
+    border: var(--border-login-button);
+    border-radius: var(--border-radius-box);
+    padding: var(--padding-login-button);
+    margin: var(--margin-login-button);
+}
+

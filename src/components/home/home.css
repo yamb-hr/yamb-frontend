@@ -1,0 +1,32 @@
+.form {
+    background: var(--background-form);
+    color: var(--color-form);
+    border: var(--border-form);
+    border-radius: var(--border-radius-box);
+    padding: var(--padding-form);
+}
+
+.play-button {
+    background: var(--background-play-button);
+    color: var(--color-play-button);
+    border: var(--border-play-button);
+    border-radius: var(--border-radius-box);
+    padding: var(--padding-play-button);
+    margin: var(--margin-play-button);
+}
+
+.username-input {
+    background: var(--background-username-input);
+    color: var(--color-username-input);
+    border-bottom: var(--border-username-input);
+    border-radius: var(--border-radius-box);
+    padding: 5px;
+}
+
+.new-game-button {
+    background: var(--background-play-button);
+    color: var(--color-play-button);
+    border: var(--border-play-button);
+    border-radius: var(--border-radius-box);
+    padding: 5px;
+}

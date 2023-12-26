@@ -1,0 +1,16 @@
+.box {
+    color: var(--color-box);
+    background: var(--background-box);
+    border: var(--border-box);
+    border-radius: var(--border-radius-box);
+    width: var(--width-box);
+    height: var(--height-box);
+}
+
+.box:disabled {
+    border: var(--border-box-alt);
+}
+
+.announcement {
+    border: var(--border-box);
+}

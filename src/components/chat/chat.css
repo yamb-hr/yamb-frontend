@@ -1,0 +1,45 @@
+.chat {
+    background: var(--background-form);
+    border-radius: var(--border-radius-box);
+    color: var(--color-form);
+    padding: var(--padding-form);
+}
+
+.chat-inner {
+    border-radius: var(--border-radius-form);
+    display: flex;
+}
+
+.chat-button {
+    padding: var(--padding-play-button);
+    color: var(--color-play-button);
+    background: var(--background-play-button);
+    border: none;
+    width: 100%;
+}
+
+.selected {
+    filter: brightness(200%);
+}
+
+.message-box {
+    background: var(--background-form);
+    border-radius: var(--border-radius-form);
+    height: 40vh;
+    filter: brightness(200%);
+    text-align: left;
+    padding: 10px;
+    font-size: medium;
+    font-weight: lighter;
+}
+
+.chat-input {
+}
+
+.input-and-message-box {
+}
+
+.players {
+    color: var(--color-yellow);
+    display: block;
+}
