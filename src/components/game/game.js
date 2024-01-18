@@ -9,6 +9,15 @@ function Game(props) {
     const [restart, setRestart] = useState(false);
     const [diceToRoll, setDiceToRoll] = useState([0, 1, 2, 3, 4]);
     const [rollCount, setRollCount] = useState(props.rollCount);
+    const {
+        sheet,
+        dices,
+        announcement,
+        status,
+        player
+    } = props;
+
+    let diceDisabled = rollCount === 0 || rollCount === 3 || status === "FINISHED";
 
     useEffect(() => {
         if (restart) {
@@ -59,12 +68,6 @@ function Game(props) {
         props.onLogout();
     };
 
-    let sheet = props.sheet;
-    let dices = props.dices;
-    let announcement = props.announcement;
-    let player = props.player;
-    let diceDisabled = rollCount === 0 || rollCount === 3;
-
     return (
         <div className="game">
             {dices && <div className="dices">
@@ -86,6 +89,7 @@ function Game(props) {
                 columns={sheet.columns} 
                 rollCount={rollCount}
                 announcement={announcement}
+                status={status}
                 dices={dices}
                 player={player}
                 onRollDice={handleRollDice}

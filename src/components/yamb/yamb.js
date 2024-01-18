@@ -160,6 +160,7 @@ function Yamb() {
                 dices={game.dices}
                 rollCount={game.rollCount}
                 announcement={game.announcement}
+                status={game.status}
                 player={game.player}
                 onRollDice={handleRollDice}
                 onFillBox={handleFillBox}

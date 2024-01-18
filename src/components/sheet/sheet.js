@@ -9,6 +9,16 @@ function Sheet(props) {
 
     const { t } = useTranslation();
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
+    const {
+        columns,
+        rollCount,
+        announcement,
+        status,
+        player
+    } = props;
+
+    let rollDiceButtonDisabled = rollCount === 3 || isAnnouncementRequired() || status === "FINISHED";
+    let restartButtonDisabled = status === "FINISHED";
 
     function handleRollDice() {
         props.onRollDice();
@@ -21,13 +31,6 @@ function Sheet(props) {
     function handleBoxClick(columnType, boxType) {
         props.onBoxClick(columnType, boxType);
     }
-
-    const {
-        columns,
-        rollCount,
-        announcement,
-        player
-    } = props;
 
     function getTotalSum() {
         return getTopSectionSum() + getMiddleSectionSum() + getBottomSectionSum();
@@ -111,8 +114,6 @@ function Sheet(props) {
         return true;
     }
 
-    let rollDiceButtonDisabled = rollCount === 3 || isAnnouncementRequired();
-
     return (
         <div className="sheet">
             <div className="column">
@@ -159,7 +160,7 @@ function Sheet(props) {
                 <div className="top-section-sum">
                     <Label variant="sum" value={getTopSectionSum()}></Label>
                 </div>
-                <button className="restart-button" onClick={handleRestart}>
+                <button className="restart-button" onClick={handleRestart} diabled={restartButtonDisabled}>
                     <img src={"../svg/buttons/restart.svg"} alt="Restart"></img>
                 </button>
                 <div className="middle-section-sum">
