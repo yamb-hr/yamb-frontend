@@ -47,7 +47,7 @@ const GameService = {
     },
 
     play: function() {
-        return fetch(API_URL + '/play', {
+        return fetch(API_URL + '/', {
             body: null,
             credentials: 'same-origin',
             headers: {
