@@ -4,9 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 import { BoxType } from '../../constants/box-types';
 import { CurrentUserContext, ErrorContext } from '../../App';
-import calculateScore from '../score-calculator';
-import AuthService from '../../api/auth-service';
-import GameService from '../../api/game-service';
+import { AuthService } from '../../services/authService';
+import { GameService } from '../../services/gameService';
+import { calculateScore } from '../../util/score-calculator';
 import Game from '../game/game';
 import './yamb.css';
 

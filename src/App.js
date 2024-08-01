@@ -14,8 +14,8 @@ import Admin from './components/admin/admin';
 import Yamb from './components/yamb/yamb';
 import Chat from './components/chat/chat';
 import Dashboard from './components/dashboard/dashboard';
-import AuthService from './api/auth-service';
-import PlayerService from "./api/player-service";
+import { AuthService } from './services/authService';
+import { PlayerService } from "./services/playerService";
 import { slide as Menu } from 'react-burger-menu'
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';

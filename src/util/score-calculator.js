@@ -1,7 +1,7 @@
 import { BoxType } from "../constants/box-types";
 import { GameConstants } from "../constants/game-constants";
 
-function calculateScore(diceValues, boxType) {
+export function calculateScore(diceValues, boxType) {
     switch (boxType) {
         case BoxType.ONES:
         case BoxType.TWOS:
@@ -27,8 +27,6 @@ function calculateScore(diceValues, boxType) {
             throw new Error("Invalid BoxType: " + boxType);
     }
 }
-
-export default calculateScore;
 
 function calculateSum(diceValues, boxType) {
     if (boxType !== undefined) {

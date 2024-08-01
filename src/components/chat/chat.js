@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext, ErrorContext } from "../../App";
+import { PlayerService } from "../../services/playerService";
 import SockJsClient from "react-stomp";
-import PlayerService from "../../api/player-service";
 import "./chat.css";
 
 var socket = null;

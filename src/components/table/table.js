@@ -2,9 +2,9 @@ import { useContext, useEffect, useState } from "react";
 import { ErrorContext, LanguageContext } from "../../App";
 import { useLocation } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom';
-import PlayerService from "../../api/player-service";
-import GameService from "../../api/game-service";
-import ScoreService from "../../api/score-service";
+import { PlayerService } from "../../services/playerService";
+import { GameService } from "../../services/gameService";
+import { ScoreService } from "../../services/scoreService";
 import "./table.css";
 
 function Table() {
@@ -28,7 +28,7 @@ function Table() {
     useEffect(() => {
         switch (location.pathname) {
             case '/players':
-                PlayerService.getPlayers(tableState.size, tableState.page, tableState.order, tableState.direction)
+                PlayerService.getAll(tableState.size, tableState.page, tableState.order, tableState.direction)
                 .then(data => {
                     console.log(data);
                     setTableState(prevState => ({...prevState, data: data}));
@@ -38,7 +38,7 @@ function Table() {
                 });
                 break;
             case '/games':
-                GameService.getGames(tableState.size, tableState.page, tableState.order, tableState.direction)
+                GameService.getAll(tableState.size, tableState.page, tableState.order, tableState.direction)
                 .then(data => {
                     console.log(data);
                     setTableState(prevState => ({...prevState, data: data}));
@@ -48,7 +48,7 @@ function Table() {
                 });
                 break;
             case '/scores': 
-                ScoreService.getScores(tableState.size, tableState.page, tableState.order, tableState.direction)
+                ScoreService.getAll(tableState.size, tableState.page, tableState.order, tableState.direction)
                 .then(data => {
                     console.log(data);
                     setTableState(prevState => ({...prevState, data: data}));

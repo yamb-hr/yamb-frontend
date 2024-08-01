@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import AuthService from '../../api/auth-service';
+import { AuthService } from '../../services/authService';
 import { ErrorContext } from '../../App';
 import { useTranslation } from 'react-i18next';
 import './auth.css';

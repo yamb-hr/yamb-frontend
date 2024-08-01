@@ -1,8 +1,8 @@
 import { useContext, useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { ErrorContext, LanguageContext } from '../../App';
-import PlayerService from '../../api/player-service';
-import ScoreService from '../../api/score-service';
+import { PlayerService } from '../../services/playerService';
+import { ScoreService } from '../../services/scoreService';
 
 
 function Element() {

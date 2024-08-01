@@ -9,17 +9,17 @@ const getAuthHeaders = () => ({
 
 export class GameService {
 
-    static async getGameById(gameId: string): Promise<Game> {
+    static async getById(gameId: string): Promise<Game> {
         const { data }: AxiosResponse<Game> = await axios.get(`${API_BASE_URL}/${gameId}`, {
             headers: getAuthHeaders()
         });
         return data;
     }
 
-    static async getGames(
+    static async getAll(
         size: number = 10, 
         page: number = 0, 
-        order: string = 'id', 
+        order: string = 'createdAt', 
         direction: string = 'asc'
     ): Promise<Game[]> {
         const { data }: AxiosResponse<Game[]> = await axios.get(API_BASE_URL, {
@@ -36,21 +36,21 @@ export class GameService {
         return data;
     }
 
-    static async rollDiceById(gameId: string, diceToRoll: number[]): Promise<Game> {
+    static async rollById(gameId: string, diceToRoll: number[]): Promise<Game> {
         const { data }: AxiosResponse<Game> = await axios.put(`${API_BASE_URL}/${gameId}/roll`, { diceToRoll }, {
             headers: getAuthHeaders()
         });
         return data;
     }
 
-    static async fillBoxById(gameId: string, columnType: string, boxType: string): Promise<Game> {
+    static async fillById(gameId: string, columnType: string, boxType: string): Promise<Game> {
         const { data }: AxiosResponse<Game> = await axios.put(`${API_BASE_URL}/${gameId}/fill`, { columnType, boxType }, {
             headers: getAuthHeaders()
         });
         return data;
     }
 
-    static async makeAnnouncementById(gameId: string, boxType: string): Promise<Game> {
+    static async announceById(gameId: string, boxType: string): Promise<Game> {
         const { data }: AxiosResponse<Game> = await axios.put(`${API_BASE_URL}/${gameId}/announce`, { boxType }, {
             headers: getAuthHeaders()
         });

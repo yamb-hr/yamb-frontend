@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { ErrorContext } from "../../App";
-import ScoreService from "../../api/score-service";
+import { ScoreService } from "../../services/scoreService";
 import "./dashboard.css";
 
 function Dashboard() {

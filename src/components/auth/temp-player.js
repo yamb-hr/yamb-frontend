@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { CurrentUserContext, ErrorContext } from '../../App';
-import AuthService from '../../api/auth-service';
+import { AuthService } from '../../services/authService';
 import { useTranslation } from 'react-i18next';
 
 function TempPlayer() {
