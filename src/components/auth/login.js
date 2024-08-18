@@ -23,6 +23,7 @@ function Login() {
             localStorage.setItem("player", JSON.stringify(authData.player));
             localStorage.setItem("token", authData.token);
             navigate("/");
+            window.location.reload();
         })
         .catch((error) => {
             handleError(error.message); 

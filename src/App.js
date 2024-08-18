@@ -136,18 +136,20 @@ function App() {
     }
 
 	function handleError(error) {
-		toast.error(error?.message, {
-			position: "top-center",
-			autoClose: 2000,
-			transition: Slide,
-			hideProgressBar: true,
-			closeOnClick: true,
-			pauseOnHover: true,
-			pauseOnFocusLoss: true,
-			draggable: true,
-			progress: undefined,
-			theme: theme
-		});
+		if (error.message) {
+			toast.error(error.message, {
+				position: "top-center",
+				autoClose: 2000,
+				transition: Slide,
+				hideProgressBar: true,
+				closeOnClick: true,
+				pauseOnHover: true,
+				pauseOnFocusLoss: true,
+				draggable: true,
+				progress: undefined,
+				theme: theme
+			});
+		}
 	}
 
 	function handleConnected() {
