@@ -2,13 +2,14 @@ import { useContext } from 'react';
 import { slide as Menu } from 'react-burger-menu'
 import { CurrentUserContext, DeviceContext, LanguageContext, MenuContext, ThemeContext } from '../../App';
 import { useTranslation } from 'react-i18next';
+import { AuthService } from '../../services/authService';
 import './navigation.css';
 
 function Navigation(props) {
 
     const { t } = useTranslation();
     const { isMobile, setMobile } = useContext(DeviceContext);
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
     const { language, toggleLanguage} = useContext(LanguageContext);
     const { theme, toggleTheme } = useContext(ThemeContext);
@@ -26,7 +27,10 @@ function Navigation(props) {
                     <a href="/players">{t('players')}</a>
                     <a href="/scores">{t('scores')}</a>
                     <a href="/games">{t('games')}</a>
-                    {currentUser?.tempUser ? <a href="/register">{t('register')}</a> : <a href="/logout">{t('logout')}</a>}
+                    {currentUser && <a href="/logout" onClick={() => {
+                        AuthService.logout();
+                    }}>{t('logout')}</a>}
+                    {!currentUser && <a href="/register">{t('register')}</a>}
                     <button className="language-button" onClick={toggleLanguage}>
                         <img src="../svg/buttons/language.svg" alt={language} />
                     </button>
@@ -46,7 +50,10 @@ function Navigation(props) {
 				<br/>
 				<a href="/games">{t('games')}</a>
 				<br/>
-				{currentUser?.tempUser ? <a href="/register">{t('register')}</a> : <a href="/logout">{t('logout')}</a>}
+                    {currentUser && <a href="/logout" onClick={() => {
+                        AuthService.logout();
+                    }}>{t('logout')}</a>}
+                    {!currentUser && <a href="/register">{t('register')}</a>}
 				<br/>
 				<div className="menu-buttons"> 
 					<button className="language-button" onClick={toggleLanguage}>
