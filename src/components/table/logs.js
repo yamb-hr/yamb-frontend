@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Table from './table';
-import { GameService } from '../../services/gameService';
+import { LogService } from '../../services/logService';
 
-function Games() {
+function Logs() {
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -16,10 +16,10 @@ function Games() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const games = await GameService.getAll(9999);
-            setData(games);
+            const logs = await LogService.getAll(9999, 0, "createdAt", "desc");
+            setData(logs);
         } catch (error) {
-            console.error('Failed to fetch games:', error);
+            console.error('Failed to fetch logs:', error);
         } finally {
             setIsLoading(false);
         }
@@ -40,4 +40,4 @@ function Games() {
     );
 };
 
-export default Games;
+export default Logs;

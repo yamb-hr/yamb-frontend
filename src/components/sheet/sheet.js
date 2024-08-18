@@ -1,6 +1,6 @@
-import { useContext } from 'react';
+import { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MenuContext } from '../../App';
+import { DeviceContext, MenuContext } from '../../App';
 import Column from '../column/column';
 import Label from '../label/label';
 import './sheet.css';
@@ -9,19 +9,15 @@ function Sheet(props) {
 
     const { t } = useTranslation();
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
-    const {
-        columns,
-        rollCount,
-        announcement,
-        status,
-        player
-    } = props;
-
-    let rollDiceButtonDisabled = rollCount === 3 || isAnnouncementRequired() || status === "FINISHED";
-    let restartButtonDisabled = status === "FINISHED";
+    const { isMobile, setMobile } = useContext(DeviceContext);
+    const [isRollDisabled, setIsRollDisabled] = useState(false);
 
     function handleRollDice() {
+        setIsRollDisabled(true);
         props.onRollDice();
+        setTimeout(() => {
+            setIsRollDisabled(false);
+        }, 500);
     }
 
     function handleRestart() {
@@ -117,9 +113,11 @@ function Sheet(props) {
     return (
         <div className="sheet">
             <div className="column">
-                <button className="settings-button-sheet" onClick={() => {setMenuOpen(!isMenuOpen)}}>
-                    <img src="../svg/buttons/cog.svg" alt="Settings" ></img>
-                </button>
+                { isMobile ?
+                    <button className="settings-button-sheet" onClick={() => {setMenuOpen(!isMenuOpen);}}>
+                        <img src="../svg/buttons/cog.svg" alt="Settings" ></img>
+                    </button> : <div></div>
+                }
                 <Label icon="ones" info={t('ones')}></Label>
                 <Label icon="twos" info={t('twos')}></Label>
                 <Label icon="threes" info={t('threes')}></Label>
@@ -154,7 +152,7 @@ function Sheet(props) {
                 </div>
             ))}
             <div className="column">
-                <button className="roll-button" onClick={handleRollDice} disabled={rollDiceButtonDisabled}>
+                <button className="roll-button" onClick={handleRollDice} disabled={isRollDisabled || rollCount === 3 || isAnnouncementRequired()}>
                     <img src={"../svg/buttons/roll-" + (3-rollCount) + ".svg"} alt="Roll"></img>
                 </button>                    
                 <div className="top-section-sum">

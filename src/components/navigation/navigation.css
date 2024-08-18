@@ -1,0 +1,44 @@
+.navigation {
+    position: absolute;
+    top: 0;
+}
+
+@media (max-width: 480px) {
+    .settings-button {
+        display: block;
+    }
+
+    .navigation {
+        top: 0;
+        left: 0;
+    }
+}
+
+@media (min-width: 481px) {
+
+    .settings-button {
+        display: none;
+    }
+
+    nav {
+        position: absolute;
+        width: 100%;
+        justify-content: center;
+        display: flex;
+    }
+    
+    nav a {
+        background: var(--background-play-button);
+        padding: 20px 20px 20px 20px;
+    }
+    
+    [theme="dark"] nav a:hover {
+        filter: brightness(150%);
+        text-decoration: none;
+    }
+    
+    [theme="light"] nav a:hover {
+        filter: brightness(70%);
+        text-decoration: none;
+    }
+}

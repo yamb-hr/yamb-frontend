@@ -1,0 +1,60 @@
+import { useContext } from 'react';
+import { slide as Menu } from 'react-burger-menu'
+import { DeviceContext } from '../../App';
+import './navigation.css';
+
+function Navigation({ isMenuOpen, setMenuOpen, currentUser, toggleLanguage, language, toggleTheme, theme, t }) {
+
+    const { isMobile, setMobile } = useContext(DeviceContext);
+
+    return (
+        <div className="navigation">
+            {isMobile ? (
+                <button className="settings-button" onClick={() => setMenuOpen(!isMenuOpen)}>
+                    <img src="../svg/buttons/cog.svg" alt="Settings" />
+                </button>
+            ) : (
+                <nav>
+                    <a href="/">{t('play')}</a>
+                    <a href="/players">{t('players')}</a>
+                    <a href="/scores">{t('scores')}</a>
+                    <a href="/games">{t('games')}</a>
+                    {currentUser?.tempUser ? <a href="/register">{t('register')}</a> : <a href="/logout">{t('logout')}</a>}
+                    <button className="language-button" onClick={toggleLanguage}>
+                        <img src="../svg/buttons/language.svg" alt={language} />
+                    </button>
+                    <button className="theme-button" onClick={toggleTheme}>
+                        <img src={`../svg/buttons/${theme === "dark" ? "sun" : "moon"}.svg`} alt={theme} />
+                    </button>
+                    {currentUser?.roles?.find(x => x.label === "ADMIN") && <a href="/admin">Admin</a>}
+                </nav>
+            )}
+            {isMobile && <Menu isOpen={ isMenuOpen } onClose={() => {setMenuOpen(false)}} className={ "menu" } customBurgerIcon={ false }>
+				<br/>
+				<a href="/">{t('play')}</a>
+				<br/>
+				<a href="/players">{t('players')}</a>
+				<br/>
+				<a href="/scores">{t('scores')}</a>
+				<br/>
+				<a href="/games">{t('games')}</a>
+				<br/>
+				{currentUser?.tempUser ? <a href="/register">{t('register')}</a> : <a href="/logout">{t('logout')}</a>}
+				<br/>
+				<div className="menu-buttons"> 
+					<button className="language-button" onClick={toggleLanguage}>
+						<img src="../svg/buttons/language.svg" alt={language} ></img>
+					</button>
+					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+					<button className="theme-button" onClick={toggleTheme}>
+						<img src={"../svg/buttons/" + (theme === "dark" ? "sun" : "moon") + ".svg"} alt={theme}></img>
+					</button>
+				</div>
+				<br/>
+                {currentUser?.roles?.find(x => x.label=== "ADMIN") && <a href="/admin">Admin</a>}	
+			</Menu>}
+        </div>
+    );
+}
+
+export default Navigation;

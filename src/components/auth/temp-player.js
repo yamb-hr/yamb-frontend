@@ -1,6 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { CurrentUserContext, ErrorContext } from '../../App';
-import AuthService from '../../api/auth-service';
+import { AuthService } from '../../services/authService';
 import { useTranslation } from 'react-i18next';
 
 function TempPlayer() {
@@ -14,10 +14,10 @@ function TempPlayer() {
         AuthService.createTempPlayer({
             username: username
         })
-        .then((player) => {
-            console.log(player);
-            localStorage.setItem("player", JSON.stringify(player));
-            setCurrentUser(player);
+        .then((authData) => {
+            localStorage.setItem("player", JSON.stringify(authData.player));
+            localStorage.setItem("token", authData.token);
+            setCurrentUser(authData.player);
         })
         .catch((error) => {
             handleError(error);

@@ -40,11 +40,17 @@
 
   --color-box: var(--color-turq);
   --background-box: var(--color-blue);
-  --border-box: 1px solid var(--color-turq);
-  --border-box-alt: 1px dashed var(--color-red);
+  /* --border-box: 1px solid var(--color-turq);
+  --border-box-alt: 1px dashed var(--color-red); */
+  --radius-border-box: 4px;
+  --color-border-box: var(--color-turq);
+  --color-border-box-alt: var(--color-red);
+  --style-border-box: solid;
+  --style-border-box-alt: dashed;
+  --width-border-box: 1px;
+  --width-border-box-alt: 1px;
   --width-box: 64px;
   --height-box: 32px;
-  --border-radius-box: 4px;
   
   --background-dice: var(--color-gray);
   --border-dice: none;
@@ -135,10 +141,12 @@
 }
 
 [theme="light"] {
+  
+  --color-gray: #eeeeee;
 
   --background-menu: var(--color-gray);
 
-  --color-background: #cecece;
+  --color-background: #ffffff;
   --background-sheet: var(--color-gray);
 
   --color-label: var(--color-blue);
@@ -156,8 +164,12 @@
 
   --color-box: var(--color-blue);
   --background-box: var(--color-gray);
-  --border-box: 1px solid var(--color-turq);
-  --border-box-alt: 1px dashed var(--color-red);
+  --color-border-box: var(--color-blue);
+  --color-border-box-alt: var(--color-blue);
+  --style-border-box: solid;
+  --style-border-box-alt: dashed;
+  --width-border-box: 1px;
+  --width-border-box-alt: 1px;
   
   --background-dice: var(--color-yellow);
   --border-dice-alt: 3px solid var(--color-red);
@@ -255,9 +267,8 @@ button:hover:enabled {
   filter: brightness(150%);
 }
 
-
 [theme="light"] button:hover:enabled {
-  filter: brightness(70%);
+  filter: brightness(90%);
 }
 
 button:focus {
@@ -275,7 +286,7 @@ button:disabled {
 }
 
 [theme="light"] button:disabled {
-  filter: brightness(90%);
+  /* filter: brightness(100%); */
 }
 
 input {

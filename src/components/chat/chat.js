@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext, ErrorContext } from "../../App";
+import { PlayerService } from "../../services/playerService";
+import { AuthService } from "../../services/authService";
 import SockJsClient from "react-stomp";
-import PlayerService from "../../api/player-service";
 import "./chat.css";
 
 var socket = null;
@@ -128,7 +129,7 @@ function Chat() {
                     <br/>
                     <a href="/login">Login</a>
                 </div>}
-                {currentUser && <SockJsClient url={process.env.REACT_APP_API_URL + "/ws?token=" + currentUser.token}
+                {currentUser && <SockJsClient url={process.env.REACT_APP_API_URL + "/ws?token=" + AuthService.getAccessToken()}
 					topics={topics}
 					onMessage={(message) => {
                         handleMessage(message);
