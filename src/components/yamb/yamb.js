@@ -98,7 +98,7 @@ function Yamb() {
 
     function handleMakeAnnouncement(type) {
         console.time("makeAnnouncement");
-        GameService.makeAnnouncementById(
+        GameService.announceById(
             game.id, type
         )
         .then((data) => {
