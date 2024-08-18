@@ -9,6 +9,15 @@ function Sheet(props) {
 
     const { t } = useTranslation();
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
+    const {
+        columns,
+        rollCount,
+        announcement,
+        status,
+        player
+    } = props;
+
+    let restartButtonDisabled = status === "FINISHED";
     const { isMobile, setMobile } = useContext(DeviceContext);
     const [isRollDisabled, setIsRollDisabled] = useState(false);
 
@@ -158,7 +167,7 @@ function Sheet(props) {
                 <div className="top-section-sum">
                     <Label variant="sum" value={getTopSectionSum()}></Label>
                 </div>
-                <button className="restart-button" onClick={handleRestart} diabled={restartButtonDisabled}>
+                <button className="restart-button" onClick={handleRestart} disabled={restartButtonDisabled}>
                     <img src={"../svg/buttons/restart.svg"} alt="Restart"></img>
                 </button>
                 <div className="middle-section-sum">
