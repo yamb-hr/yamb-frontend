@@ -1,11 +1,18 @@
 import { useContext } from 'react';
 import { slide as Menu } from 'react-burger-menu'
-import { DeviceContext } from '../../App';
+import { CurrentUserContext, DeviceContext, LanguageContext, MenuContext, ThemeContext } from '../../App';
+import { useTranslation } from 'react-i18next';
 import './navigation.css';
 
-function Navigation({ isMenuOpen, setMenuOpen, currentUser, toggleLanguage, language, toggleTheme, theme, t }) {
+function Navigation(props) {
 
+    const { t } = useTranslation();
     const { isMobile, setMobile } = useContext(DeviceContext);
+    const { currentUser } = useContext(CurrentUserContext);
+    const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
+    const { language, toggleLanguage} = useContext(LanguageContext);
+    const { theme, toggleTheme } = useContext(ThemeContext);
+
 
     return (
         <div className="navigation">

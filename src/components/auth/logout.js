@@ -6,8 +6,8 @@ function Logout() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        AuthService.logout();  // Clear local storage
-        navigate('/login');    // Redirect to the login page
+        AuthService.logout();
+        navigate('/');
     }, [navigate]);
 
     return null;

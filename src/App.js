@@ -18,7 +18,6 @@ import { AuthService } from './services/authService';
 import { PlayerService } from "./services/playerService";
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
-import Element from './components/table/element';
 import Logout from './components/auth/logout';
 import Navigation from './components/navigation/navigation';
 import Player from './components/table/player';
