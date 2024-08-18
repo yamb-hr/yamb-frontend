@@ -19,8 +19,9 @@ function Login() {
             username: username,
             password: password
         })
-        .then((player) => {
-            localStorage.setItem("player", JSON.stringify(player)); 
+        .then((authData) => {
+            localStorage.setItem("player", JSON.stringify(authData.player));
+            localStorage.setItem("token", authData.token);
             navigate("/");
         })
         .catch((error) => {
