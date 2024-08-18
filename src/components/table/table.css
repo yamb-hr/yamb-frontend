@@ -1,75 +1,74 @@
-.table {
-    background: var(--background-form);
-    filter: brightness(150%);
-    text-align: center;
-    font-size: medium;
-    font-weight: normal;
-}
-
-.element {
-    background: var(--background-form);
-    color: var(--color-form);
-    border: var(--border-form);
-    border-radius: var(--border-radius-box);
-    padding: var(--padding-form);
-    width: var(--width-table-form);
-    height: var(--height-table-form);
-    text-align: left;
-    font-size: medium;
-    font-weight: normal;
-}
-
-.table tr {
-    display: table;
-    width: 100%;
+table {
+    width: 50vw;
+    border-collapse: collapse;
     table-layout: fixed;
-    height: 40px;
+    font-size: medium;
+    min-width: 480px;
+    margin-bottom: 40px;
 }
 
 tbody {
     display: block;
-    height: 450px;
-    overflow: auto;
+    overflow-y: auto;
+    width: 100%;
+    max-height: 60vh;
 }
 
-.table-form {
-    background: var(--background-form);
-    color: var(--color-form);
-    border: var(--border-form);
-    border-radius: var(--border-radius-box);
-    padding: var(--padding-form);
-    width: var(--width-table-form);
+tr {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
 }
 
-.table, th, td {
-    border-collapse: collapse;
+@media screen and (max-width: 480px) {
+    table {
+        min-width: auto;
+        width: 100vw;
+    }   
+    tbody {
+        max-height: 75vh;
+    } 
 }
 
-.table tr {
-    background: var(--background-form);
+th, td {
+    padding: 10px 15px;
+    text-align: left;
+    border: 1px solid var(--color-border-label);
+    color: var(--color-label);
 }
 
-.table tbody tr:nth-child(odd) {
-    filter: brightness(70%);
-}
-
-.table tr:hover {
-    filter: brightness(150%) !important;
+th {
+    background-color: var(--background-box);
     cursor: pointer;
-}
-
-label {
-    font-size: medium;
-}
-
-.page-control {
-    background: var(--background-box);
     color: var(--color-box);
-    padding: var(--padding-play-button);
-    border: none;
-    border-radius: var(--border-radius-box);
 }
 
-.page-control:disabled {
-    border: none;
+tr:nth-child(even) {
+    background-color: var(--background-box);
 }
+
+td:hover {
+    cursor: pointer;
+    filter: var(--filter-column-symbol);
+}
+
+.pagination-button {
+    padding: 10px;
+    border-radius: 4px;
+    color: var(--color-label);
+    background-color: var(--background-box);
+}
+
+.page-number {
+    padding: 10px;
+    border-radius: 4px;
+    color: var(--color-label);
+    margin: 0 5px;
+}
+
+select {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid var(--color-border-box);
+}
+  

@@ -1,16 +1,22 @@
 .box {
     color: var(--color-box);
     background: var(--background-box);
-    border: var(--border-box);
-    border-radius: var(--border-radius-box);
+    border-color: var(--color-border-box);
+    border-style: var(--style-border-box);
+    border-width: var(--width-border-box);
     width: var(--width-box);
     height: var(--height-box);
+    border-radius: var(--radius-border-box);
 }
 
 .box:disabled {
-    border: var(--border-box-alt);
+    border-color: var(--color-border-box-alt);
+    border-style: var(--style-border-box-alt);
+    border-width: var(--width-border-box-alt);
 }
 
 .announcement {
-    border: var(--border-box);
+    border-color: var(--color-border-box);
+    border-style: var(--style-border-box);
+    border-width: var(--width-border-box);
 }

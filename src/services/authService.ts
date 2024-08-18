@@ -35,11 +35,11 @@ export class AuthService {
 
 	static async createTempPlayer(tempPlayerRequest: PlayerCredentials): Promise<AuthData> {
 		try {
-			const response: AxiosResponse<{ data: AuthData }> = await axios.post(API_URL + '/temp-player', tempPlayerRequest, {
-				withCredentials: true,
+			const { data }: AxiosResponse<AuthData> = await axios.post(API_URL + '/temp-player', tempPlayerRequest, {
 				headers: { 'Content-Type': 'application/json' },
 			});
-			return response.data.data;
+			console.log(data);
+			return data;
 		} catch (error: any) {
 			console.error(error);
 			throw new Error(error.response?.data?.message || 'Creation of temporary player failed');
@@ -47,16 +47,12 @@ export class AuthService {
 	}
 	
 	static async register(authRequest: PlayerCredentials): Promise<Player> {
-		const token = AuthService.getAccessToken();
 		try {
-			const response: AxiosResponse<{ data: Player }> = await axios.post(API_URL + '/register', authRequest, {
-				withCredentials: true,
-				headers: {
-					'Authorization': `Bearer ${token}`,
-					'Content-Type': 'application/json'
-				},
+			const { data }: AxiosResponse<Player>= await axios.post(API_URL + '/register', authRequest, {
+				headers: AuthService.getAuthHeaders(),
 			});
-			return response.data.data;
+			console.log(data);
+			return data;
 		} catch (error: any) {
 			console.error(error);
 			throw new Error(error.response?.data?.message || 'Registration failed');
@@ -65,11 +61,9 @@ export class AuthService {
 
 	static async login(authRequest: PlayerCredentials): Promise<AuthData> {
 		try {
-			const response: AxiosResponse<{ data: AuthData }> = await axios.post(API_URL + '/login', authRequest, {
-				withCredentials: true,
-				headers: { 'Content-Type': 'application/json' },
-			});
-			return response.data.data;
+			const { data }: AxiosResponse<AuthData> = await axios.post(API_URL + '/login', authRequest);
+			console.log(data);
+			return data;
 		} catch (error: any) {
 			console.error(error);
 			throw new Error(error.response?.data?.message || 'Login failed');

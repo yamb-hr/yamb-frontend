@@ -21,9 +21,8 @@ function Yamb() {
 
     useEffect(() => {   
         if (id) {
-            GameService.getGameById(id)
+            GameService.getById(id)
             .then((data) => {
-                console.log(data);
                 setGame(data);
             })
             .catch((error) => {
@@ -32,7 +31,6 @@ function Yamb() {
         } else if (currentUser) {
             GameService.play()
             .then((data) => {
-                console.log(data);
                 setGame(data);
             })
             .catch((error) => {
@@ -44,13 +42,12 @@ function Yamb() {
 
     function handleRollDice(diceToRoll) {
         console.time("rollDice");
-        GameService.rollDiceById(game.id, diceToRoll)
+        GameService.rollById(game.id, diceToRoll)
         .then((data) => {
             console.timeEnd("rollDice");
-            console.log(data);
-            let newGame = {...game};
-            newGame.dices = data;
-            newGame.rollCount = game.rollCount + 1;
+            let newGame = {...data};
+            // newGame.dices = data;
+            // newGame.rollCount = game.rollCount + 1;
             setGame(newGame);
         })
         .catch((error) => {
@@ -67,19 +64,18 @@ function Yamb() {
         let value = calculateScore(diceValues, BoxType[boxType])
         newGame.sheet.columns[columnIndex].boxes[boxIndex].value = value;
         setGame(newGame);
-        GameService.fillBoxById(
+        GameService.fillById(
             game.id, columnType, boxType
         )
         .then((data) => {
             console.timeEnd("fillBox");
-            console.log(data);
-            let newGame = {...game};
-            const columnIndex = newGame.sheet.columns.findIndex(c => c.type === columnType);
-            const boxIndex = newGame.sheet.columns[columnIndex].boxes.findIndex(b => b.type === boxType);
-            newGame.sheet.columns[columnIndex].boxes[boxIndex].value = data;
-            newGame.rollCount = 0;
-            newGame.announcement = null;
-            newGame.status = data.status;
+            let newGame = {...data};
+            // const columnIndex = newGame.sheet.columns.findIndex(c => c.type === columnType);
+            // const boxIndex = newGame.sheet.columns[columnIndex].boxes.findIndex(b => b.type === boxType);
+            // newGame.sheet.columns[columnIndex].boxes[boxIndex].value = data;
+            // newGame.rollCount = 0;
+            // newGame.announcement = null;
+            // newGame.status = data.status;
             setGame(newGame);
             if (data.status === "FINISHED") {
                 handleFinish();
@@ -93,7 +89,6 @@ function Yamb() {
     function handleNewGame() {
         GameService.play()
         .then((data) => {
-            console.log(data);
             setGame(data);
         })
         .catch((error) => {
@@ -108,9 +103,7 @@ function Yamb() {
         )
         .then((data) => {
             console.timeEnd("makeAnnouncement");
-            console.log(data);
-            let newGame = {...game};
-            newGame.announcement = data;
+            let newGame = {...data};
             setGame(newGame);
         })
         .catch((error) => {
@@ -126,7 +119,6 @@ function Yamb() {
         )
         .then((data) => {
             console.timeEnd("restart");
-            console.log(data);
             setGame(data);
         })
         .catch((error) => {

@@ -14,10 +14,10 @@ function TempPlayer() {
         AuthService.createTempPlayer({
             username: username
         })
-        .then((player) => {
-            console.log(player);
-            localStorage.setItem("player", JSON.stringify(player));
-            setCurrentUser(player);
+        .then((authData) => {
+            localStorage.setItem("player", JSON.stringify(authData.player));
+            localStorage.setItem("token", authData.token);
+            setCurrentUser(authData.player);
         })
         .catch((error) => {
             handleError(error);

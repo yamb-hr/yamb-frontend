@@ -7,10 +7,15 @@ const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;
 export class PlayerService {
 
     static async getById(playerId: string): Promise<Player> {
-        const { data }: AxiosResponse<Player> = await axios.get(`${API_BASE_URL}/${playerId}`, {
-            headers: AuthService.getAuthHeaders()
-        });
-        return data;
+        try {
+            const { data }: AxiosResponse<Player> = await axios.get(`${API_BASE_URL}/${playerId}`, {
+                headers: AuthService.getAuthHeaders()
+            });
+            return data;
+        } catch (error: any) {
+            console.error(error);
+            throw new Error(error.response?.data?.message);
+        }
     }
 
     static async getAll(
@@ -19,18 +24,28 @@ export class PlayerService {
         order: string = 'createdAt', 
         direction: string = 'asc'
     ): Promise<Player[]> {
-        const { data }: AxiosResponse<Player[]> = await axios.get(API_BASE_URL, {
-            params: { size, page, sort: order, direction },
-            headers: AuthService.getAuthHeaders()
-        });
-        return data;
+        try {
+            const { data }: AxiosResponse<Player[]> = await axios.get(API_BASE_URL, {
+                params: { size, page, sort: order, direction },
+                headers: AuthService.getAuthHeaders()
+            });
+            return data;
+        } catch (error: any) {
+            console.error(error);
+            throw new Error(error.response?.data?.message);
+        }
     }
 
     static async getPrincipalById(playerId: string): Promise<string> {
-        const { data }: AxiosResponse<string> = await axios.get(`${API_BASE_URL}/${playerId}/principal`, {
-            headers: AuthService.getAuthHeaders()
-        });
-        return data;
+        try {
+            const { data }: AxiosResponse<string> = await axios.get(`${API_BASE_URL}/${playerId}/principal`, {
+                headers: AuthService.getAuthHeaders()
+            });
+            return data;
+        } catch (error: any) {
+            console.error(error);
+            throw new Error(error.response?.data?.message);
+        }
     }
 
 }

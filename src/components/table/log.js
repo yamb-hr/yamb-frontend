@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Table from './table';
-import { GameService } from '../../services/gameService';
+import Element from './element';
+import { LogService } from '../../services/logService';
+import { useParams } from 'react-router-dom';
 
-function Games() {
+function Log() {
 
-    const [data, setData] = useState([]);
+    const { id } = useParams(); // Gets the 'id' from the URL
+    const [data, setData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     const columns = [
@@ -16,10 +18,10 @@ function Games() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const games = await GameService.getAll(9999);
-            setData(games);
+            const log = await LogService.getById(id);
+            setData(log);
         } catch (error) {
-            console.error('Failed to fetch games:', error);
+            console.error('Failed to fetch log:', error);
         } finally {
             setIsLoading(false);
         }
@@ -31,7 +33,7 @@ function Games() {
 
     return (
         <div>
-            <Table 
+            <Element 
                 data={data} 
                 columns={columns} 
                 isLoading={isLoading} 
@@ -40,4 +42,4 @@ function Games() {
     );
 };
 
-export default Games;
+export default Log;

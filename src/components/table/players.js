@@ -1,19 +1,43 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Table from './table';
+import { PlayerService } from '../../services/playerService';
 
 function Players() {
 
-    const { t } = useTranslation();
+    const [data, setData] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    const columns = [
+        { name: 'name', label: 'Name' },
+        { name: 'createdAt', label: 'Date' }
+    ];
+
+    const fetchData = async () => {
+        setIsLoading(true);
+        try {
+            const players = await PlayerService.getAll(9999);
+            setData(players);
+        } catch (error) {
+            console.error('Failed to fetch players:', error);
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
-        <div className="table-form">
-            {t('players')}
-            <br/>
-            <br/>
-            <Table></Table>
-        </div>   
+        <div>
+            <Table 
+                data={data} 
+                columns={columns} 
+                isLoading={isLoading} 
+            />
+        </div>
     );
-}
+};
 
 export default Players;

@@ -20,7 +20,6 @@ function Login() {
             password: password
         })
         .then((player) => {
-            console.log(player);
             localStorage.setItem("player", JSON.stringify(player)); 
             navigate("/");
         })

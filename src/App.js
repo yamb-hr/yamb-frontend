@@ -16,16 +16,22 @@ import Chat from './components/chat/chat';
 import Dashboard from './components/dashboard/dashboard';
 import { AuthService } from './services/authService';
 import { PlayerService } from "./services/playerService";
-import { slide as Menu } from 'react-burger-menu'
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import Element from './components/table/element';
+import Logout from './components/auth/logout';
+import Navigation from './components/navigation/navigation';
+import Player from './components/table/player';
+import Score from './components/table/score';
+import Logs from './components/table/logs';
+import Log from './components/table/log';
 
 export const ThemeContext = createContext(null);
 export const LanguageContext = createContext(null);
 export const CurrentUserContext = createContext(null);
 export const MenuContext = createContext(null);
 export const ErrorContext = createContext(null);
+export const DeviceContext = createContext(null);
 
 var socket = null
 
@@ -36,6 +42,7 @@ function App() {
 	const [ language, setLanguage ] = useState(getCurrentLanguage());
 	const [ currentUser, setCurrentUser ] = useState(AuthService.getCurrentPlayer());
 	const [ isMenuOpen, setMenuOpen ] = useState(false);
+	const [ isMobile, setMobile ] = useState(window.innerWidth <= 480);
 
     const [ principal, setPrincipal ] = useState(null);
     const [ connected, setConnected ] = useState(false);
@@ -48,6 +55,15 @@ function App() {
             setTopics([...newTopics, "/player/" + principal + "/private"]);
         }
     }, [principal]);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setMobile(window.innerWidth <= 480);
+        };
+
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
 
 	function toggleTheme() {
 		let newTheme = theme === "dark" ? "light" : "dark";
@@ -121,7 +137,7 @@ function App() {
     }
 
 	function handleError(error) {
-		toast.error(error, {
+		toast.error(error?.message, {
 			position: "top-center",
 			autoClose: 2000,
 			transition: Slide,
@@ -163,81 +179,65 @@ function App() {
 		}
 	}
 
-	function handleOnMenuClose() {
-		setMenuOpen(false);
-	}
-
 	return (
 		<div className="App">
-			<button className="settings-button" onClick={() => {setMenuOpen(!isMenuOpen)}}>
-                <img src="../svg/buttons/cog.svg" alt="Settings" ></img>
-            </button>
-			<Menu isOpen={ isMenuOpen } onClose={handleOnMenuClose} className={ "menu" } customBurgerIcon={ false }>
-				<br/>
-				<a href="/">{t('play')}</a>
-				<br/>
-				<a href="/players">{t('players')}</a>
-				<br/>
-				<a href="/scores">{t('scores')}</a>
-				<br/>
-				<a href="/games">{t('games')}</a>
-				<br/>
-				{currentUser?.tempUser ? <a href="/register">{t('register')}</a> : <a href="/logout">{t('logout')}</a>}
-				<br/>
-				<div className="menu-buttons"> 
-					<button className="language-button" onClick={toggleLanguage}>
-						<img src="../svg/buttons/language.svg" alt={language} ></img>
-					</button>
-					&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-					<button className="theme-button" onClick={toggleTheme}>
-						<img src={"../svg/buttons/" + (theme === "dark" ? "sun" : "moon") + ".svg"} alt={theme}></img>
-					</button>
-				</div>
-				<br/>
-                {currentUser?.roles?.find(x => x.label=== "ADMIN") && <a href="/admin">Admin</a>}	
-			</Menu>
 			<header className="App-header">
 				<ErrorContext.Provider value={{ handleError}}>
-					<MenuContext.Provider value={{ isMenuOpen, setMenuOpen}}>
-						<CurrentUserContext.Provider value={{ currentUser, setCurrentUser}}>
-							<ThemeContext.Provider value={{ theme, toggleTheme}}>
-								<LanguageContext.Provider value={{ language, toggleLanguage}}>
+					<DeviceContext.Provider value={{ isMobile, setMobile}}>
+						<MenuContext.Provider value={{ isMenuOpen, setMenuOpen}}>
+							<CurrentUserContext.Provider value={{ currentUser, setCurrentUser}}>
+								<ThemeContext.Provider value={{ theme, toggleTheme}}>
+									<LanguageContext.Provider value={{ language, toggleLanguage}}>
+										<Navigation 
+											isMenuOpen={isMenuOpen} 
+											setMenuOpen={setMenuOpen} 
+											currentUser={currentUser} 
+											toggleLanguage={toggleLanguage} 
+											language={language} 
+											toggleTheme={toggleTheme} 
+											theme={theme} 
+											t={t} 
+										/>
+										<ToastContainer limit={5} style={{fontSize:"medium"}}/>
+										{currentUser && <SockJsClient url={process.env.REACT_APP_API_URL + "/ws?token=" + AuthService.getAccessToken()}
+											topics={topics}
+											onMessage={(message) => {
+												handleMessage(message);
+											}}
+											onConnect={() => {
+												handleConnected();
+											}}
+											onDisconnect={() => {
+												handleDisconnected();
+											}}
+											ref={(client) => {
+												socket = client;
+										}} />}
 										<Router>
 											<Routes>
 												<Route path="/" element={<Home  />} />
 												<Route path="/login" element={<Login  />} />
 												<Route path="/register" element={<Register  />} />
 												<Route path="/players" element={<Players  />} />
-												<Route path="/players/:id" element={<Element />} />
+												<Route path="/players/:id" element={<Player />} />
 												<Route path="/scores" element={<Scores  />} />
-												<Route path="/scores/:id" element={<Element />} />
+												<Route path="/scores/:id" element={<Score />} />
 												<Route path="/games" element={<Games  />} />
 												<Route path="/games/:id" element={<Yamb  />} />
+												<Route path="/logs" element={<Logs />} />
+												<Route path="/log/:id" element={<Log />} />
 												<Route path="/admin" element={<Admin  />} />
 												<Route path="/chat" element={<Chat  />} />
 												<Route path="/dashboard" element={<Dashboard  />} />
+												<Route path="/logout" element={<Logout  />} />
 											</Routes>
-										</Router>
-								</LanguageContext.Provider>
-							</ThemeContext.Provider>
-						</CurrentUserContext.Provider>
-					</MenuContext.Provider>
+										</Router>		
+									</LanguageContext.Provider>
+								</ThemeContext.Provider>
+							</CurrentUserContext.Provider>
+						</MenuContext.Provider>
+					</DeviceContext.Provider>
 				</ErrorContext.Provider>
-				<ToastContainer limit={5} style={{fontSize:"medium"}}/>
-				{currentUser && <SockJsClient url={process.env.REACT_APP_API_URL + "/ws?token=" + currentUser.token}
-					topics={topics}
-					onMessage={(message) => {
-                        handleMessage(message);
-					}}
-					onConnect={() => {
-                        handleConnected();
-					}}
-					onDisconnect={() => {
-						handleDisconnected();
-					}}
-					ref={(client) => {
-						socket = client;
-					}} />}
 			</header>
 		</div>
 	);

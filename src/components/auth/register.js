@@ -23,7 +23,6 @@ function Register() {
             password: password
         })
         .then((player) => {
-            console.log(player);
             toast.success(t('registration-success'), {
                 position: "top-center",
                 autoClose: 2000,
