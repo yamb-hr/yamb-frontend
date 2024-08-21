@@ -20,3 +20,7 @@
     border-style: var(--style-border-box);
     border-width: var(--width-border-box);
 }
+
+.box:hover:enabled {
+    background-color: var(--background-box-hover);
+}

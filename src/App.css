@@ -26,57 +26,6 @@
   color: #61dafb;
 }
 
-.menu {
-  font-weight: bold;
-  font-size: xx-large;
-  background: var(--background-menu);
-}
-
-.menu-buttons {
-  text-align: center;
-  width: 100%;
-}
-
-.language-button {
-	background: var(--background-settings-button);
-  color: var(--color-settings-button);
-  border: var(--border-settings-button);
-  border-radius: var(--border-radius-box);
-}
-
-.language-button img {
-	width: calc(var(--width-box) / 2);
-	filter: var(--filter-settings-button)
-}
-
-.theme-button {
-  background: var(--background-info-button);
-  color: var(--color-info-button);
-  border: var(--border-info-button);
-  border-radius: var(--border-radius-box);
-}
-
-.theme-button img {
-  width: calc(var(--width-box) / 2);
-  filter: var(--filter-info-button);
-}
-
-.settings-button {
-	background: var(--color-background);
-  color: var(--color-settings-button);
-  border: var(--border-settings-button);
-  border-radius: var(--border-radius-box);
-  position: fixed;
-  top: 10px;
-  left: 10px;
-  z-index: 1;
-}
-
-.settings-button img {
-	width: calc(var(--width-box) / 2);
-	filter: var(--filter-settings-button);
-}
-
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);

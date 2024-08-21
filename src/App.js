@@ -1,29 +1,30 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { ToastContainer, toast, Slide } from 'react-toastify';
-import { createContext, useEffect, useState } from 'react';
+import { createContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import SockJsClient from "react-stomp";
 import i18n from './i18n';
 import Home from './components/home/home';
 import Login from './components/auth/login';
 import Register from './components/auth/register';
-import Players from './components/table/players';
-import Scores from './components/table/scores';
-import Games from './components/table/games';
+
 import Admin from './components/admin/admin';
 import Yamb from './components/yamb/yamb';
 import Chat from './components/chat/chat';
-import Dashboard from './components/dashboard/dashboard';
 import { AuthService } from './services/authService';
 import { PlayerService } from "./services/playerService";
-import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
 import Logout from './components/auth/logout';
 import Navigation from './components/navigation/navigation';
-import Player from './components/table/player';
-import Score from './components/table/score';
-import Logs from './components/table/logs';
-import Log from './components/table/log';
+import Players from './components/dynamic/table/players';
+import Scores from './components/dynamic/table/scores';
+import Games from './components/dynamic/table/games';
+import Logs from './components/dynamic/table/logs';
+import Player from './components/dynamic/element/player';
+import Score from './components/dynamic/element/score';
+import Log from './components/dynamic/element/log';
+import Play from './components/play/play';
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
 
 export const ThemeContext = createContext(null);
 export const LanguageContext = createContext(null);
@@ -35,6 +36,25 @@ export const DeviceContext = createContext(null);
 var socket = null
 
 function App() {
+
+	const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
+
+    useEffect(() => {
+        const script = document.createElement('script');
+        script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+        script.async = true;
+
+        script.onerror = () => {
+            console.error('Failed to load reCAPTCHA script');
+        };
+
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+
+    }, [RECAPTCHA_SITE_KEY]);
 	
 	const { t } = useTranslation();
 	const [ theme, setTheme ] = useState(getCurrentTheme());
@@ -57,9 +77,8 @@ function App() {
 
     useEffect(() => {
         const handleResize = () => {
-            setMobile(window.innerWidth <= 480);
-        };
-
+			setMobile(window.innerWidth <= 480);
+		}
         window.addEventListener('resize', handleResize);
         return () => window.removeEventListener('resize', handleResize);
     }, []);
@@ -77,7 +96,7 @@ function App() {
 				pauseOnFocusLoss: false,
 				draggable: true,
 				progress: undefined,
-				theme: theme
+				theme: newTheme
         });
 		document.documentElement.setAttribute("theme", newTheme);
 		localStorage.setItem("nextTheme", newTheme === "dark" ? "light" : "dark");
@@ -136,8 +155,10 @@ function App() {
     }
 
 	function handleError(error) {
-		if (error.message) {
-			toast.error(error.message, {
+		console.error(error);
+		let message = error.response?.data?.message ? error.response.data.message : error.message;
+		if (message) {
+			toast.error(message, {
 				position: "top-center",
 				autoClose: 2000,
 				transition: Slide,
@@ -154,15 +175,17 @@ function App() {
 
 	function handleConnected() {
         setConnected(true);
-        PlayerService.getPrincipalById(
-            currentUser.id
-        )
-        .then(data => {
-            setPrincipal(data.principal);
-        }
-        ).catch(error => {
-            handleError(error);
-        });
+		if (currentUser) {
+			PlayerService.getPrincipalById(
+				currentUser.id
+			)
+			.then(data => {
+				setPrincipal(data.principal);
+			}
+			).catch(error => {
+				handleError(error);
+			});
+		}
     }
 
 	function handleMessage(message) {
@@ -179,6 +202,25 @@ function App() {
 			socket.sendMessage("/app" + channel, JSON.stringify(message));
 		}
 	}
+
+	const sockJsClient = useMemo(() => {
+		const token = AuthService.getAccessToken();
+	
+		if (!token) {
+			return null;
+		}
+	
+		return (
+			<SockJsClient 
+				url={process.env.REACT_APP_API_URL + "/ws?token=" + token}
+				topics={topics}
+				onMessage={handleMessage}
+				onConnect={handleConnected}
+				onDisconnect={handleDisconnected}
+				ref={(client) => { socket = client; }}
+			/>
+		);
+	}, [topics]);
 
 	return (
 		<div className="App">
@@ -200,23 +242,12 @@ function App() {
 											t={t} 
 										/>
 										<ToastContainer limit={5} style={{fontSize:"medium"}}/>
-										{currentUser && <SockJsClient url={process.env.REACT_APP_API_URL + "/ws?token=" + AuthService.getAccessToken()}
-											topics={topics}
-											onMessage={(message) => {
-												handleMessage(message);
-											}}
-											onConnect={() => {
-												handleConnected();
-											}}
-											onDisconnect={() => {
-												handleDisconnected();
-											}}
-											ref={(client) => {
-												socket = client;
-										}} />}
+										<div id="recaptcha-container"></div>
+										{/* {currentUser && sockJsClient} */}
 										<Router>
 											<Routes>
-												<Route path="/" element={<Home  />} />
+												<Route path="/" element={<Play />} />
+												<Route path="/scoreboard" element={<Home  />} />
 												<Route path="/login" element={<Login  />} />
 												<Route path="/register" element={<Register  />} />
 												<Route path="/players" element={<Players  />} />
@@ -229,7 +260,6 @@ function App() {
 												<Route path="/log/:id" element={<Log />} />
 												<Route path="/admin" element={<Admin  />} />
 												<Route path="/chat" element={<Chat  />} />
-												<Route path="/dashboard" element={<Dashboard  />} />
 												<Route path="/logout" element={<Logout  />} />
 											</Routes>
 										</Router>		

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Element from './element';
-import { LogService } from '../../services/logService';
-import { useParams } from 'react-router-dom';
+import Table from './table';
+import { LogService } from '../../../services/logService';
 
-function Log() {
+function Logs() {
 
-    const { id } = useParams(); // Gets the 'id' from the URL
-    const [data, setData] = useState({});
+    const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const columns = [
@@ -18,10 +16,10 @@ function Log() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const log = await LogService.getById(id);
-            setData(log);
+            const logs = await LogService.getAll(9999, 0, "createdAt", "desc");
+            setData(logs);
         } catch (error) {
-            console.error('Failed to fetch log:', error);
+            console.error('Failed to fetch logs:', error);
         } finally {
             setIsLoading(false);
         }
@@ -33,7 +31,7 @@ function Log() {
 
     return (
         <div>
-            <Element 
+            <Table 
                 data={data} 
                 columns={columns} 
                 isLoading={isLoading} 
@@ -42,4 +40,4 @@ function Log() {
     );
 };
 
-export default Log;
+export default Logs;

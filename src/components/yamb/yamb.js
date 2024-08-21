@@ -14,7 +14,7 @@ function Yamb() {
 
     const { id } = useParams();
     const { t } = useTranslation();
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorContext);
     
     const [game, setGame] = useState(null);
@@ -35,6 +35,7 @@ function Yamb() {
             })
             .catch((error) => {
                 handleError(error);
+                setCurrentUser(null);
                 AuthService.logout();
             });
         }

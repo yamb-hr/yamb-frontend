@@ -1,25 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Table from './table';
-import { LogService } from '../../services/logService';
+import Element from './element';
+import { ScoreService } from '../../../services/scoreService';
+import { useParams } from 'react-router-dom';
 
-function Logs() {
+function Score() {
 
-    const [data, setData] = useState([]);
+    const { id } = useParams();
+    const [data, setData] = useState({});
     const [isLoading, setIsLoading] = useState(true);
 
     const columns = [
         { name: 'player.name', label: 'Player' },
-        { name: 'createdAt', label: 'Date' }
+        { name: 'createdAt', label: 'Date' },
+        { name: 'value', label: 'Value' }
     ];
 
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const logs = await LogService.getAll(9999, 0, "createdAt", "desc");
-            setData(logs);
+            const score = await ScoreService.getById(id);
+            setData(score);
         } catch (error) {
-            console.error('Failed to fetch logs:', error);
+            console.error('Failed to fetch score:', error);
         } finally {
             setIsLoading(false);
         }
@@ -31,7 +34,7 @@ function Logs() {
 
     return (
         <div>
-            <Table 
+            <Element 
                 data={data} 
                 columns={columns} 
                 isLoading={isLoading} 
@@ -40,4 +43,4 @@ function Logs() {
     );
 };
 
-export default Logs;
+export default Score;

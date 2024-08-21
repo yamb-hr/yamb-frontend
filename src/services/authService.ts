@@ -12,7 +12,7 @@ export class AuthService {
 			return JSON.parse(localStorage.getItem("player") || 'null');
 		} catch (error) {
 			console.error(error);
-			this.logout();
+			//this.logout();
 			return null;
 		}
 	}
@@ -22,7 +22,7 @@ export class AuthService {
 			return localStorage.getItem("token") || 'null';
 		} catch (error) {
 			console.error(error);
-			this.logout();
+			//this.logout();
 			return null;
 		}
 	}
@@ -33,41 +33,28 @@ export class AuthService {
 		}
 	}
 
-	static async createTempPlayer(tempPlayerRequest: PlayerCredentials): Promise<AuthData> {
-		try {
-			const { data }: AxiosResponse<AuthData> = await axios.post(API_URL + '/temp-player', tempPlayerRequest, {
-				headers: { 'Content-Type': 'application/json' },
-			});
-			console.log(data);
-			return data;
-		} catch (error: any) {
-			console.error(error);
-			throw new Error(error.response?.data?.message || 'Creation of temporary player failed');
-		}
+	static async createTempPlayer(tempPlayerRequest: PlayerCredentials, recaptchaToken: string): Promise<AuthData> {
+		const { data }: AxiosResponse<AuthData> = await axios.post(API_URL + '/temp-player', tempPlayerRequest, {
+			headers: { "X-Recaptcha-Token": recaptchaToken },
+		});
+		console.log(data);
+		return data;
 	}
 	
-	static async register(authRequest: PlayerCredentials): Promise<Player> {
-		try {
-			const { data }: AxiosResponse<Player>= await axios.post(API_URL + '/register', authRequest, {
-				headers: AuthService.getAuthHeaders(),
-			});
-			console.log(data);
-			return data;
-		} catch (error: any) {
-			console.error(error);
-			throw new Error(error.response?.data?.message || 'Registration failed');
-		}
+	// auth header is sent when registering a player in case the player is already logged in as a temp player
+	// the user is instead converted to a full player
+	static async register(authRequest: PlayerCredentials, recaptchaToken: string): Promise<Player> {
+		const { data }: AxiosResponse<Player>= await axios.post(API_URL + '/register', authRequest, {
+			headers: { ...AuthService.getAuthHeaders(), "X-Recaptcha-Token": recaptchaToken },
+		});
+		console.log(data);
+		return data;
 	}
 
 	static async login(authRequest: PlayerCredentials): Promise<AuthData> {
-		try {
-			const { data }: AxiosResponse<AuthData> = await axios.post(API_URL + '/login', authRequest);
-			console.log(data);
-			return data;
-		} catch (error: any) {
-			console.error(error);
-			throw new Error(error.response?.data?.message || 'Login failed');
-		}
+		const { data }: AxiosResponse<AuthData> = await axios.post(API_URL + '/login', authRequest);
+		console.log(data);
+		return data;
 	}
 	
 	static logout(): void {

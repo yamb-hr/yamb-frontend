@@ -7,15 +7,10 @@ const API_BASE_URL = `${process.env.REACT_APP_API_URL}/scores`;
 export class ScoreService {
 
     static async getById(scoreId: string): Promise<Score> {
-        try {
-            const { data }: AxiosResponse<Score> = await axios.get(`${API_BASE_URL}/${scoreId}`, {
-                headers: AuthService.getAuthHeaders()
-            });
-            return data;
-        } catch (error: any) {
-            console.error(error);
-            throw new Error(error.response?.data?.message);
-        }
+        const { data }: AxiosResponse<Score> = await axios.get(`${API_BASE_URL}/${scoreId}`, {
+            headers: AuthService.getAuthHeaders()
+        });
+        return data;
     }
 
     static async getAll(
@@ -24,16 +19,18 @@ export class ScoreService {
         order: string = 'createdAt', 
         direction: string = 'asc'
     ): Promise<Score[]> {
-        try {
-            const { data }: AxiosResponse<Score[]> = await axios.get(API_BASE_URL, {
-                params: { size, page, sort: order, direction },
-                headers: AuthService.getAuthHeaders()
-            });
-            return data;
-        } catch (error: any) {
-            console.error(error);
-            throw new Error(error.response?.data?.message);
-        }
+        const { data }: AxiosResponse<Score[]> = await axios.get(API_BASE_URL, {
+            params: { size, page, sort: order, direction },
+            headers: AuthService.getAuthHeaders()
+        });
+        return data;
+    }
+
+    static async getScoreboard() {
+        const { data }: AxiosResponse<Score[]> = await axios.get(`${API_BASE_URL}/scoreboard`, {
+            headers: AuthService.getAuthHeaders()
+        });
+        return data;
     }
 
 }

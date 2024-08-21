@@ -11,7 +11,8 @@
 }
 
 .label:hover:enabled {
-    cursor: help;
+    /* cursor: help; */
+    background-color: var(--background-label-hover);
 }
 
 .sum {

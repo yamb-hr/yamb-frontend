@@ -1,7 +1,7 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthService } from '../../services/authService';
-import { ErrorContext } from '../../App';
+import { CurrentUserContext, ErrorContext } from '../../App';
 import { useTranslation } from 'react-i18next';
 import './auth.css';
 
@@ -13,8 +13,11 @@ function Login() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [isLoginDisabled, setLoginDisabled] = useState(true);
+    const { setCurrentUser } = useContext(CurrentUserContext);
 
-    function handleSubmit() {
+    function handleSubmit(event) {
+        event.preventDefault();
         AuthService.login({
             username: username,
             password: password
@@ -22,13 +25,22 @@ function Login() {
         .then((authData) => {
             localStorage.setItem("player", JSON.stringify(authData.player));
             localStorage.setItem("token", authData.token);
+            setCurrentUser(authData.player);
             navigate("/");
             window.location.reload();
         })
         .catch((error) => {
-            handleError(error.message); 
+            handleError(error); 
         });
     };
+
+    useEffect(() => {
+        if (isLoginDisabled && username.length >= 5 && password.length >= 5) {
+            setLoginDisabled(false);
+        } else if (!isLoginDisabled && (username.length < 5 || password.length < 5)) {
+            setLoginDisabled(true);
+        }
+    }, [username, password]);
 
     function handleUsernameChange(event) {
         setUsername(event.target.value);
@@ -38,36 +50,17 @@ function Login() {
         setPassword(event.target.value);
     };
 
-    const loginDisabled = username.length < 5 || username.length > 15 || !password;
-
     return (
-        <div className="login">
-            <div className="form">
-                <input
-                    className="username-input"
-                    type="text"
-                    value={username}
-                    onChange={handleUsernameChange}
-                    placeholder={t('username') + "..."} />
-                <br />
-                <input
-                    className="password-input"
-                    type="password"
-                    value={password}
-                    onChange={handlePasswordChange}
-                    placeholder={t('password') + "..."} />
-                <br />
-                <button
-                    className="login-button"
-                    disabled={loginDisabled}
-                    onClick={handleSubmit}>
-                    {t('login')}
-                </button>
-                <br />
-                <span style={{ float: "left" }}><a href="/">{t('play')}</a></span>
-                <span style={{ float: "right" }}><a href="/register">{t('register')}</a></span>
-                <br />
-            </div>
+        <div className="login-container">
+            <form onSubmit={handleSubmit}>
+                <input type="text" name="username" autComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('username') + "..."} required/>
+                <input type="password" name="password" autoComplete="current-password" value={password}  onChange={handlePasswordChange} placeholder={t('password') + "..."} required/>
+                <input type="submit" value={t('login')} disabled={isLoginDisabled} />
+                <div className="link">
+                    <a href="/" style={{ float: "left" }}>{t('play')}</a>
+                    <a href="/register" style={{ float: "right" }}>{t('register')}</a>
+                </div>
+            </form>
         </div>
     );
 };

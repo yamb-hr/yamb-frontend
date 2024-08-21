@@ -1,8 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Slide, toast } from 'react-toastify';
+import { ThemeContext } from '../../App';
 import './label.css';
 
 function Label(props) {
+
+    const { theme } = useContext(ThemeContext);
 
     function handleClick() {
         if (props.info) {
@@ -17,7 +20,7 @@ function Label(props) {
                 pauseOnFocusLoss: true,
                 draggable: true,
                 progress: undefined,
-                theme: "dark"
+                theme: theme
             });
         }
     };

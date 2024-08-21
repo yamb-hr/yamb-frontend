@@ -1,0 +1,110 @@
+.element-container {
+    background-color: var(--background-sheet);
+    padding: 25px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    margin: 0 auto;
+    font-size: medium;
+    max-width: 800px;
+    min-width: 480px;
+}
+
+.element-row {
+    display: flex;  
+    justify-content: space-between;
+    border-bottom: 1px solid var(--color-label);
+}
+
+.element-row:last-child {
+    border-bottom: none;
+}
+
+.element-label {   
+    color: var(--color-table-body);
+    font-weight: bold;
+}
+
+.element-value {    
+    color: var(--color-table-body);
+    word-wrap: break-word;
+}
+
+.loading {
+    text-align: center;
+    padding: 25px;
+    font-size: 18px;
+    color: var(--color-box);
+}
+
+.related-table-container {
+    margin-top: 25px;
+    background-color: var(--background-sheet);
+    padding: 20px;
+    border-radius: 10px;
+    font-size: medium;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.1);
+}
+
+.related-table-title {
+    color: var(--color-table-body);
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.related-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    border-top: 1px solid var(--color-label);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.related-table th, .related-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.related-table th {
+    background-color: var(--background-label);
+    color: var(--color-table-header);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+.related-table tr {
+    display: table;
+    table-layout: fixed;
+    width: 100%;
+}
+
+.related-table tbody {
+    display: block;
+    max-height: 300px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    color: var(--color-table-body);
+}
+
+.related-table tr:nth-child(odd) {
+    background-color: var(--color-background);
+}
+
+@media screen and (max-width: 480px) {
+    
+    .element-container {
+        padding: 15px;
+        min-width: auto;
+    }
+
+    .related-table-container {
+        padding: 15px;
+    }
+
+    .element-label {
+        margin-bottom: 5px;
+    }
+}

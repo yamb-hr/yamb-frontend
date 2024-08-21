@@ -1,27 +1,62 @@
-.password-input {
-    background: var(--background-password-input);
-    color: var(--color-password-input);
-    border-bottom: var(--border-password-input);
-    border-radius: var(--border-radius-box);
-    padding: var(--padding-password-input);
-    margin: var(--margin-password-input);
+.login-container {
+    background-color: #ffffff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
 }
 
-.register-button {
-    background: var(--background-register-button);
-    color: var(--color-register-button);
-    border: var(--border-register-button);
-    border-radius: var(--border-radius-box);
-    padding: var(--padding-register-button);
-    margin: var(--margin-register-button);
+.login-container h2 {
+    margin-bottom: 20px;
+    color: #333;
+    font-size: 24px;
+    text-align: center;
 }
 
-.login-button {
-    background: var(--background-login-button);
-    color: var(--color-login-button);
-    border: var(--border-login-button);
-    border-radius: var(--border-radius-box);
-    padding: var(--padding-login-button);
-    margin: var(--margin-login-button);
+.login-container input[type="text"],
+
+.login-container input[type="password"] {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    font-size: 16px;
+}
+
+.login-container input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: #007bff;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-size: 16px;
+}
+
+.login-container input[type="submit"]:hover:enabled {
+    cursor: pointer;
+    background-color: #0056b3;
+}
+
+.login-container input[type="submit"]:disabled {
+    filter: brightness(0.8);
+}
+
+.login-container .link {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.login-container .link a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.login-container .link a:hover {
+    text-decoration: underline;
 }
 

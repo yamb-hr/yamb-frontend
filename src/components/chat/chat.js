@@ -75,7 +75,7 @@ function Chat() {
             currentUser.id
         )
         .then(data => {
-            setPrincipal(data.principal);
+            setPrincipal(data);
         }
         ).catch(error => {
             handleError(error);

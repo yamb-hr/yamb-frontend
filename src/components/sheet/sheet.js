@@ -1,9 +1,10 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { DeviceContext, MenuContext } from '../../App';
 import Column from '../column/column';
 import Label from '../label/label';
 import './sheet.css';
+import { useNavigate } from 'react-router-dom';
 
 function Sheet(props) {
 
@@ -18,14 +19,37 @@ function Sheet(props) {
     } = props;
 
     let restartButtonDisabled = status === "FINISHED";
-    const { isMobile, setMobile } = useContext(DeviceContext);
-    const [isRollDisabled, setIsRollDisabled] = useState(false);
+    const { isMobile } = useContext(DeviceContext);
+    const [ isRolling, setRolling ] = useState(false);
+
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const recaptchaBadge = document.querySelector('.grecaptcha-badge');
+
+        if (isMobile) {
+            if (recaptchaBadge) {
+                recaptchaBadge.style.display = 'none';
+            }
+        } else {
+            if (recaptchaBadge) {
+                recaptchaBadge.style.display = 'block';
+            }
+        }
+
+        // Cleanup function to reset the display when the component unmounts or when the route changes
+        return () => {
+            if (recaptchaBadge) {
+                recaptchaBadge.style.display = 'block';
+            }
+        };
+    }, [isMobile]);
 
     function handleRollDice() {
-        setIsRollDisabled(true);
+        setRolling(true);
         props.onRollDice();
         setTimeout(() => {
-            setIsRollDisabled(false);
+            setRolling(false);
         }, 500);
     }
 
@@ -161,7 +185,7 @@ function Sheet(props) {
                 </div>
             ))}
             <div className="column">
-                <button className="roll-button" onClick={handleRollDice} disabled={isRollDisabled || rollCount === 3 || isAnnouncementRequired()}>
+                <button className="roll-button" onClick={handleRollDice} disabled={isRolling || rollCount === 3 || isAnnouncementRequired() || status === "FINISHED"}>
                     <img src={"../svg/buttons/roll-" + (3-rollCount) + ".svg"} alt="Roll"></img>
                 </button>                    
                 <div className="top-section-sum">
@@ -178,7 +202,7 @@ function Sheet(props) {
                 </div>
             </div>
             <div className="last-row">
-                <button className="username-button">{player.username}</button>
+                <button className="username-button" onClick={() => {navigate("/players/" + player.id)}}>{player.name}</button>
                 <Label variant="total-sum" value={getTotalSum()}></Label>
             </div>
         </div>

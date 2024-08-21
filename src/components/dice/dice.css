@@ -1,16 +1,15 @@
 .dice {
+    transition: background-color 0.3s;
 	width: var(--width-dice);
 	height: var(--height-dice);
 	background: var(--background-dice);
 	border-radius: var(--border-radius-dice);
-	border: var(--border-dice);
 	margin: var(--margin-dice);
-	/* box-shadow: var(--box-shadow-dice); */
 	outline: var(--border-dice);
 }
 
 .dice:hover:enabled {
-	filter: brightness(50%);
+	background-color: var(--background-dice-hover);
 }
 
 .dice img {
@@ -19,6 +18,10 @@
 
 .dice:disabled {
 	border-radius: var(--border-radius-dice);
+}
+
+.dice:focus {
+	outline: var(--border-dice);
 }
 
 /* .saved {

@@ -9,7 +9,7 @@ function Admin() {
     const { currentUser } = useContext(CurrentUserContext);
 
     useEffect(() => {
-        if (!currentUser?.roles?.find(x => x.label === 'ADMIN')) {
+        if (!currentUser?.roles?.find(x => x.name === 'ADMIN')) {
             navigate('/');
         }
     });
@@ -19,18 +19,10 @@ function Admin() {
             <div className="form">
                 Admin
                 <br/>
-                <br/>
-                <a href="/">Home</a>
-                <br/>
                 <a href="/chat">Chat</a>
                 <br/>
-                <a href="/dashboard">Dashboard</a>
+                <a href="/scoreboard">Scoreboard</a>
                 <br/>
-                <a href="/players">Players</a>
-                <br/>
-                <a href="/games">Games</a>
-                <br/>
-                <a href="/scores">Scores</a>
             </div>
         </div>
     );

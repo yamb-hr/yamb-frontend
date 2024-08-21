@@ -1,25 +1,26 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Table from './table';
-import { PlayerService } from '../../services/playerService';
+import { ScoreService } from '../../../services/scoreService';
 
-function Players() {
+function Scores() {
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
     const columns = [
-        { name: 'name', label: 'Name' },
-        { name: 'createdAt', label: 'Date' }
+        { name: 'player.name', label: 'Player' },
+        { name: 'createdAt', label: 'Date' },
+        { name: 'value', label: 'Score' }
     ];
 
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const players = await PlayerService.getAll(9999);
-            setData(players);
+            const scores = await ScoreService.getAll(9999, 0, "createdAt", "desc");
+            setData(scores);
         } catch (error) {
-            console.error('Failed to fetch players:', error);
+            console.error('Failed to fetch scores:', error);
         } finally {
             setIsLoading(false);
         }
@@ -40,4 +41,4 @@ function Players() {
     );
 };
 
-export default Players;
+export default Scores;
