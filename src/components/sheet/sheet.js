@@ -45,9 +45,9 @@ function Sheet(props) {
         };
     }, [isMobile]);
 
-    function handleRollDice() {
+    function handleRoll() {
         setRolling(true);
-        props.onRollDice();
+        props.onRoll();
         setTimeout(() => {
             setRolling(false);
         }, 500);
@@ -185,7 +185,7 @@ function Sheet(props) {
                 </div>
             ))}
             <div className="column">
-                <button className="roll-button" onClick={handleRollDice} disabled={isRolling || rollCount === 3 || isAnnouncementRequired() || status === "FINISHED"}>
+                <button className="roll-button" onClick={handleRoll} disabled={isRolling || rollCount === 3 || isAnnouncementRequired() || status === "FINISHED"}>
                     <img src={"../svg/buttons/roll-" + (3-rollCount) + ".svg"} alt="Roll"></img>
                 </button>                    
                 <div className="top-section-sum">

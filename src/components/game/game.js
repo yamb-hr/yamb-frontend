@@ -5,7 +5,7 @@ import './game.css';
 
 function Game(props) {
 
-    const [fillBox, setFillBox] = useState(null);
+    const [fill, setFill] = useState(null);
     const [restart, setRestart] = useState(false);
     const [diceToRoll, setDiceToRoll] = useState([0, 1, 2, 3, 4]);
     const [rollCount, setRollCount] = useState(props.rollCount);
@@ -29,13 +29,13 @@ function Game(props) {
     }, [restart]);
 
     useEffect(() => {
-        if (fillBox) {
-            props.onFillBox(fillBox.columnType, fillBox.boxType);    
+        if (fill) {
+            props.onFill(fill.columnType, fill.boxType);    
             setDiceToRoll([0, 1, 2, 3, 4]);
             setRollCount(0);
-            setFillBox(null);
+            setFill(null);
         }
-    }, [fillBox]);
+    }, [fill]);
 
     function handleDiceClick(index) {
         let newDiceToRoll = [...diceToRoll];
@@ -47,16 +47,16 @@ function Game(props) {
         setDiceToRoll(newDiceToRoll);
     };
 
-    function handleRollDice() {
+    function handleRoll() {
         setRollCount(rollCount + 1);
-        props.onRollDice(diceToRoll);
+        props.onRoll(diceToRoll);
     }
 
     function handleBoxClick(columnType, boxType) {
         if (columnType === "ANNOUNCEMENT" && props.announcement == null) {
-            props.onMakeAnnouncement(boxType);
+            props.onAnnounce(boxType);
         } else {
-            setFillBox({ columnType, boxType })
+            setFill({ columnType, boxType })
         }
     };
 
@@ -92,7 +92,7 @@ function Game(props) {
                 status={status}
                 dices={dices}
                 player={player}
-                onRollDice={handleRollDice}
+                onRoll={handleRoll}
                 onRestart={handleRestart}
                 onBoxClick={handleBoxClick}
                 onLogout={handleLogout}>

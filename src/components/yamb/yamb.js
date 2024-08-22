@@ -41,11 +41,11 @@ function Yamb() {
         }
     }, [currentUser, id]);
 
-    function handleRollDice(diceToRoll) {
-        console.time("rollDice");
+    function handleRoll(diceToRoll) {
+        console.time("roll");
         GameService.rollById(game.id, diceToRoll)
         .then((data) => {
-            console.timeEnd("rollDice");
+            console.timeEnd("roll");
             let newGame = {...data};
             // newGame.dices = data;
             // newGame.rollCount = game.rollCount + 1;
@@ -56,8 +56,8 @@ function Yamb() {
         });
     };
 
-    function handleFillBox(columnType, boxType) {
-        console.time("fillBox");
+    function handleFill(columnType, boxType) {
+        console.time("fill");
         let diceValues = game.dices.map((dice) => dice.value);
         let newGame = {...game};
         const columnIndex = newGame.sheet.columns.findIndex(c => c.type === columnType);
@@ -69,7 +69,7 @@ function Yamb() {
             game.id, columnType, boxType
         )
         .then((data) => {
-            console.timeEnd("fillBox");
+            console.timeEnd("fill");
             let newGame = {...data};
             // const columnIndex = newGame.sheet.columns.findIndex(c => c.type === columnType);
             // const boxIndex = newGame.sheet.columns[columnIndex].boxes.findIndex(b => b.type === boxType);
@@ -97,13 +97,13 @@ function Yamb() {
         });
     }
 
-    function handleMakeAnnouncement(type) {
-        console.time("makeAnnouncement");
+    function handleAnnounce(type) {
+        console.time("announce");
         GameService.announceById(
             game.id, type
         )
         .then((data) => {
-            console.timeEnd("makeAnnouncement");
+            console.timeEnd("announce");
             let newGame = {...data};
             setGame(newGame);
         })
@@ -155,9 +155,9 @@ function Yamb() {
                 announcement={game.announcement}
                 status={game.status}
                 player={game.player}
-                onRollDice={handleRollDice}
-                onFillBox={handleFillBox}
-                onMakeAnnouncement={handleMakeAnnouncement}
+                onRoll={handleRoll}
+                onFill={handleFill}
+                onAnnounce={handleAnnounce}
                 onRestart={handleRestart}>
             </Game>}
         </div>
