@@ -6,8 +6,8 @@ const API_BASE_URL = `${process.env.REACT_APP_API_URL}/games`;
 
 export class LogService {
 
-    static async getById(externalId: string): Promise<Log> {
-        const { data }: AxiosResponse<Log> = await axios.get(`${API_BASE_URL}/${externalId}`, {
+    static async getById(id: string): Promise<Log> {
+        const { data }: AxiosResponse<Log> = await axios.get(`${API_BASE_URL}/${id}`, {
             headers: AuthService.getAuthHeaders()
         });
         console.log(data);
@@ -28,8 +28,8 @@ export class LogService {
         return data;
     }
 
-    static async deleteById(externalId: string): Promise<void> {
-        await axios.delete(`${API_BASE_URL}/${externalId}`, {
+    static async deleteById(id: string): Promise<void> {
+        await axios.delete(`${API_BASE_URL}/${id}`, {
             headers: AuthService.getAuthHeaders()
         });
     }
