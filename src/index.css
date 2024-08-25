@@ -1,6 +1,9 @@
 :root {
 
-  --color-background: #00000B;
+  --color-background: #121212;
+  
+  --color-black: #000000;
+  --color-white: #ffffff;
 
   --color-blue: #011627;
   --color-red: #f71735;
@@ -19,6 +22,7 @@
   --filter-turq: invert(67%) sepia(85%) saturate(337%) hue-rotate(119deg) brightness(102%) contrast(90%);
   --filter-gray: invert(91%) sepia(1%) saturate(1080%) hue-rotate(66deg) brightness(103%) contrast(117%);
   --filter-yellow: invert(78%) sepia(28%) saturate(5593%) hue-rotate(343deg) brightness(102%) contrast(103%);
+  --filter-auth-logo: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
 
   --background-sheet: var(--color-blue);
   --border-radius-sheet: 5px;
@@ -31,6 +35,7 @@
   --background-nav-hover: var(--color-blue-hover);
   --color-nav: var(--color-gray);
   --color-nav-hover: var(--color-gray-hover);
+  --filter-nav: var(--filter-gray);
 
   --color-label: var(--color-gray);
   --background-label: var(--color-blue);
@@ -90,43 +95,17 @@
   --width-table-form: 400px;
   --height-table-form: 500px;
     
-  --color-username-input: var(--color-gray);
-  --background-username-input: var(--color-blue);
-  --border-username-input: 2px solid var(--color-gray);
-  --padding-username-input: 5px;
-  --margin-username-input: 5px;
-
-  --color-password-input: var(--color-red);
-  --background-password-input: var(--color-blue);
-  --border-password-input: 2px solid var(--color-gray);
-  --padding-password-input: 5px;
-  --margin-password-input: 5px;
-  
-  --color-register-button: var(--color-gray);
-  --background-register-button: var(--color-blue);
-  --border-register-button: 2px solid var(--color-turq);
-  --padding-register-button: 10px 20px 10px 20px;
-  --margin-register-button: 20px 0 0 0;
-
-  --color-login-button: var(--color-gray);
-  --background-login-button: var(--color-blue);
-  --border-login-button: 2px solid var(--color-turq);
-  --padding-login-button: 10px 20px 10px 20px;
-  --margin-login-button: 20px 0 0 0;
-
-  --color-play-button: var(--color-gray);
-  --background-play-button: var(--color-blue);
-  --border-play-button: 2px solid var(--color-turq);
-  --padding-play-button: 10px 20px 10px 20px;
-  --margin-play-button: 20px 0 0 0;
-
-  --color-logout-button: var(--color-red);
-  --background-logout-button: var(--color-blue);
-  --border-logout-button: 2px solid var(--color-turq);
-
-  --color-register-button: var(--color-gray);
-  --background-register-button: var(--color-blue);
-  --border-register-button: 2px solid var(--color-turq);
+  --background-auth: var(--color-blue);
+  --background-auth-input: var(--color-blue-hover);
+  --background-auth-button: var(--color-gray);
+  --background-auth-button-hover: var(--color-gray-hover);
+  --background-auth-button-disabled: var(--color-blue-hover);
+  --color-auth: var(--color-gray);
+  --color-auth-button: var(--color-blue);
+  --color-auth-input: var(--color-gray);
+  --border-auth-input: var(--color-blue);
+  --border-auth-button: var(--color-blue);
+  --color-auth-link: var(--color-yellow);
   
   --color-settings-button: var(--color-turq);
   --background-settings-button: var(--color-blue);
@@ -152,7 +131,7 @@
   --border-roll-button: 1px solid var(--color-bue);
   --filter-roll-button: var(--filter-gray);
 
-  --color-username-button: var(--color-yellow);
+  --color-username-button: var(--color-gray);
   --background-username-button: var(--color-blue);
   --border-username-button: none;
   
@@ -186,10 +165,11 @@
 
   --background-menu: var(--color-gray);
 
-  --background-nav: var(--color-gray);
-  --background-nav-hover: var(--color-gray-hover);
-  --color-nav: var(--color-blue);
-  --color-nav-hover: var(--color-blue-hover);
+  --background-nav: var(--color-blue);
+  --background-nav-hover: var(--color-blue-hover);
+  --color-nav: var(--color-gray);
+  --color-nav-hover: var(--color-gray-hover);
+  --filter-nav: var(--filter-gray);
 
   --background-sheet: var(--color-gray);
 
@@ -239,27 +219,20 @@
   --color-password-input: var(--color-red);
   --background-password-input: var(--color-gray);
   --border-password-input: 2px solid var(--color-blue);
-  
-  --color-register-button: var(--color-blue);
-  --background-register-button: var(--color-gray);
-  --border-register-button: 2px solid var(--color-turq);
 
-  --color-login-button: var(--color-blue);
-  --background-login-button: var(--color-gray);
-  --border-login-button: 2px solid var(--color-turq);
+  --background-auth: var(--color-gray);
+  --background-auth-input: var(--color-gray-hover);
+  --background-auth-button: var(--color-blue);
+  --background-auth-button-hover: var(--color-blue-hover);
+  --background-auth-button-disabled: var(--color-gray-hover);
+  --color-auth: var(--color-black);
+  --color-auth-button: var(--color-gray);
+  --color-auth-input: var(--color-black);
+  --border-auth-input: var(--color-gray);
+  --border-auth-button: var(--color-gray);
+  --color-auth-link: var(--color-blue);
+  --filter-auth-logo: invert(100%) sepia(0%) saturate(33%) hue-rotate(0deg) brightness(100%) contrast(100%); 
 
-  --color-play-button: var(--color-blue);
-  --background-play-button: var(--color-gray);
-  --border-play-button: 2px solid var(--color-turq);
-
-  --color-logout-button: var(--color-red);
-  --background-logout-button: var(--color-gray);
-  --border-logout-button: 2px solid var(--color-turq);
-
-  --color-register-button: var(--color-blue);
-  --background-register-button: var(--color-gray);
-  --border-register-button: 2px solid var(--color-turq);
-  
   --color-settings-button: var(--color-blue);
   --background-settings-button: var(--color-gray);
   --filter-settings-button: var(--filter-blue);
@@ -282,9 +255,6 @@
   --border-roll-button: 1px solid var(--color-gray);
   --filter-roll-button: var(--filter-blue);
 
-  --color-username-button: var(--color-blue);
-  --background-username-button: var(--color-gray);
-
   --color-table-header: var(--color-blue);
   --color-table-body: black;
   --background-table-container: var(--color-gray);
@@ -293,6 +263,10 @@
   --background-table-row-hover: var(--color-red);
   --background-table-row-alt: var(--color-gray);
   --background-table-row-alt-hover: var(--color-red);
+
+  --color-username-button: var(--color-blue);
+  --background-username-button: var(--color-gray);
+  --border-username-button: none;
 }
 
 body {

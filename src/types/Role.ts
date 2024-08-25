@@ -1,6 +1,5 @@
-import { BaseType } from "./BaseType";
-
-export interface Role extends BaseType{
+export interface Role {
+    id: string;
     name: string;
     description: string;
 }

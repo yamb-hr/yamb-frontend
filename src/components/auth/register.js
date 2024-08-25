@@ -17,7 +17,6 @@ function Register() {
     const { handleError } = useContext(ErrorContext);
     const [ username, setUsername ] = useState(currentUser ? currentUser.username : "");
     const [ password, setPassword ] = useState('');
-    const [ repeatPassword, setRepeatPassword ] = useState('');
     const [ isRegisterDisabled, setRegisterDisabled ] = useState(true);
     const navigate = useNavigate();
 
@@ -52,12 +51,12 @@ function Register() {
     };
 
     useEffect(() => {
-        if (isRegisterDisabled && username.length >= 5 && password.length >= 5 && password === repeatPassword) {
+        if (isRegisterDisabled && username.length >= 5 && password.length >= 5) {
             setRegisterDisabled(false);
-        } else if (!isRegisterDisabled && (username.length < 5 || password.length < 5 || password !== repeatPassword)) {
+        } else if (!isRegisterDisabled && (username.length < 5 || password.length < 5)) {
             setRegisterDisabled(true);
         }
-    }, [username, password, repeatPassword]);
+    }, [username, password]);
 
     function handleUsernameChange(event) {
         setUsername(event.target.value);
@@ -67,56 +66,22 @@ function Register() {
         setPassword(event.target.value);
     };
 
-    function handleRepeatPasswordChange(event) {
-        setRepeatPassword(event.target.value);
-    };
-
     return (
         <div className="login-container">
+            <img src="/logo.png" alt="Yamb" />
+            <h2>{t('Register')}</h2>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="username" autoComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('username') + "..."} required/>
-                <input type="password" name="password" autoComplete="new-password" value={password}  onChange={handlePasswordChange} placeholder={t('password') + "..."} required/>
-                <input type="password" name="password" autoComplete="new-password" value={repeatPassword} onChange={handleRepeatPasswordChange} placeholder={t('password') + "..."} required/>
+                <label className="input-label" htmlFor="username">{t('username')}</label>
+                <input type="text" name="username" autoComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('enter-username')} required/>
+                <label className="input-label" htmlFor="password">{t('password')}</label>
+                <input type="password" name="password" autoComplete="new-password" value={password}  onChange={handlePasswordChange} placeholder={t('enter-password')} required/>
                 <input type="submit" value={t('register')} disabled={isRegisterDisabled} />
                 <div className="link">
-                    <a href="/" style={{ float: "left" }}>{t('play')}</a>
-                    <a href="/login" style={{ float: "right" }}>{t('login')}</a>
+                    {t('already-have-account')}&nbsp;
+                    <a href="/login">{t('sign-in')}</a><br/>
                 </div>
             </form>
         </div>
-        // <div className="login-container">
-        //     <form>
-        //         <input
-        //             className="username-input"
-        //             type="text"
-        //             value={username}
-        //             onChange={handleUsernameChange}
-        //             placeholder={t('username') + "..."} >
-        //         </input>
-        //         <br />
-        //         <input
-        //             className="password-input"
-        //             type="password"
-        //             value={password}
-        //             onChange={handlePasswordChange}
-        //             placeholder={t('password') + "..."} >
-        //         </input>
-        //         <br />
-        //         <input
-        //             className="password-input"
-        //             type="password"
-        //             value={repeatPassword}
-        //             onChange={handleRepeatPasswordChange}
-        //             placeholder={t('password') + "..."} >
-        //         </input>
-        //         <br />
-        //         <button className="register-button" disabled={registerDisabled} onClick={handleSubmit}>{t('register')}</button>
-        //         <br />
-        //         <span style={{ float: "left" }}><a href="/">{t('play')}</a></span>
-        //         <span style={{ float: "right" }}><a href="/login">{t('login')}</a></span>
-        //         <br />
-        //     </form>
-        // </div>
     );
 };
 

@@ -1,7 +1,9 @@
-import { BaseType } from "./BaseType";
 import { Role } from "./Role";
 
-export interface Player extends BaseType {
+export interface Player {
+    id: string;
+    createdAt: Date;
+    updatedAt: Date;
     name: string;
     roles: Role[];
 }

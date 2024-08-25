@@ -139,6 +139,7 @@ function App() {
         } else {
             setLanguage("en-US");
         }
+        i18n.changeLanguage(language);
         toast.info(t('language-changed') + language, {
             position: "top-center",
 				autoClose: 1000,
@@ -151,7 +152,6 @@ function App() {
 				progress: undefined,
 				theme: theme
         });
-        i18n.changeLanguage(language);
     }
 
 	function handleError(error) {

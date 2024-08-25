@@ -7,7 +7,7 @@ import { CurrentUserContext, ErrorContext } from '../../App';
 import { AuthService } from '../../services/authService';
 import { GameService } from '../../services/gameService';
 import { calculateScore } from '../../util/score-calculator';
-import Game from '../game/game';
+import Game from './game/game';
 import './yamb.css';
 
 function Yamb() {
@@ -29,14 +29,14 @@ function Yamb() {
                 handleError(error)
             });
         } else if (currentUser) {
-            GameService.play()
+            GameService.create()
             .then((data) => {
                 setGame(data);
             })
             .catch((error) => {
                 handleError(error);
-                setCurrentUser(null);
-                AuthService.logout();
+                // setCurrentUser(null);
+                // AuthService.logout();
             });
         }
     }, [currentUser, id]);

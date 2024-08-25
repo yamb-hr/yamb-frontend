@@ -27,9 +27,11 @@
     transition: background-color 0.3s;
 }
 
+.navbar ul li img {
+    filter: var(--filter-nav);
+}
+
 .navbar ul li:hover a {
-    /* color: var(--color-label);
-    filter: var(--filter-dice); */
     background-color: var(--background-nav-hover);
 }
 

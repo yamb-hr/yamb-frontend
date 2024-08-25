@@ -28,13 +28,17 @@ export class GameService {
         return data;
     }
 
-    static async play(): Promise<Game> {
-        console.log(AuthService.getAuthHeaders());
-        const { data }: AxiosResponse<Game> = await axios.post(API_BASE_URL, null, {
-            headers: AuthService.getAuthHeaders()
-        });
-        console.log(data);
-        return data;
+    static async create(): Promise<Game> {
+        const currentPlayer = AuthService.getCurrentPlayer();
+        if (currentPlayer) {
+            const { data }: AxiosResponse<Game> = await axios.post(API_BASE_URL, { playerId: currentPlayer.id }, {
+                headers: AuthService.getAuthHeaders()
+            });
+            console.log(data);
+            return data;
+        } else {
+            throw new Error('Player not logged in');
+        }
     }
 
     static async rollById(gameId: string, diceToRoll: number[]): Promise<Game> {

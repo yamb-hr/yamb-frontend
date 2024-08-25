@@ -1,6 +1,6 @@
 import React, { useContext } from 'react';
 import { Slide, toast } from 'react-toastify';
-import { ThemeContext } from '../../App';
+import { ThemeContext } from '../../../App';
 import './label.css';
 
 function Label(props) {

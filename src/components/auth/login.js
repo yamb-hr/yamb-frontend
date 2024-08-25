@@ -52,14 +52,24 @@ function Login() {
 
     return (
         <div className="login-container">
+            <img src="/logo.png" alt="Yamb" />
+            <h2>{t('login')}</h2>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="username" autComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('username') + "..."} required/>
-                <input type="password" name="password" autoComplete="current-password" value={password}  onChange={handlePasswordChange} placeholder={t('password') + "..."} required/>
-                <input type="submit" value={t('login')} disabled={isLoginDisabled} />
+                <label className="input-label" htmlFor="username">{t('username')}</label>
+                <input type="text" name="username" autoComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('enter-username')} required/>
+                <label className="input-label" htmlFor="password">{t('password')}</label>
+                <input type="password" name="password" autoComplete="current-password" value={password}  onChange={handlePasswordChange} placeholder={t('enter-password') + "..."} required/>
+                <input type="submit" value={t('sign-in')} disabled={isLoginDisabled} />
                 <div className="link">
-                    <a href="/" style={{ float: "left" }}>{t('play')}</a>
-                    <a href="/register" style={{ float: "right" }}>{t('register')}</a>
+                    {t('dont-have-account')}&nbsp;
+                    <a href="/register">{t('sign-up')}</a><br/>
                 </div>
+                {/* <hr/>
+                <div className="oauth">
+                    <a href="/auth/google"><img></img></a>
+                    <a href="/auth/facebook"><img></img></a>
+                    <a href="/auth/github"><img></img></a>
+                </div> */}
             </form>
         </div>
     );

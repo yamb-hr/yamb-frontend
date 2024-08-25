@@ -1,9 +1,14 @@
 {
     "login": "Login",
-    "logout": "Logout",
-    "register": "Register",
-    "username": "Name",
+    "sign-in": "Sign In",
+    "sign-up": "Sign Up",
+    "sign-out": "Sign Out",
+    "logout": "Sign Out",
+    "register": "Sign Up",
+    "username": "Username",
     "password": "Password",
+    "enter-username": "\uD83D\uDC64 Enter username",
+    "enter-password": "\uD83D\uDD12 Enter password",
     "player": "Player",
     "play": "Play",
     "players": "Players",
@@ -41,5 +46,9 @@
     "congratulations": "Congratulations! Your final score is:",
     "language-changed": "Language set to: ",
     "theme-changed": "Theme set to: ",
-    "new-game": "New Game"
+    "new-game": "New Game",
+    "already-have-account": "Already have an account?",
+    "dont-have-account": "Don't have an account?",
+    "play-as-guest": "Play as guest",
+    "just-play": "Just Play"
 }

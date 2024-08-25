@@ -38,7 +38,7 @@
     filter: var(--filter-column-symbol);
 }
 
-img {
+.label img {
     filter: var(--filter-label);
 }
 

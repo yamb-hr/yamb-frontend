@@ -1,7 +1,6 @@
-import { BaseType } from './BaseType';
 import { Score } from './Score';
 
-export interface Scoreboard extends BaseType{
+export interface Scoreboard {
 
     gamesPlayed: number;
     averageScore: number;

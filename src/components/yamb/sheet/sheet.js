@@ -1,10 +1,10 @@
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DeviceContext, MenuContext } from '../../App';
+import { DeviceContext, MenuContext } from '../../../App';
 import Column from '../column/column';
 import Label from '../label/label';
-import './sheet.css';
 import { useNavigate } from 'react-router-dom';
+import './sheet.css';
 
 function Sheet(props) {
 
@@ -36,8 +36,6 @@ function Sheet(props) {
                 recaptchaBadge.style.display = 'block';
             }
         }
-
-        // Cleanup function to reset the display when the component unmounts or when the route changes
         return () => {
             if (recaptchaBadge) {
                 recaptchaBadge.style.display = 'block';

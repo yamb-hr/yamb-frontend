@@ -1,9 +1,16 @@
 {
     "login": "Prijava",
     "logout": "Odjava",
+    "sign-in": "Prijavi se",
+    "sign-up": "Registriraj se",
+    "sign-out": "Odjavi se",
     "register": "Registracija",
-    "username": "Ime",
+    "username": "Korisničko ime",
     "password": "Lozinka",
+    "confirm-password": "Potvrdi lozinku",
+    "enter-username": "\uD83D\uDC64 Unesi ime",
+    "enter-password": "\uD83D\uDD12 Unesi lozinku",
+    "enter-confirm-password": "\uD83D\uDD12 Potvrdi lozinku",
     "player": "Igrač",
     "play": "Igraj",
     "players": "Igrači",
@@ -41,5 +48,9 @@
     "congratulations": "Čestitamo! Vaš konačni rezultat je:",
     "language-changed": "Jezik postavljen na: ",
     "theme-changed": "Tema postavljena na: ",
-    "new-game": "Nova igra"
+    "new-game": "Nova igra",
+    "already-have-account": "Već imate račun?",
+    "dont-have-account": "Nemate račun?",
+    "play-as-guest": "Igraj kao gost",
+    "just-play": "Samo igraj"
 }

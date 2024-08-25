@@ -50,13 +50,22 @@ function TempPlayer() {
 
     return (
         <div className="login-container">
+            <img src="/logo.png" alt="Yamb" />
+            <h2>{t('play-as-guest')}</h2>
             <form onSubmit={handleSubmit}>
-                <input type="text" name="username" autoComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('username') + "..."} required/>
+                <label className="input-label" htmlFor="username">{t('username')}</label>
+                <input type="text" name="username" autoComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('enter-username')} required/>
                 <input type="submit" value={t('play')} disabled={isPlayDisabled} />
                 <div className="link">
-                    <a href="/login" style={{ float: "left" }}>{t('login')}</a>
-                    <a href="/register" style={{ float: "right" }}>{t('register')}</a>
+                    {t('already-have-account')}&nbsp;
+                    <a href="/login">{t('sign-in')}</a><br/>
                 </div>
+                {/* <hr/>
+                <div className="oauth">
+                    <a href="/auth/google"><img></img></a>
+                    <a href="/auth/facebook"><img></img></a>
+                    <a href="/auth/github"><img></img></a>
+                </div> */}
             </form>
         </div>
     );

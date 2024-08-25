@@ -12,7 +12,7 @@ export class AuthService {
 			return JSON.parse(localStorage.getItem("player") || 'null');
 		} catch (error) {
 			console.error(error);
-			//this.logout();
+			// this.logout();
 			return null;
 		}
 	}
@@ -22,7 +22,7 @@ export class AuthService {
 			return localStorage.getItem("token") || 'null';
 		} catch (error) {
 			console.error(error);
-			//this.logout();
+			// this.logout();
 			return null;
 		}
 	}
@@ -34,7 +34,7 @@ export class AuthService {
 	}
 
 	static async createTempPlayer(tempPlayerRequest: PlayerCredentials, recaptchaToken: string): Promise<AuthData> {
-		const { data }: AxiosResponse<AuthData> = await axios.post(API_URL + '/temp-player', tempPlayerRequest, {
+		const { data }: AxiosResponse<AuthData> = await axios.post(API_URL + '/anonymous', tempPlayerRequest, {
 			headers: { "X-Recaptcha-Token": recaptchaToken },
 		});
 		console.log(data);
