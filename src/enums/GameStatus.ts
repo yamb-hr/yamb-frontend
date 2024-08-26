@@ -1,4 +1,5 @@
 export enum GameStatus {
     InProgress = "IN_PROGRESS",
-    Finished = "FINISHED",
+    Completed = "COMPLETED",
+    Finished = "FINISHED"
 }

@@ -18,7 +18,7 @@ function Sheet(props) {
         player
     } = props;
 
-    let restartButtonDisabled = status === "FINISHED";
+    let restartButtonDisabled = status !== "IN_PROGRESS";
     const { isMobile } = useContext(DeviceContext);
     const [ isRolling, setRolling ] = useState(false);
 
@@ -119,8 +119,7 @@ function Sheet(props) {
     }
 
     function isAnnouncementRequired() {
-        rollCount === 1 && announcement == null && areAllNonAnnouncementColumnsCompleted();
-        return false;
+        return rollCount === 1 && announcement === null && areAllNonAnnouncementColumnsCompleted();
     }
 
     function areAllNonAnnouncementColumnsCompleted() {
@@ -134,7 +133,7 @@ function Sheet(props) {
 
     function isColumnCompleted(columnIndex) {
         for (let i in columns[columnIndex].boxes) {
-            if (columns[columnIndex].boxes[i].value) {
+            if (columns[columnIndex].boxes[i].value === null) {
                 return false;
             }
         }
@@ -183,7 +182,7 @@ function Sheet(props) {
                 </div>
             ))}
             <div className="column">
-                <button className="roll-button" onClick={handleRoll} disabled={isRolling || rollCount === 3 || isAnnouncementRequired() || status === "FINISHED"}>
+                <button className="roll-button" onClick={handleRoll} disabled={isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS"}>
                     <img src={"../svg/buttons/roll-" + (3-rollCount) + ".svg"} alt="Roll"></img>
                 </button>                    
                 <div className="top-section-sum">

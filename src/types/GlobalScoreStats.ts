@@ -1,14 +1,14 @@
 import { Score } from './Score';
 
-export interface Scoreboard {
+export interface GlobalScoreStats {
 
-    gamesPlayed: number;
+    scoreCount: number;
     averageScore: number;
-    topScore: number;
+    highScore: Score;
     topToday: Score[];
     topThisWeek: Score[];
     topThisMonth: Score[];
     topThisYear: Score[];
     topAllTime: Score[];
-    
+
 }

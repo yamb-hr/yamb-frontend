@@ -1,5 +1,10 @@
+import { Score } from "./Score";
+
 export interface PlayerStats {
-    id: string;
-    createdAt: Date;
-    updatedAt: Date;
+
+    lastActivity: Date;
+    averageScore: number;
+    highScore: Score;
+    scoreCount: number;
+
 }

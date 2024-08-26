@@ -14,14 +14,8 @@ export class LogService {
         return data;
     }
 
-    static async getAll(
-        page: number = 0,
-        size: number = 10,
-        sort: string = 'createdAt',
-        direction: string = 'desc'
-    ): Promise<Log[]> {
+    static async getAll(): Promise<Log[]> {
         const { data }: AxiosResponse<Log[]> = await axios.get(API_BASE_URL, {
-            params: { page, size, sort, direction },
             headers: AuthService.getAuthHeaders()
         });
         console.log(data);

@@ -1,8 +1,0 @@
-export const GameConstants = {
-    BONUS_TRIPS: 30,
-    BONUS_STRAIGHT_SMALL: 35,
-    BONUS_STRAIGHT_LARGE: 45,
-    BONUS_BOAT: 40,
-    BONUS_CARRIAGE: 50,
-    BONUS_YAMB: 60
-};

@@ -247,7 +247,6 @@ function App() {
 										<Router>
 											<Routes>
 												<Route path="/" element={<Play />} />
-												<Route path="/scoreboard" element={<Home  />} />
 												<Route path="/login" element={<Login  />} />
 												<Route path="/register" element={<Register  />} />
 												<Route path="/players" element={<Players  />} />

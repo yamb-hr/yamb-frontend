@@ -8,16 +8,13 @@ function Player() {
 
     const { id } = useParams();
     const [ data, setData ] = useState({});
+    const [ playerStats, setPlayerStats ] = useState(undefined);
     const [ relatedData, setRelatedData ] = useState({});
     const [ isLoading, setIsLoading ] = useState(true);
 
     const columns = [
         { name: 'name', label: 'Name' },
-        { name: 'createdAt', label: 'Started on' },
-        { name: 'averageScore', label: 'Average Score' },
-        { name: 'topScore', label: 'Top Score' },
-        { name: 'lastActivity', label: 'Last Active on' },
-        { name: 'gamesPlayed', label: 'Total Games Played' }
+        { name: 'createdAt', label: 'Started on' }
     ];
 
     const relatedColumns = [
@@ -30,7 +27,8 @@ function Player() {
         try {
             const player = await PlayerService.getById(id);
             const stats = await PlayerService.getStatsById(id);
-            setData({...player, ...stats});
+            setData(player);
+            setPlayerStats(stats);
             const scores = await PlayerService.getScoresByPlayerId(id);
             setRelatedData(scores);
         } catch (error) {
@@ -46,6 +44,28 @@ function Player() {
 
     return (
         <div>
+            {playerStats && (
+                <div className="stats-container">
+                    <div className="stats">
+                        <div className="stat-item">
+                            <span className="stat-label">Last active on:</span>
+                            <span className="stat-value">{playerStats.lastActivity}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">Total games played:</span>
+                            <span className="stat-value">{playerStats.scoreCount}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">High score:</span>
+                            <span className="stat-value">{playerStats.highScore?.value}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">Average Score:</span>
+                            <span className="stat-value">{playerStats.averageScore}</span>
+                        </div>
+                    </div>
+                </div>
+            )}
             <Element 
                 data={data} 
                 columns={columns} 

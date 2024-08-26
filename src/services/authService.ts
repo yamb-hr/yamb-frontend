@@ -12,7 +12,7 @@ export class AuthService {
 			return JSON.parse(localStorage.getItem("player") || 'null');
 		} catch (error) {
 			console.error(error);
-			// this.logout();
+			this.logout();
 			return null;
 		}
 	}
@@ -22,7 +22,7 @@ export class AuthService {
 			return localStorage.getItem("token") || 'null';
 		} catch (error) {
 			console.error(error);
-			// this.logout();
+			this.logout();
 			return null;
 		}
 	}

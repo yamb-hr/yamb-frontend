@@ -34,7 +34,7 @@ function Navigation() {
                 <li>{themeButton}</li>
                 {currentUser?.roles?.find(x => x.name === "ADMIN") && <li><a href="/admin">Admin</a></li>}
             </ul>
-            <div className="shadow" onClick={() => {setMenuOpen(false)}}></div>
+            <div className="navbar-shadow" onClick={() => {setMenuOpen(false)}}></div>
             <button className="settings-button" onClick={() => {setMenuOpen(!isMenuOpen)}}>
                 <img src="../svg/buttons/cog.svg" alt="Settings" />
             </button>

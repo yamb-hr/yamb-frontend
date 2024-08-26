@@ -7,6 +7,7 @@ function Scores() {
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [globalScoresStats, setGlobalScoresStats] = useState(undefined);
 
     const columns = [
         { name: 'player.name', label: 'Player' },
@@ -17,7 +18,9 @@ function Scores() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const scores = await ScoreService.getAll(9999, 0, "createdAt", "desc");
+            const scores = await ScoreService.getAll();
+            const globalScoresStats = await ScoreService.getStats();
+            setGlobalScoresStats(globalScoresStats);
             setData(scores);
         } catch (error) {
             console.error('Failed to fetch scores:', error);
@@ -32,6 +35,24 @@ function Scores() {
 
     return (
         <div>
+            {globalScoresStats && (
+                <div className="stats-container">
+                    <div className="stats">
+                        <div className="stat-item">
+                            <span className="stat-label">Total games played:</span>
+                            <span className="stat-value">{globalScoresStats.scoreCount}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">High score:</span>
+                            <span className="stat-value">{globalScoresStats.highScore?.value}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">Average score:</span>
+                            <span className="stat-value">{globalScoresStats.averageScore}</span>
+                        </div>
+                    </div>
+                </div>
+            )}
             <Table 
                 data={data} 
                 columns={columns} 

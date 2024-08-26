@@ -2,11 +2,11 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { BoxType } from '../../constants/box-types';
+import { BoxType } from '../../enums/BoxType';
 import { CurrentUserContext, ErrorContext } from '../../App';
 import { AuthService } from '../../services/authService';
 import { GameService } from '../../services/gameService';
-import { calculateScore } from '../../util/score-calculator';
+import { calculateScore } from '../../util/scoreCalculator';
 import Game from './game/game';
 import './yamb.css';
 
@@ -16,8 +16,8 @@ function Yamb() {
     const { t } = useTranslation();
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorContext);
-    
     const [game, setGame] = useState(null);
+    const [isShareModalVisible, setShareModalVisible] = useState(false);
 
     useEffect(() => {   
         if (id) {
@@ -32,11 +32,14 @@ function Yamb() {
             GameService.create()
             .then((data) => {
                 setGame(data);
+                if (data.status === "COMPLETED") {
+                    setShareModalVisible(true);
+                }
             })
             .catch((error) => {
                 handleError(error);
-                // setCurrentUser(null);
-                // AuthService.logout();
+                setCurrentUser(null);
+                AuthService.logout();
             });
         }
     }, [currentUser, id]);
@@ -47,8 +50,6 @@ function Yamb() {
         .then((data) => {
             console.timeEnd("roll");
             let newGame = {...data};
-            // newGame.dices = data;
-            // newGame.rollCount = game.rollCount + 1;
             setGame(newGame);
         })
         .catch((error) => {
@@ -62,7 +63,7 @@ function Yamb() {
         let newGame = {...game};
         const columnIndex = newGame.sheet.columns.findIndex(c => c.type === columnType);
         const boxIndex = newGame.sheet.columns[columnIndex].boxes.findIndex(b => b.type === boxType);
-        let value = calculateScore(diceValues, BoxType[boxType])
+        let value = calculateScore(diceValues, boxType);
         newGame.sheet.columns[columnIndex].boxes[boxIndex].value = value;
         setGame(newGame);
         GameService.fillById(
@@ -71,26 +72,10 @@ function Yamb() {
         .then((data) => {
             console.timeEnd("fill");
             let newGame = {...data};
-            // const columnIndex = newGame.sheet.columns.findIndex(c => c.type === columnType);
-            // const boxIndex = newGame.sheet.columns[columnIndex].boxes.findIndex(b => b.type === boxType);
-            // newGame.sheet.columns[columnIndex].boxes[boxIndex].value = data;
-            // newGame.rollCount = 0;
-            // newGame.announcement = null;
-            // newGame.status = data.status;
             setGame(newGame);
-            if (data.status === "FINISHED") {
-                handleFinish();
+            if (data.status === "COMPLETED") {
+                setShareModalVisible(true);
             }
-        })
-        .catch((error) => {
-            handleError(error)
-        });
-    }
-
-    function handleNewGame() {
-        GameService.play()
-        .then((data) => {
-            setGame(data);
         })
         .catch((error) => {
             handleError(error)
@@ -127,27 +112,62 @@ function Yamb() {
         });
     }
 
-    function handleFinish(totalSum) {
-        toast(
-			<div>
-				<h4>{t('congratulations')}</h4><h2>{totalSum}</h2>
-				<button onClick={handleNewGame} className="new-game-button">{t('new-game')}</button>
-			</div>, {
-				position: "top-center",
-				autoClose: false,
-				hideProgressBar: false,
-				closeOnClick: true,
-				pauseOnHover: true,
-				pauseOnFocusLoss: true,
-				draggable: true,
-				progress: undefined,
-				theme: "dark"
-			}
-		);
+    function handleCompleted() {
+
     }
+
+    function handleFinish() {
+        GameService.finishById(
+            game.id
+        )
+        .then((data) => {
+            window.location.reload();
+        })
+        .catch((error) => {
+            handleError(error)
+        });
+    }
+
+    const handleShare = () => {
+        const shareText = `I scored ${game.totalSum} points in Yamb! Can you beat my score?`;
+        
+        if (navigator.share) {
+            navigator.share({
+                title: 'My Yamb Score',
+                text: shareText,
+                url: window.location.href
+            }).then(() => {
+                console.log('Score shared successfully!');
+            }).catch((error) => {
+                console.error('Error sharing the score:', error);
+            });
+        } else {
+            navigator.clipboard.writeText(shareText).then(() => {
+                alert('Score copied to clipboard!');
+            });
+        }
+    };
    
     return (
         <div className="yamb">
+            <div className={`share-modal ${isShareModalVisible ? 'show' : ''}`}>
+                <img src="/logo.png" alt="Yamb" className="share-logo" />
+                <h2>{t("congrats")}</h2>
+                <p>{t("congrats-score")}</p>
+                {game && <h2>{game.totalSum}</h2>}
+                <button className="share-button" onClick={() => handleShare()}>
+                    {t("share-score")}
+                </button>
+                <hr/>
+                <p>{t("want-to-try-again")}</p>
+                <button className="new-game-button" onClick={() => handleFinish()}>
+                    {t("new-game")}
+                </button>
+                <button className="close-button" onClick={() => setShareModalVisible(false)}>
+                    X
+                </button>
+            </div>
+            <div className={`share-modal-shadow ${isShareModalVisible ? 'show' : ''}`} onClick={() => setShareModalVisible(false)}></div>
             {game && <Game 
                 sheet={game.sheet}
                 dices={game.dices}

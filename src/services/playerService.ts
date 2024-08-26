@@ -3,6 +3,7 @@ import { Player } from '../types/Player';
 import { AuthService } from './authService';
 import { Score } from '../types/Score';
 import { PlayerStats } from '../types/PlayerStats';
+import { GlobalPlayerStats } from '../types/GlobalPlayerStats';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;
 
@@ -12,6 +13,7 @@ export class PlayerService {
         const { data }: AxiosResponse<Player> = await axios.get(`${API_BASE_URL}/${playerId}`, {
             headers: AuthService.getAuthHeaders()
         });
+        console.log(data);
         return data;
     }
 
@@ -19,19 +21,23 @@ export class PlayerService {
         const { data }: AxiosResponse<PlayerStats> = await axios.get(`${API_BASE_URL}/${playerId}/stats`, {
             headers: AuthService.getAuthHeaders()
         });
+        console.log(data);
         return data;
     }
 
-    static async getAll(
-        size: number = 10, 
-        page: number = 0, 
-        order: string = 'createdAt', 
-        direction: string = 'asc'
-    ): Promise<Player[]> {
+    static async getAll(): Promise<Player[]> {
         const { data }: AxiosResponse<Player[]> = await axios.get(API_BASE_URL, {
-            params: { size, page, sort: order, direction },
             headers: AuthService.getAuthHeaders()
         });
+        console.log(data);
+        return data;
+    }
+
+    static async getStats(): Promise<GlobalPlayerStats> {
+        const { data }: AxiosResponse<GlobalPlayerStats> = await axios.get(`${API_BASE_URL}/stats`, {
+            headers: AuthService.getAuthHeaders()
+        });
+        console.log(data);
         return data;
     }
 
@@ -39,6 +45,7 @@ export class PlayerService {
         const { data }: AxiosResponse<string> = await axios.get(`${API_BASE_URL}/${playerId}/principal`, {
             headers: AuthService.getAuthHeaders()
         });
+        console.log(data);
         return data;
     }
 
@@ -46,6 +53,7 @@ export class PlayerService {
         const { data }: AxiosResponse<Score[]> = await axios.get(`${API_BASE_URL}/${playerId}/scores`, {
             headers: AuthService.getAuthHeaders()
         });
+        console.log(data);
         return data;
     }
 

@@ -16,14 +16,7 @@ function Admin() {
     
     return (
         <div className="admin">
-            <div className="form">
-                Admin
-                <br/>
-                <a href="/chat">Chat</a>
-                <br/>
-                <a href="/scoreboard">Scoreboard</a>
-                <br/>
-            </div>
+            <a href="/chat">Chat</a>
         </div>
     );
 };

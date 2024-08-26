@@ -46,26 +46,27 @@ function Element({ data, columns, isLoading, relatedResource, relatedData, relat
 
     return (
         <div className="element-container">
-            {columns.map(({ name, label }) => {
-                const value = formatValue(getNestedValue(data, name));
-                const isNested = name.includes('.');
-
-                return (
-                    <div key={name} className="element-row">
-                        <div className="element-label">{label}:&nbsp;</div>
-                        <div
-                            className={`element-value ${isNested ? 'clickable' : ''}`}
-                            onClick={() => isNested && handleClick(name)}
-                            style={{ cursor: isNested ? 'pointer' : 'default' }}
-                        >
-                            {value}
+            <div className="element-rows">
+                {columns.map(({ name, label }) => {
+                    const value = formatValue(getNestedValue(data, name));
+                    const isNested = name.includes('.');
+                    return (
+                        <div key={name} className="element-row">
+                            <div className="element-label">{label}:&nbsp;</div>
+                            <div
+                                className={`element-value ${isNested ? 'clickable' : ''}`}
+                                onClick={() => isNested && handleClick(name)}
+                                style={{ cursor: isNested ? 'pointer' : 'default' }}
+                            >
+                                {value}
+                            </div>
                         </div>
-                    </div>
-                );
-            })}
+                    );
+                })}
+            </div>
             {relatedData && relatedColumns && (
-                <div className="related-container">
-                    <h2 className="related-table-title">{t(relatedResource)}</h2>
+                <div className="related-table-container">
+                    {/* <h2 className="related-table-title">{t(relatedResource)}</h2> */}
                     <table className="related-table">
                         <thead>
                             <tr>

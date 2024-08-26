@@ -1,13 +1,68 @@
+.stats-container {
+    margin-top: 70px;
+    padding: 25px;
+    max-width: 800px;
+    border-radius: 6px;
+    background-color: var(--background-table-header);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
+    color: var(--color-table-row);
+    text-align: left;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-height: 248px;
+}
+
+.stats-container:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
+}
+
+.stats-container h2 {
+    margin-bottom: 15px;
+    color: var(--color-table-header);
+    font-size: 18px;
+}
+
+.stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+    font-size: 16px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 15px;
+    background-color: var(--background-table-row-alt);
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.stat-item:hover {
+    background-color: var(--background-table-row-alt-hover);
+}
+
+.stat-label {
+    color: var(--color-table-header);
+}
+
+.stat-value {
+    color: var(--color-table-row);
+}
+
 .table-container {
     margin-top: 20px;
     background-color: var(--background-table-container);
     padding: 20px;
-    border-radius: 12px;
-    font-size: medium;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    font-size: 16px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.15);
     max-width: 800px;
     min-width: 480px;
-    max-height: 80vh;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.table-container:hover {
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.2);
 }
 
 .table {
@@ -21,53 +76,69 @@
 }
 
 .table th, .table tr {
-    transition: color 0.3s;
+    transition: color 0.3s, background-color 0.3s;
+    border-radius: 8px;
 }
 
-.table thead {
+.table th {
     background-color: var(--background-table-header);
     color: var(--color-table-header);
 }
 
 .table th, .table td {
-    padding: 15px;
     text-align: left;
-    border-bottom: 1px solid var(--background-table-row-alt);
+    padding: 15px;
 }
 
 .table th {
     position: sticky;
     top: 0;
-    background-color: var(--background-table-header);
     color: var(--color-table-header);
+    background-color: var(--background-table-header);
     z-index: 2;
 }
 
 .table th:hover {
     cursor: pointer;
-    color: var(--background-table-row-hover);
+    color: var(--color-table-header-hover);
+    background-color: var(--background-table-header-hover);
+}
+
+.table tr {
+    color: var(--color-table-row);
+    background-color: var(--background-table-row);
 }
 
 .table tr:nth-child(odd) {
-    background-color: var(--color-background);
+    color: var(--color-table-row-alt);
+    background-color: var(--background-table-row-alt);
 }
 
-.table tr:hover {
-    color: var(--background-table-row-hover);
+.table tbody tr:hover {
+    color: var(--color-table-row-hover);
+    background: var(--background-table-row-hover);
+}
+
+.table tbody tr:nth-child(odd):hover {
+    color: var(--color-table-row-alt-hover);
+    background-color: var(--background-table-row-alt-hover);
 }
 
 .table tbody {
     display: block;
-    max-height: 450px;
     overflow-y: auto;
     overflow-x: hidden;
     color: var(--color-table-body);
+    max-height: 350px;
 }
 
 .table tr {
     display: table;
     width: 100%;
-    table-layout: fixed;
+    table-layout: fixed;  
+    border-width: 0px 0px 1px 0px;
+    border-style: solid;
+    border-color: var(--border-table-row);
 }
 
 td:hover {
@@ -77,45 +148,65 @@ td:hover {
 .pagination-button {
     padding: 8px 12px;
     border-radius: 6px;
-    background-color: var(--background-roll-button);
-    color: var(--color-form);
-    border: none;
+    color: var(--color-pagination-button);
     transition: background-color 0.3s;
+    background-color: var(--background-pagination-button);
+    border: none;
 }
 
 .pagination-button:disabled {
     border: none;
-    background-color: var(--background-roll-button);
+    border-radius: 6px;
 }
 
 .pagination-button:hover:enabled {
-    background-color: var(--background-box-hover);
+    background-color: var(--background-pagination-button-hover);
 }
 
 .page-number {
     padding: 10px;
     border-radius: 6px;
     margin: 0 5px;
-    color: var(--color-table-body);
+    color: var(--color-table-row);
 }
 
 select {
     padding: 8px 12px;
     border-radius: 6px;
-    color: var(--color-form);
-    background-color: var(--background-box);
     border: none;
+    margin-left: 40px;
 }
 
 @media screen and (max-width: 480px) {
+    
+    .stats-container {
+        padding: 10px;
+        border-radius: 10px;
+        margin-top: 50px;
+        height: auto;
+        max-height: 310px;
+    }
+    
+    .stats {
+        grid-template-columns: 1fr;
+        gap: 0px;
+    }
+
+    .stat-item {
+        padding: 6px;
+    }
+
     .table-container {
         padding: 0px;
         min-width: auto;
     }
-    .table {
-        width: 100vw;
-    }   
+
     .table tbody {
-        max-height: 75vh;
+        max-height: 44vh;
     } 
+
+    .table th, .table td {
+        padding: 10px 0px 0px 10px;
+    }    
+
 }

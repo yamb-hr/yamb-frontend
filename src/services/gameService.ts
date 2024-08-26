@@ -14,14 +14,8 @@ export class GameService {
         return data;
     }
 
-    static async getAll(
-        size: number = 10, 
-        page: number = 0, 
-        order: string = 'createdAt', 
-        direction: string = 'asc'
-    ): Promise<Game[]> {
+    static async getAll(): Promise<Game[]> {
         const { data }: AxiosResponse<Game[]> = await axios.get(API_BASE_URL, {
-            params: { size, page, sort: order, direction },
             headers: AuthService.getAuthHeaders()
         });
         console.log(data);
@@ -72,6 +66,15 @@ export class GameService {
         console.log(data);
         return data;
     }
+
+    static async finishById(gameId: string): Promise<Game> {
+        const { data }: AxiosResponse<Game> = await axios.put(`${API_BASE_URL}/${gameId}/finish`, null, {
+            headers: AuthService.getAuthHeaders()
+        });
+        console.log(data);
+        return data;
+    }
+    
 }
 
 export default GameService;

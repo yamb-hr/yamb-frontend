@@ -24,6 +24,8 @@
   --filter-yellow: invert(78%) sepia(28%) saturate(5593%) hue-rotate(343deg) brightness(102%) contrast(103%);
   --filter-auth-logo: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
 
+  --filter-settings-button: var(--filter-turq);
+
   --background-sheet: var(--color-blue);
   --border-radius-sheet: 5px;
   --border-sheet: none;
@@ -106,11 +108,6 @@
   --border-auth-input: var(--color-blue);
   --border-auth-button: var(--color-blue);
   --color-auth-link: var(--color-yellow);
-  
-  --color-settings-button: var(--color-turq);
-  --background-settings-button: var(--color-blue);
-  --border-settings-button: none;
-  --filter-settings-button: var(--filter-turq);
 
   --color-info-button: var(--color-turq);
   --background-info-button: var(--color-blue);
@@ -135,15 +132,32 @@
   --background-username-button: var(--color-blue);
   --border-username-button: none;
   
-  --color-table-header: var(--color-turq);
-  --color-table-body: var(--color-gray);
+  --color-table-header: var(--color-gray);
+  --color-table-header-hover: var(--color-gray);
+  --color-table-row: var(--color-gray);
+  --color-table-row-alt: var(--color-gray);
+  --color-table-row-hover: var(--color-gray);
+  --color-table-row-alt-hover: var(--color-gray);
+  --color-color-pagination-button: var(--color-blue);
   --background-table-container: var(--color-blue);
   --background-table-header: var(--color-blue);
   --background-table-header-hover: var(--color-blue-hover);
-  --background-table-row: var(--color-blue-hover);
-  --background-table-row-hover: var(--color-red);
+  --background-table-row: var(--color-blue);
+  --background-table-row-hover: var(--color-blue-hover);
   --background-table-row-alt: var(--color-blue);
-  --background-table-row-alt-hover: var(--color-red);
+  --background-table-row-alt-hover: var(--color-blue-hover);
+  --background-pagination-button: var(--color-gray);
+  --background-pagination-button-hover: var(--color-blue-hover);
+  --border-table-row: var(--color-blue-hover);
+
+  --color-share-modal: var(--color-gray);
+  --background-share-modal: var(--color-blue);
+  --color-share-button: var(--color-blue);
+  --background-share-button: var(--color-turq);
+  --background-share-button-hover: var(--color-turq-hover);
+  --color-new-game-button: var(--color-blue);
+  --background-new-game-button: var(--color-gray);
+  --background-new-game-button-hover: var(--color-gray-hover);
 
 }
 
@@ -233,8 +247,6 @@
   --color-auth-link: var(--color-blue);
   --filter-auth-logo: invert(100%) sepia(0%) saturate(33%) hue-rotate(0deg) brightness(100%) contrast(100%); 
 
-  --color-settings-button: var(--color-blue);
-  --background-settings-button: var(--color-gray);
   --filter-settings-button: var(--filter-blue);
 
   --color-info-button: var(--color-blue);
@@ -255,18 +267,37 @@
   --border-roll-button: 1px solid var(--color-gray);
   --filter-roll-button: var(--filter-blue);
 
-  --color-table-header: var(--color-blue);
-  --color-table-body: black;
+  --color-table-header: var(--color-black);
+  --color-table-header-hover: var(--color-black);
+  --color-table-row: var(--color-black);
+  --color-table-row-alt: var(--color-black);
+  --color-table-row-hover: var(--color-black);
+  --color-table-row-alt-hover: var(--color-black);
+  --color-pagination-button: var(--color-gray);
   --background-table-container: var(--color-gray);
   --background-table-header: var(--color-gray);
-  --background-table-row: var(--color-gray-hover);
-  --background-table-row-hover: var(--color-red);
+  --background-table-header-hover: var(--color-gray-hover);
+  --background-table-row: var(--color-gray);
+  --background-table-row-hover: var(--color-gray-hover);
   --background-table-row-alt: var(--color-gray);
-  --background-table-row-alt-hover: var(--color-red);
+  --background-table-row-alt-hover: var(--color-gray-hover);
+  --background-pagination-button: var(--color-blue);
+  --background-pagination-button-hover: var(--color-blue-hover);  
+  --border-table-row: var(--color-gray-hover);
 
   --color-username-button: var(--color-blue);
   --background-username-button: var(--color-gray);
   --border-username-button: none;
+
+  --color-share-modal: var(--color-black);
+  --background-share-modal: var(--color-gray);
+  --color-share-button: var(--color-gray);
+  --background-share-button: var(--color-turq);
+  --background-share-button-hover: var(--color-turq-hover);
+  --color-new-game-button: var(--color-gray);
+  --background-new-game-button: var(--color-blue);
+  --background-new-game-button-hover: var(--color-blue-hover);
+
 }
 
 body {
@@ -309,7 +340,7 @@ button:disabled {
 }
 
 [theme="light"] button:disabled {
-  filter: brightness(90%);
+  filter: brightness(120%);
 }
 
 input {
@@ -331,7 +362,7 @@ a {
   color: var(--color-blue);
 }
 
-@media only screen and (max-width: 480px) {
+@media screen and (max-width: 480px) {
   :root {
     --width-box: 16.3vw;
     --height-box: 4.9vh;

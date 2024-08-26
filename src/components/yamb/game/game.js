@@ -17,7 +17,7 @@ function Game(props) {
         player
     } = props;
 
-    let diceDisabled = rollCount === 0 || rollCount === 3 || status === "FINISHED";
+    let diceDisabled = rollCount === 0 || rollCount === 3 || status !== "IN_PROGRESS";
 
     useEffect(() => {
         if (restart) {

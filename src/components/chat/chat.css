@@ -18,15 +18,10 @@
     width: 100%;
 }
 
-.selected {
-    filter: brightness(200%);
-}
-
 .message-box {
     background: var(--background-form);
     border-radius: var(--border-radius-form);
     height: 40vh;
-    filter: brightness(200%);
     text-align: left;
     padding: 10px;
     font-size: medium;
