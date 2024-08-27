@@ -329,18 +329,12 @@ button:focus {
   outline: none;
 }
 
-button:disabled {
-  /* cursor: not-allowed; */
-  border-radius: 0px;
-  border-style: dashed;
-}
-
 [theme="dark"] button:disabled {
   filter: brightness(80%);
 }
 
 [theme="light"] button:disabled {
-  filter: brightness(120%);
+  filter: brightness(90%);
 }
 
 input {

@@ -21,6 +21,15 @@
     border-width: var(--width-border-box);
 }
 
+.box:enabled {
+    background-color: var(box-)
+}
+
 .box:hover:enabled {
     background-color: var(--background-box-hover);
+}
+
+.box:disabled {
+    border-radius: 0px;
+    border-style: dashed;
 }

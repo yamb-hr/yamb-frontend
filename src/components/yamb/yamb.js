@@ -135,7 +135,7 @@ function Yamb() {
             navigator.share({
                 title: 'My Yamb Score',
                 text: shareText,
-                url: window.location.href
+                url: `/games/${game.id}`
             }).then(() => {
                 console.log('Score shared successfully!');
             }).catch((error) => {
