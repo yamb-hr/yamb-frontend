@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import { CurrentUserContext, ErrorContext } from "../../App";
-import { PlayerService } from "../../services/playerService";
-import { AuthService } from "../../services/authService";
+import playerService from "../../services/playerService";
+import authService from "../../services/authService";
 import SockJsClient from "react-stomp";
 import "./chat.css";
 
@@ -71,7 +71,7 @@ function Chat() {
 
     function handleConnected() {
         setConnected(true);
-        PlayerService.getPrincipalById(
+        playerService.getPrincipalById(
             currentUser.id
         )
         .then(data => {
@@ -129,7 +129,7 @@ function Chat() {
                     <br/>
                     <a href="/login">Login</a>
                 </div>}
-                {currentUser && <SockJsClient url={process.env.REACT_APP_API_URL + "/ws?token=" + AuthService.getAccessToken()}
+                {currentUser && <SockJsClient url={process.env.REACT_APP_API_URL + "/ws?token=" + authService.getAccessToken()}
 					topics={topics}
 					onMessage={(message) => {
                         handleMessage(message);

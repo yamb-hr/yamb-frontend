@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Element from './element';
-import { PlayerService } from '../../../services/playerService';
+import playerService from '../../../services/playerService';
 import { useParams } from 'react-router-dom';
 
 function Player() {
@@ -25,11 +25,11 @@ function Player() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const player = await PlayerService.getById(id);
-            const stats = await PlayerService.getStatsById(id);
+            const player = await playerService.getById(id);
+            const stats = await playerService.getStatsById(id);
             setData(player);
             setPlayerStats(stats);
-            const scores = await PlayerService.getScoresByPlayerId(id);
+            const scores = await playerService.getScoresByPlayerId(id);
             setRelatedData(scores);
         } catch (error) {
             console.error('Failed to fetch player:', error);

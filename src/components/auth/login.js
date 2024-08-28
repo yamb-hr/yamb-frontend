@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { AuthService } from '../../services/authService';
+import authService from '../../services/authService';
 import { CurrentUserContext, ErrorContext } from '../../App';
 import { useTranslation } from 'react-i18next';
 import './auth.css';
@@ -18,7 +18,7 @@ function Login() {
 
     function handleSubmit(event) {
         event.preventDefault();
-        AuthService.login({
+        authService.login({
             username: username,
             password: password
         })

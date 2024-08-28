@@ -1,33 +1,56 @@
-import axios, { AxiosResponse } from 'axios';
+import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { Game } from '../types/Game';
-import { AuthService } from './authService';
+import authService from './authService';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/games`;
 
-export class GameService {
+class GameService {
+    private axiosInstance: AxiosInstance;
 
-    static async getById(gameId: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await axios.get(`${API_BASE_URL}/${gameId}`, {
-            headers: AuthService.getAuthHeaders()
+    constructor() {
+        this.axiosInstance = axios.create({
+            baseURL: API_BASE_URL,
+            headers: {
+                'Content-Type': 'application/json',
+            },
         });
+
+        this.axiosInstance.interceptors.request.use(
+            (config: InternalAxiosRequestConfig) => {
+                if (config.headers) {
+                    const language = localStorage.getItem('language');
+                    if (language) {
+                        config.headers['Accept-Language'] = language;
+                    }
+                    const token = authService.getAccessToken();
+                    if (token) {
+                        config.headers['Authorization'] = `Bearer ${token}`;
+                    }
+                }
+                return config;
+            },
+            (error) => {
+                return Promise.reject(error);
+            }
+        );
+    }
+
+    async getById(gameId: string): Promise<Game> {
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.get(`/${gameId}`);
         console.log(data);
         return data;
     }
 
-    static async getAll(): Promise<Game[]> {
-        const { data }: AxiosResponse<Game[]> = await axios.get(API_BASE_URL, {
-            headers: AuthService.getAuthHeaders()
-        });
+    async getAll(): Promise<Game[]> {
+        const { data }: AxiosResponse<Game[]> = await this.axiosInstance.get('/');
         console.log(data);
         return data;
     }
 
-    static async create(): Promise<Game> {
-        const currentPlayer = AuthService.getCurrentPlayer();
+    async getOrCreate(): Promise<Game> {
+        const currentPlayer = authService.getCurrentPlayer();
         if (currentPlayer) {
-            const { data }: AxiosResponse<Game> = await axios.post(API_BASE_URL, { playerId: currentPlayer.id }, {
-                headers: AuthService.getAuthHeaders()
-            });
+            const { data }: AxiosResponse<Game> = await this.axiosInstance.put('/', { playerId: currentPlayer.id });
             console.log(data);
             return data;
         } else {
@@ -35,46 +58,36 @@ export class GameService {
         }
     }
 
-    static async rollById(gameId: string, diceToRoll: number[]): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await axios.put(`${API_BASE_URL}/${gameId}/roll`, { diceToRoll }, {
-            headers: AuthService.getAuthHeaders()
-        });
+    async rollById(gameId: string, diceToRoll: number[]): Promise<Game> {
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/roll`, { diceToRoll });
         console.log(data);
         return data;
     }
 
-    static async fillById(gameId: string, columnType: string, boxType: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await axios.put(`${API_BASE_URL}/${gameId}/fill`, { columnType, boxType }, {
-            headers: AuthService.getAuthHeaders()
-        });
+    async fillById(gameId: string, columnType: string, boxType: string): Promise<Game> {
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/fill`, { columnType, boxType });
         console.log(data);
         return data;
     }
 
-    static async announceById(gameId: string, boxType: string): Promise<Game> {
-            const { data }: AxiosResponse<Game> = await axios.put(`${API_BASE_URL}/${gameId}/announce`, { boxType }, {
-                headers: AuthService.getAuthHeaders()
-            });
-			console.log(data);
-            return data;
-    }
-
-    static async restartById(gameId: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await axios.put(`${API_BASE_URL}/${gameId}/restart`, null, {
-            headers: AuthService.getAuthHeaders()
-        });
+    async announceById(gameId: string, boxType: string): Promise<Game> {
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/announce`, { boxType });
         console.log(data);
         return data;
     }
 
-    static async finishById(gameId: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await axios.put(`${API_BASE_URL}/${gameId}/finish`, null, {
-            headers: AuthService.getAuthHeaders()
-        });
+    async restartById(gameId: string): Promise<Game> {
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/restart`);
         console.log(data);
         return data;
     }
-    
+
+    async finishById(gameId: string): Promise<Game> {
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/finish`);
+        console.log(data);
+        return data;
+    }
 }
 
-export default GameService;
+const gameService = new GameService();
+export default gameService;

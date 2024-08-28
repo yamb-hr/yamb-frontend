@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Table from './table';
-import { PlayerService } from '../../../services/playerService';
+import playerService from '../../../services/playerService';
 
 function Players() {
     const [data, setData] = useState([]);
@@ -15,8 +15,8 @@ function Players() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const players = await PlayerService.getAll();
-            const globalPlayerStats = await PlayerService.getStats();
+            const players = await playerService.getAll();
+            const globalPlayerStats = await playerService.getStats();
             setGlobalPlayerStats(globalPlayerStats);
             setData(players);
         } catch (error) {

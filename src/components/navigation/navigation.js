@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react';
 import { CurrentUserContext, DeviceContext, LanguageContext, MenuContext, ThemeContext } from '../../App';
 import { useTranslation } from 'react-i18next';
-import { AuthService } from '../../services/authService';
+import authService from '../../services/authService';
 import './navigation.css';
 
 function Navigation() {
@@ -28,7 +28,7 @@ function Navigation() {
                 <li><a href="/players">{t('players')}</a></li>
                 <li><a href="/scores">{t('scores')}</a></li>
                 <li><a href="/games">{t('games')}</a></li>
-                {currentUser && <li><a href="/logout" onClick={() => { AuthService.logout(); }}>{t('sign-out')}</a></li>}
+                {currentUser && <li><a href="/logout" onClick={() => { authService.logout(); }}>{t('sign-out')}</a></li>}
                 {!currentUser && <li><a href="/register">{t('register')}</a></li>}
                 <li>{languageButton}</li>
                 <li>{themeButton}</li>

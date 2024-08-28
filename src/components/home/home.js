@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { ErrorContext } from "../../App";
-import { ScoreService } from "../../services/scoreService";
+import scoreService from "../../services/scoreService";
 import "./home.css";
 
 function Home() {
@@ -13,7 +13,7 @@ function Home() {
     };
 
     useEffect(() => {
-        ScoreService.getScoreboard()
+        scoreService.getScoreboard()
         .then(data => {
             console.log(data);
             setData(data);  

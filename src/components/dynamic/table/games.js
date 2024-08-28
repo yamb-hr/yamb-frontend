@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Table from './table';
-import { GameService } from '../../../services/gameService';
+import gameService from '../../../services/gameService';
 
 function Games() {
 
@@ -17,7 +17,7 @@ function Games() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const games = await GameService.getAll(9999, 0, 'updatedAt', 'desc');
+            const games = await gameService.getAll(9999, 0, 'updatedAt', 'desc');
             setData(games);
         } catch (error) {
             console.error('Failed to fetch games:', error);

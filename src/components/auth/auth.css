@@ -78,11 +78,10 @@
     text-decoration: underline;
 }
 
-/* .login-container img {
+.login-container img {
     width: 100px;
     margin-top: 20px;
-    filter: var(--filter-auth-logo);
-} */
+}
 
 .input-label {
     font-size: 14px;

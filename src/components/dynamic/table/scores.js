@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Table from './table';
-import { ScoreService } from '../../../services/scoreService';
+import scoreService from '../../../services/scoreService';
 
 function Scores() {
 
@@ -18,8 +18,8 @@ function Scores() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const scores = await ScoreService.getAll();
-            const globalScoresStats = await ScoreService.getStats();
+            const scores = await scoreService.getAll();
+            const globalScoresStats = await scoreService.getStats();
             setGlobalScoresStats(globalScoresStats);
             setData(scores);
         } catch (error) {

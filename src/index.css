@@ -4,14 +4,13 @@
   
   --color-black: #000000;
   --color-white: #ffffff;
-
-  --color-blue: #011627;
+  --color-blue: #0A192F;
   --color-red: #f71735;
   --color-turq: #41EAD4;
   --color-gray: #FDFFFC;
   --color-yellow: #FF9F1C;
 
-  --color-blue-hover: #012c4e;
+  --color-blue-hover: #1B2B41;
   --color-red-hover: #ff4c4c;
   --color-turq-hover: #63e6be;
   --color-gray-hover: #bbbbbb;
@@ -22,7 +21,6 @@
   --filter-turq: invert(67%) sepia(85%) saturate(337%) hue-rotate(119deg) brightness(102%) contrast(90%);
   --filter-gray: invert(91%) sepia(1%) saturate(1080%) hue-rotate(66deg) brightness(103%) contrast(117%);
   --filter-yellow: invert(78%) sepia(28%) saturate(5593%) hue-rotate(343deg) brightness(102%) contrast(103%);
-  --filter-auth-logo: invert(100%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(100%) contrast(100%);
 
   --filter-settings-button: var(--filter-turq);
 
@@ -245,7 +243,6 @@
   --border-auth-input: var(--color-gray);
   --border-auth-button: var(--color-gray);
   --color-auth-link: var(--color-blue);
-  --filter-auth-logo: invert(100%) sepia(0%) saturate(33%) hue-rotate(0deg) brightness(100%) contrast(100%); 
 
   --filter-settings-button: var(--filter-blue);
 

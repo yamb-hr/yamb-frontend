@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { CurrentUserContext, ErrorContext } from '../../App';
-import { AuthService } from '../../services/authService';
+import authService from '../../services/authService';
 import { useTranslation } from 'react-i18next';
 import './auth.css';
 
@@ -20,7 +20,7 @@ function TempPlayer() {
         window.grecaptcha.ready(() => {
             window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'register' })
             .then((recaptchaToken) => {
-                AuthService.createTempPlayer({username: username}, recaptchaToken)
+                authService.createTempPlayer({username: username}, recaptchaToken)
                 .then((authData) => {
                     localStorage.setItem("player", JSON.stringify(authData.player));
                     localStorage.setItem("token", authData.token);

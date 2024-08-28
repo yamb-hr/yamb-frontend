@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import Element from './element';
-import { ScoreService } from '../../../services/scoreService';
+import scoreService from '../../../services/scoreService';
 import { useParams } from 'react-router-dom';
 
 function Score() {
@@ -19,7 +19,7 @@ function Score() {
     const fetchData = async () => {
         setIsLoading(true);
         try {
-            const score = await ScoreService.getById(id);
+            const score = await scoreService.getById(id);
             setData(score);
         } catch (error) {
             console.error('Failed to fetch score:', error);

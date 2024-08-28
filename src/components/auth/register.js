@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { AuthService } from '../../services/authService';
+import authService from '../../services/authService';
 import { Slide, toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
@@ -24,7 +24,7 @@ function Register() {
         event.preventDefault();
         window.grecaptcha.ready(() => {
             window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'register' }).then((token) => {
-                AuthService.register({
+                authService.register({
                     username: username,
                     password: password
                 }, token)

@@ -1,11 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { toast } from 'react-toastify';
-import { BoxType } from '../../enums/BoxType';
 import { CurrentUserContext, ErrorContext } from '../../App';
-import { AuthService } from '../../services/authService';
-import { GameService } from '../../services/gameService';
+import authService from '../../services/authService';
+import gameService from '../../services/gameService';
 import { calculateScore } from '../../util/scoreCalculator';
 import Game from './game/game';
 import './yamb.css';
@@ -21,7 +19,7 @@ function Yamb() {
 
     useEffect(() => {   
         if (id) {
-            GameService.getById(id)
+            gameService.getById(id)
             .then((data) => {
                 setGame(data);
             })
@@ -29,7 +27,7 @@ function Yamb() {
                 handleError(error)
             });
         } else if (currentUser) {
-            GameService.create()
+            gameService.getOrCreate()
             .then((data) => {
                 setGame(data);
                 if (data.status === "COMPLETED") {
@@ -39,14 +37,14 @@ function Yamb() {
             .catch((error) => {
                 handleError(error);
                 setCurrentUser(null);
-                AuthService.logout();
+                authService.logout();
             });
         }
     }, [currentUser, id]);
 
     function handleRoll(diceToRoll) {
         console.time("roll");
-        GameService.rollById(game.id, diceToRoll)
+        gameService.rollById(game.id, diceToRoll)
         .then((data) => {
             console.timeEnd("roll");
             let newGame = {...data};
@@ -66,7 +64,7 @@ function Yamb() {
         let value = calculateScore(diceValues, boxType);
         newGame.sheet.columns[columnIndex].boxes[boxIndex].value = value;
         setGame(newGame);
-        GameService.fillById(
+        gameService.fillById(
             game.id, columnType, boxType
         )
         .then((data) => {
@@ -84,7 +82,7 @@ function Yamb() {
 
     function handleAnnounce(type) {
         console.time("announce");
-        GameService.announceById(
+        gameService.announceById(
             game.id, type
         )
         .then((data) => {
@@ -100,7 +98,7 @@ function Yamb() {
 
     function handleRestart() {       
         console.time("restart");
-        GameService.restartById(
+        gameService.restartById(
             game.id
         )
         .then((data) => {
@@ -117,7 +115,7 @@ function Yamb() {
     }
 
     function handleFinish() {
-        GameService.finishById(
+        gameService.finishById(
             game.id
         )
         .then((data) => {
