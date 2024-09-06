@@ -13,11 +13,18 @@ function Login() {
 
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [isLoginDisabled, setLoginDisabled] = useState(true);
+    const [errors, setErrors] = useState({});
     const { setCurrentUser } = useContext(CurrentUserContext);
 
     function handleSubmit(event) {
         event.preventDefault();
+
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
         authService.login({
             username: username,
             password: password
@@ -34,20 +41,29 @@ function Login() {
         });
     };
 
-    useEffect(() => {
-        if (isLoginDisabled && username.length >= 5 && password.length >= 5) {
-            setLoginDisabled(false);
-        } else if (!isLoginDisabled && (username.length < 5 || password.length < 5)) {
-            setLoginDisabled(true);
+    function validateForm() {
+        let validationErrors = {};
+        if (username.length < 5) {
+            validationErrors.username = t('username-must-be-5-chars');
         }
-    }, [username, password]);
+        if (password.length < 5) {
+            validationErrors.password = t('password-must-be-5-chars');
+        }
+        return validationErrors;
+    }
 
     function handleUsernameChange(event) {
         setUsername(event.target.value);
+        if (errors.username) {
+            setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
+        }
     };
 
     function handlePasswordChange(event) {
         setPassword(event.target.value);
+        if (errors.password) {
+            setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
+        }
     };
 
     return (
@@ -56,20 +72,35 @@ function Login() {
             <h2>{t('login')}</h2>
             <form onSubmit={handleSubmit}>
                 <label className="input-label" htmlFor="username">{t('username')}</label>
-                <input type="text" name="username" autoComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('enter-username')} required/>
+                <input 
+                    type="text" 
+                    name="username" 
+                    autoComplete="username" 
+                    value={username} 
+                    onChange={handleUsernameChange} 
+                    placeholder={t('enter-username')} 
+                    required
+                />
+                {errors.username && <span className="error-text">{errors.username}</span>}
+
                 <label className="input-label" htmlFor="password">{t('password')}</label>
-                <input type="password" name="password" autoComplete="current-password" value={password}  onChange={handlePasswordChange} placeholder={t('enter-password') + "..."} required/>
-                <input type="submit" value={t('sign-in')} disabled={isLoginDisabled} />
+                <input 
+                    type="password" 
+                    name="password" 
+                    autoComplete="current-password" 
+                    value={password}  
+                    onChange={handlePasswordChange} 
+                    placeholder={t('enter-password') + "..."} 
+                    required
+                />
+                {errors.password && <span className="error-text">{errors.password}</span>}
+
+                <input type="submit" value={t('sign-in')} />
+                
                 <div className="link">
                     {t('dont-have-account')}&nbsp;
                     <a href="/register">{t('sign-up')}</a><br/>
                 </div>
-                {/* <hr/>
-                <div className="oauth">
-                    <a href="/auth/google"><img></img></a>
-                    <a href="/auth/facebook"><img></img></a>
-                    <a href="/auth/github"><img></img></a>
-                </div> */}
             </form>
         </div>
     );

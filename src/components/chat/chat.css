@@ -28,12 +28,6 @@
     font-weight: lighter;
 }
 
-.chat-input {
-}
-
-.input-and-message-box {
-}
-
 .players {
     color: var(--color-yellow);
     display: block;

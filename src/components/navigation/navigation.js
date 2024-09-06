@@ -27,7 +27,7 @@ function Navigation() {
                 <li><a href="/">{t('play')}</a></li>
                 <li><a href="/players">{t('players')}</a></li>
                 <li><a href="/scores">{t('scores')}</a></li>
-                <li><a href="/games">{t('games')}</a></li>
+                {/* <li><a href="/games">{t('games')}</a></li> */}
                 {currentUser && <li><a href="/logout" onClick={() => { authService.logout(); }}>{t('sign-out')}</a></li>}
                 {!currentUser && <li><a href="/register">{t('register')}</a></li>}
                 <li>{languageButton}</li>

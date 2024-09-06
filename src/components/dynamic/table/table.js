@@ -67,7 +67,7 @@ function Table ({ data, columns, isLoading }) {
 	// Apply formatting based on type, here checking for date-like strings
 	return typeof value === 'string' && !isNaN(Date.parse(value))
 	  ? formatDate(value)
-	  : value;
+	  : typeof value === 'boolean' ? (value ? '✔' : '✘') : value;
   };
 
   const getNestedValue = (obj, path) => {

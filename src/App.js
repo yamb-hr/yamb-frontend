@@ -20,6 +20,8 @@ import Play from './components/play/play';
 import 'react-toastify/dist/ReactToastify.css';
 import './App.css';
 import playerService from './services/playerService';
+import Logs from './components/dynamic/table/logs';
+import Log from './components/dynamic/element/log';
 
 export const ThemeContext = createContext(null);
 export const LanguageContext = createContext(null);
@@ -214,6 +216,7 @@ function App() {
 												<Route path="/" element={<Play />} />
 												<Route path="/login" element={<Login  />} />
 												<Route path="/register" element={<Register  />} />
+												<Route path="/logout" element={<Logout  />} />
 												<Route path="/players" element={<Players  />} />
 												<Route path="/players/:id" element={<Player />} />
 												<Route path="/scores" element={<Scores  />} />
@@ -221,8 +224,8 @@ function App() {
 												<Route path="/games" element={<Games  />} />
 												<Route path="/games/:id" element={<Yamb  />} />
 												<Route path="/admin" element={<Admin  />} />
-												<Route path="/chat" element={<Chat  />} />
-												<Route path="/logout" element={<Logout  />} />
+												<Route path="/logs" element={<Logs  />} />
+												<Route path="/logs/:id" element={<Log  />} />
 											</Routes>
 										</Router>		
 									</LanguageContext.Provider>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
 import Table from './table';
 import scoreService from '../../../services/scoreService';
 
@@ -7,7 +6,7 @@ function Scores() {
 
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
-    const [globalScoresStats, setGlobalScoresStats] = useState(undefined);
+    const [globalScoreStats, setGlobalScoreStats] = useState(undefined);
 
     const columns = [
         { name: 'player.name', label: 'Player' },
@@ -19,8 +18,8 @@ function Scores() {
         setIsLoading(true);
         try {
             const scores = await scoreService.getAll();
-            const globalScoresStats = await scoreService.getStats();
-            setGlobalScoresStats(globalScoresStats);
+            const globalScoreStats = await scoreService.getStats();
+            setGlobalScoreStats(globalScoreStats);
             setData(scores);
         } catch (error) {
             console.error('Failed to fetch scores:', error);
@@ -35,20 +34,20 @@ function Scores() {
 
     return (
         <div>
-            {globalScoresStats && (
+            {globalScoreStats && (
                 <div className="stats-container">
                     <div className="stats">
                         <div className="stat-item">
                             <span className="stat-label">Total games played:</span>
-                            <span className="stat-value">{globalScoresStats.scoreCount}</span>
+                            <span className="stat-value">{globalScoreStats.scoreCount}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">High score:</span>
-                            <span className="stat-value">{globalScoresStats.highScore?.value}</span>
+                            <span className="stat-value">{globalScoreStats.highScore?.value}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">Average score:</span>
-                            <span className="stat-value">{globalScoresStats.averageScore}</span>
+                            <span className="stat-value">{globalScoreStats.averageScore?.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>

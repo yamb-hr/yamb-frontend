@@ -6,6 +6,8 @@
 	border-radius: var(--border-radius-dice);
 	margin: var(--margin-dice);
 	outline: var(--border-dice);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	border: none;
 }
 
 .dice:hover:enabled {

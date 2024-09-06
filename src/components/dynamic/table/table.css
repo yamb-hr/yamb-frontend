@@ -59,6 +59,7 @@
     max-width: 800px;
     min-width: 480px;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
+    overflow-x: auto;
 }
 
 .table-container:hover {
@@ -67,35 +68,28 @@
 
 .table {
     width: 100%;
-    max-width: 100%;
+    max-width: 800px;
     table-layout: auto;
     border-collapse: collapse;
     margin-bottom: 20px;
-    overflow: hidden;
     border-radius: 8px;
-}
-
-.table th, .table tr {
-    transition: color 0.3s, background-color 0.3s;
-    border-radius: 8px;
-}
-
-.table th {
-    background-color: var(--background-table-header);
-    color: var(--color-table-header);
 }
 
 .table th, .table td {
-    text-align: left;
     padding: 15px;
+    text-align: left;
+    width: auto;
+    word-wrap: break-word;
+    max-width: 200px;
 }
 
 .table th {
+    background-color: var(--background-table-header);
+    color: var(--color-table-header);
     position: sticky;
     top: 0;
-    color: var(--color-table-header);
-    background-color: var(--background-table-header);
     z-index: 2;
+    transition: background-color 0.3s;
 }
 
 .table th:hover {
@@ -105,6 +99,7 @@
 }
 
 .table tr {
+    table-layout: fixed;
     color: var(--color-table-row);
     background-color: var(--background-table-row);
 }
@@ -126,7 +121,7 @@
 
 .table tbody {
     display: block;
-    overflow-y: auto;
+    overflow-y: auto; 
     overflow-x: hidden;
     color: var(--color-table-body);
     max-height: 350px;
@@ -135,10 +130,10 @@
 .table tr {
     display: table;
     width: 100%;
-    table-layout: fixed;  
     border-width: 0px 0px 1px 0px;
     border-style: solid;
     border-color: var(--border-table-row);
+    transition: background-color 0.3s;
 }
 
 td:hover {
@@ -175,7 +170,10 @@ select {
     border-radius: 6px;
     border: none;
     margin-left: 40px;
+    background-color: var(--background-pagination-button);
+    color: var(--color-pagination-button);
 }
+
 
 @media screen and (max-width: 480px) {
     

@@ -4,7 +4,7 @@
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
-    max-width: 248px;
+    max-width: 312px;
     color: var(--color-auth);
 }
 
@@ -26,6 +26,7 @@
     color: var(--color-auth-input);
     border-bottom: 1px solid var(--border-auth-input);
     border-radius: 4px;
+    caret-color: var(--color-auth-input);
 }
 
 .login-container input[type="text"]:-webkit-autofill,
@@ -92,6 +93,14 @@
 .login-container img:hover {
     outline: none !important;
 }
+
+.error-text {
+    color: var(--color-red);
+    font-size: 0.9rem;
+    margin-top: 5px;
+    display: block;
+}
+
 
 @media screen and (max-width: 480px) {
     .login-container {

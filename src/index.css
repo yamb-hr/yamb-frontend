@@ -145,7 +145,7 @@
   --background-table-row-alt: var(--color-blue);
   --background-table-row-alt-hover: var(--color-blue-hover);
   --background-pagination-button: var(--color-gray);
-  --background-pagination-button-hover: var(--color-blue-hover);
+  --background-pagination-button-hover: var(--color-gray-hover);
   --border-table-row: var(--color-blue-hover);
 
   --color-share-modal: var(--color-gray);
@@ -166,13 +166,13 @@
   --color-blue: #33658a;
   --color-red: #e63946;
   --color-turq: #2a9d8f;
-  --color-gray: #e5e5e5;
+  --color-gray: #ffffff;
   --color-yellow: #f4a261;
 
   --color-blue-hover: #2a4d6e;
   --color-red-hover: #cc2d3a;
   --color-turq-hover: #24786b;
-  --color-gray-hover: #cccccc;
+  --color-gray-hover: #dddddd;
   --color-yellow-hover: #e59444;
 
   --background-menu: var(--color-gray);
@@ -209,10 +209,10 @@
   --width-border-box: 1px;
   --width-border-box-alt: 1px;
   
-  --background-dice: white;
-  --background-dice-hover: var(--color-gray);
-  --border-dice: 1px solid var(--color-blue);
-  --border-dice-alt: 1px solid var(--color-blue);
+  --background-dice: var(--color-gray);
+  --background-dice-hover: var(--color-gray-hover);
+  --border-dice: 2px solid var(--color-blue);
+  --border-dice-alt: 2px solid var(--color-blue);
   --filter-dice: var(--filter-blue);
   --filter-dice-alt: var(--filter-red);
   --box-shadow-dice: 

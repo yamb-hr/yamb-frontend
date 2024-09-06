@@ -1,8 +1,8 @@
 import React, { useContext } from 'react';
 import { LanguageContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
-import './element.css';
 import { useTranslation } from 'react-i18next';
+import './element.css';
 
 function Element({ data, columns, isLoading, relatedResource, relatedData, relatedColumns }) {
     
@@ -66,7 +66,6 @@ function Element({ data, columns, isLoading, relatedResource, relatedData, relat
             </div>
             {relatedData && relatedColumns && (
                 <div className="related-table-container">
-                    {/* <h2 className="related-table-title">{t(relatedResource)}</h2> */}
                     <table className="related-table">
                         <thead>
                             <tr>

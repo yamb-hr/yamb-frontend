@@ -9,6 +9,7 @@ function Players() {
 
     const columns = [
         { name: 'name', label: 'Name' },
+        { name: 'registered', label: 'Registered' },
         { name: 'createdAt', label: 'Date' }
     ];
 
@@ -40,11 +41,11 @@ function Players() {
                             <span className="stat-value">{globalPlayerStats.playerCount}</span>
                         </div>
                         <div className="stat-item">
-                            <span className="stat-label">Most scores by any player:</span>
+                            <span className="stat-label">Most games by any player:</span>
                             <span className="stat-value">{globalPlayerStats.mostScoresByAnyPlayer}</span>
                         </div>
                         <div className="stat-item">
-                            <span className="stat-label">Player with most scores:</span>
+                            <span className="stat-label">Player with most games:</span>
                             <span className="stat-value">{globalPlayerStats.playerWithMostScores?.name}</span>
                         </div>
                         <div className="stat-item">

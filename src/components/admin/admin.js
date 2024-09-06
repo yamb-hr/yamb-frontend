@@ -16,7 +16,9 @@ function Admin() {
     
     return (
         <div className="admin">
-            <a href="/chat">Chat</a>
+            <a href="/logs">Logs</a>
+            <br/>
+            <a href="/games">Games</a>
         </div>
     );
 };

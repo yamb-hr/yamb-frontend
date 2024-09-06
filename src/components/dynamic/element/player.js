@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import React, { useContext, useEffect, useState } from 'react';
 import Element from './element';
 import playerService from '../../../services/playerService';
 import { useParams } from 'react-router-dom';
+import { LanguageContext } from '../../../App';
 
 function Player() {
 
@@ -11,6 +11,7 @@ function Player() {
     const [ playerStats, setPlayerStats ] = useState(undefined);
     const [ relatedData, setRelatedData ] = useState({});
     const [ isLoading, setIsLoading ] = useState(true);
+    const { language } = useContext(LanguageContext);
 
     const columns = [
         { name: 'name', label: 'Name' },
@@ -21,6 +22,10 @@ function Player() {
         { name: 'createdAt', label: 'Date' },
         { name: 'value', label: 'Score' }
     ];
+
+    const localeStringFormat = {
+        year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'
+    };
 
     const fetchData = async () => {
         setIsLoading(true);
@@ -49,7 +54,7 @@ function Player() {
                     <div className="stats">
                         <div className="stat-item">
                             <span className="stat-label">Last active on:</span>
-                            <span className="stat-value">{playerStats.lastActivity}</span>
+                            <span className="stat-value">{new Date(playerStats.lastActivity).toLocaleString(language, localeStringFormat)}</span>
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">Total games played:</span>
@@ -61,7 +66,7 @@ function Player() {
                         </div>
                         <div className="stat-item">
                             <span className="stat-label">Average Score:</span>
-                            <span className="stat-value">{playerStats.averageScore}</span>
+                            <span className="stat-value">{playerStats.averageScore?.toFixed(2)}</span>
                         </div>
                     </div>
                 </div>

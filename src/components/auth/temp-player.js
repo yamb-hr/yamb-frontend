@@ -9,14 +9,21 @@ function TempPlayer() {
     const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
     
     const { t } = useTranslation();
-    const [ username, setUsername ] = useState("");
+    const [username, setUsername] = useState("");
+    const [errors, setErrors] = useState({});
     const { handleError } = useContext(ErrorContext);
-    const [ isPlayDisabled, setPlayDisabled ] = useState(true);    
     const { setCurrentUser } = useContext(CurrentUserContext);
 
 
     function handleSubmit(event) {
         event.preventDefault();
+
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
         window.grecaptcha.ready(() => {
             window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'register' })
             .then((recaptchaToken) => {
@@ -36,17 +43,20 @@ function TempPlayer() {
         });
     };
 
-    useEffect(() => {
-        if (isPlayDisabled && username.length >= 5) {
-            setPlayDisabled(false);
-        } else if (!isPlayDisabled && username.length < 5) {
-            setPlayDisabled(true);
+    function validateForm() {
+        let validationErrors = {};
+        if (username.length < 5) {
+            validationErrors.username = t('username-must-be-5-chars');
         }
-    }, [username]);
+        return validationErrors;
+    }
 
     function handleUsernameChange(event) {
         setUsername(event.target.value);
-    };    
+        if (errors.username) {
+            setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
+        }
+    };
 
     return (
         <div className="login-container">
@@ -54,18 +64,23 @@ function TempPlayer() {
             <h2>{t('play-as-guest')}</h2>
             <form onSubmit={handleSubmit}>
                 <label className="input-label" htmlFor="username">{t('username')}</label>
-                <input type="text" name="username" autoComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('enter-username')} required/>
-                <input type="submit" value={t('play')} disabled={isPlayDisabled} />
+                <input 
+                    type="text" 
+                    name="username" 
+                    autoComplete="username" 
+                    value={username} 
+                    onChange={handleUsernameChange} 
+                    placeholder={t('enter-username')} 
+                    required
+                />
+                {errors.username && <span className="error-text">{errors.username}</span>}
+                
+                <input type="submit" value={t('play')} />
+                
                 <div className="link">
                     {t('already-have-account')}&nbsp;
                     <a href="/login">{t('sign-in')}</a><br/>
                 </div>
-                {/* <hr/>
-                <div className="oauth">
-                    <a href="/auth/google"><img></img></a>
-                    <a href="/auth/facebook"><img></img></a>
-                    <a href="/auth/github"><img></img></a>
-                </div> */}
             </form>
         </div>
     );

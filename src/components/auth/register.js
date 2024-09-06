@@ -11,17 +11,24 @@ function Register() {
 
     const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
     
-    const { t} = useTranslation();
+    const { t } = useTranslation();
     const { theme } = useContext(ThemeContext);
     const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorContext);
-    const [ username, setUsername ] = useState(currentUser ? currentUser.username : "");
-    const [ password, setPassword ] = useState('');
-    const [ isRegisterDisabled, setRegisterDisabled ] = useState(true);
+    const [username, setUsername] = useState(currentUser ? currentUser.username : "");
+    const [password, setPassword] = useState('');
+    const [errors, setErrors] = useState({});
     const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault();
+
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
         window.grecaptcha.ready(() => {
             window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'register' }).then((token) => {
                 authService.register({
@@ -50,20 +57,29 @@ function Register() {
         });
     };
 
-    useEffect(() => {
-        if (isRegisterDisabled && username.length >= 5 && password.length >= 5) {
-            setRegisterDisabled(false);
-        } else if (!isRegisterDisabled && (username.length < 5 || password.length < 5)) {
-            setRegisterDisabled(true);
+    function validateForm() {
+        let validationErrors = {};
+        if (username.length < 5) {
+            validationErrors.username = t('username-must-be-5-chars');
         }
-    }, [username, password]);
+        if (password.length < 5) {
+            validationErrors.password = t('password-must-be-5-chars');
+        }
+        return validationErrors;
+    }
 
     function handleUsernameChange(event) {
         setUsername(event.target.value);
+        if (errors.username) {
+            setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
+        }
     };
 
     function handlePasswordChange(event) {
         setPassword(event.target.value);
+        if (errors.password) {
+            setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
+        }
     };
 
     return (
@@ -72,10 +88,31 @@ function Register() {
             <h2>{t('Register')}</h2>
             <form onSubmit={handleSubmit}>
                 <label className="input-label" htmlFor="username">{t('username')}</label>
-                <input type="text" name="username" autoComplete="username" value={username} onChange={handleUsernameChange} placeholder={t('enter-username')} required/>
+                <input 
+                    type="text" 
+                    name="username" 
+                    autoComplete="username" 
+                    value={username} 
+                    onChange={handleUsernameChange} 
+                    placeholder={t('enter-username')} 
+                    required
+                />
+                {errors.username && <span className="error-text">{errors.username}</span>}
+
                 <label className="input-label" htmlFor="password">{t('password')}</label>
-                <input type="password" name="password" autoComplete="new-password" value={password}  onChange={handlePasswordChange} placeholder={t('enter-password')} required/>
-                <input type="submit" value={t('register')} disabled={isRegisterDisabled} />
+                <input 
+                    type="password" 
+                    name="password" 
+                    autoComplete="new-password" 
+                    value={password}  
+                    onChange={handlePasswordChange} 
+                    placeholder={t('enter-password')} 
+                    required
+                />
+                {errors.password && <span className="error-text">{errors.password}</span>}
+
+                <input type="submit" value={t('register')} />
+                
                 <div className="link">
                     {t('already-have-account')}&nbsp;
                     <a href="/login">{t('sign-in')}</a><br/>
