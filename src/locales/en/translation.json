@@ -11,6 +11,7 @@
     "enter-password": "\uD83D\uDD12 Enter password",
     "username-must-be-5-chars": "Username must be at least 5 characters long",
     "password-must-be-5-chars": "Password must be at least 5 characters long",
+    "registration-success": "Registration successful!",
     "player": "Player",
     "play": "Play",
     "players": "Players",

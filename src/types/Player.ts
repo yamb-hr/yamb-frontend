@@ -6,4 +6,5 @@ export interface Player {
     updatedAt: Date;
     name: string;
     roles: Role[];
+    registered: boolean;
 }
