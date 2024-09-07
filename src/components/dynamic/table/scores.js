@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Table from './table';
 import scoreService from '../../../services/scoreService';
+import { useTranslation } from 'react-i18next';
 
 function Scores() {
 
+    const { t } = useTranslation();
     const [data, setData] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [globalScoreStats, setGlobalScoreStats] = useState(undefined);
@@ -33,21 +35,25 @@ function Scores() {
     }, []);
 
     return (
-        <div>
+        <div className="table-page">
             {globalScoreStats && (
                 <div className="stats-container">
                     <div className="stats">
                         <div className="stat-item">
-                            <span className="stat-label">Total games played:</span>
+                            <span className="stat-label">{t('total-games')}</span>
                             <span className="stat-value">{globalScoreStats.scoreCount}</span>
                         </div>
                         <div className="stat-item">
-                            <span className="stat-label">High score:</span>
-                            <span className="stat-value">{globalScoreStats.highScore?.value}</span>
+                            <span className="stat-label">{t('average-score')}</span>
+                            <span className="stat-value">{globalScoreStats.averageScore?.toFixed(2)}</span>
                         </div>
                         <div className="stat-item">
-                            <span className="stat-label">Average score:</span>
-                            <span className="stat-value">{globalScoreStats.averageScore?.toFixed(2)}</span>
+                            <span className="stat-label">{t('player-with-high-score')}</span>
+                            <span className="stat-value">{globalScoreStats.highScore?.player?.name}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">{t('high-score')}</span>
+                            <span className="stat-value">{globalScoreStats.highScore?.value}</span>
                         </div>
                     </div>
                 </div>

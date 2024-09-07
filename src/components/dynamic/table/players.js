@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import Table from './table';
 import playerService from '../../../services/playerService';
+import { useTranslation } from 'react-i18next';
 
 function Players() {
+    
+    const { t } = useTranslation();
     const [data, setData] = useState([]);
     const [globalPlayerStats, setGlobalPlayerStats] = useState(undefined);
     const [isLoading, setIsLoading] = useState(true);
@@ -32,41 +35,41 @@ function Players() {
     }, []);
 
     return (
-        <div>
+        <div className="table-page">
             {globalPlayerStats && (
                 <div className="stats-container">
                     <div className="stats">
                         <div className="stat-item">
-                            <span className="stat-label">Player count:</span>
+                            <span className="stat-label">{t('total-players')}</span>
                             <span className="stat-value">{globalPlayerStats.playerCount}</span>
                         </div>
                         <div className="stat-item">
-                            <span className="stat-label">Most games by any player:</span>
-                            <span className="stat-value">{globalPlayerStats.mostScoresByAnyPlayer}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">Player with most games:</span>
-                            <span className="stat-value">{globalPlayerStats.playerWithMostScores?.name}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">Highest average score by any player:</span>
-                            <span className="stat-value">{globalPlayerStats.highestAverageScoreByAnyPlayer}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">Player with highest average score:</span>
-                            <span className="stat-value">{globalPlayerStats.playerWithHighestAverageScore?.name}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">High score:</span>
-                            <span className="stat-value">{globalPlayerStats.highScore?.value}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">Latest player:</span>
+                            <span className="stat-label">{t('newest-player')}</span>
                             <span className="stat-value">{globalPlayerStats.newestPlayer?.name}</span>
                         </div>
                         <div className="stat-item">
-                            <span className="stat-label">First player:</span>
-                            <span className="stat-value">{globalPlayerStats.oldestPlayer?.name}</span>
+                            <span className="stat-label">{t('player-with-most-games')}</span>
+                            <span className="stat-value">{globalPlayerStats.playerWithMostScores?.name}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">{t('total-games')}</span>
+                            <span className="stat-value">{globalPlayerStats.mostScoresByAnyPlayer}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">{t('player-with-highest-average')}</span>
+                            <span className="stat-value">{globalPlayerStats.playerWithHighestAverageScore?.name}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">{t('average-score')}</span>
+                            <span className="stat-value">{globalPlayerStats.highestAverageScoreByAnyPlayer}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">{t('player-with-high-score')}</span>
+                            <span className="stat-value">{globalPlayerStats.highScore?.player?.name}</span>
+                        </div>
+                        <div className="stat-item">
+                            <span className="stat-label">{t('high-score')}</span>
+                            <span className="stat-value">{globalPlayerStats.highScore?.value}</span>
                         </div>
                     </div>
                 </div>

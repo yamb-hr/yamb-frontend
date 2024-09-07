@@ -145,7 +145,7 @@ function Sheet(props) {
             <div className="column">
                 { isMobile ?
                     <button className="settings-button-sheet" onClick={() => {setMenuOpen(!isMenuOpen);}}>
-                        <img src="../svg/buttons/cog.svg" alt="Settings" ></img>
+                        <span className="icon">&#9776;</span>
                     </button> : <div></div>
                 }
                 <Label icon="ones" info={t('ones')}></Label>

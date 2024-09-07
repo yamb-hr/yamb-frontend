@@ -34,7 +34,7 @@ function Log() {
     }, []);
 
     return (
-        <div>
+        <div className="element-page">
             <Element 
                 data={data} 
                 columns={columns} 

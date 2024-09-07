@@ -1,33 +1,31 @@
-.navbar {
+.navbar ul {
+    position: fixed;
     display: flex;
-    align-items: center;
-    position: absolute;
+    flex-direction: column;
+    list-style: none;
     top: 0;
     left: 0;
-    overflow: hidden;
-}
-
-.navbar ul {
-    list-style: none;
-    justify-content: center;
     margin: 0;
     padding: 0;
-    display: flex;
     background-color: var(--background-nav);
-    width: 100vw;
+    height: 100vh;
+    width: 248px;
+    z-index: 1000;
+    transition: box-shadow 0.3s;
+}
+
+.navbar ul:hover {
+    
+    box-shadow: 12px 12px 24px rgba(70, 70, 70, 0.25);
 }
 
 .navbar ul li a {
+    display: flex;
     color: var(--color-nav);
-    text-decoration: none;
-    font-size: 1rem;
-    transition: color 0.3s ease;
-    padding: 15px 3vw 20px 3vw;
+    padding: 16px;
+    margin: 4px;
+    border-radius: 8px;
     transition: background-color 0.3s;
-}
-
-.navbar ul li img {
-    filter: var(--filter-nav);
 }
 
 .navbar ul li:hover a {
@@ -68,38 +66,158 @@
     filter: var(--filter-dice);
 }
 
-.settings-button {
+.burger {
     border: none;
     position: fixed;
-    top: 10px;
-    left: 10px;
+    top: 0;
+    left: 0;
+    margin: 0;
+    padding: 16px;
     display: none;
+    font-size: 2rem;
 }
 
-.settings-button img {
-	width: 36px;
-	filter: var(--filter-settings-button);
+.burger .icon {
+    color: var(--color-auth-input);
+    filter: grayscale(100%);
+}
+
+.navbar ul li .icon {
+    color: var(--color-nav);
+    filter: grayscale(100%);
+}
+
+.top-bar .icon {
+    color: var(--color-nav);
+    filter: grayscale(100%);
+    font-size: 1.5rem;
+}
+
+.top-bar ul {
+    position: fixed;
+    display: flex;
+    justify-content: right;
+    list-style: none;
+    top: 0;
+    left: 0;
+    padding: 0;
+    margin: 0;
+    height: 48px;
+    width: 100vw;
+    z-index: 999;
+}
+
+.search {
+    padding: 8px;
+    background-color: var(--background-auth-input);
+    color: var(--color-auth-input);
+    caret-color: var(--color-auth-input);
+    box-shadow: 0px 12px 24px rgba(70, 70, 70, 0.15);
+    transition: box-shadow 0.3s ease;
+}
+
+.search:hover, .search:focus {
+    box-shadow: 0px 12px 24px rgba(70, 70, 70, 0.25);
+}
+
+.top-bar .search {
+    position: fixed;
+    left: 260px;
+    top: 12px;
+    border-radius: 8px;
+    width: 200px;
+    padding: 12px;
+}
+
+.navbar .search {
+    width: 0px;
+    height: 0px;
+    visibility: hidden;
+    transition: all 0.5s ease;
+}
+
+.navbar .icon-buttons {
+    visibility: hidden;
+    width: 0px;
+    height: 0px;
+}
+
+.navbar .icon-buttons .icon {
+    font-size: 1.5rem;
+    filter: grayscale(100%);
+    color: var(--color-nav);
+}
+
+.navbar ul img {
+    margin: 16px;
+    width: 48px;
+}
+
+.menu-label {
+    text-align: left;
+    margin-left: 16px;
+    font-size: 1.2rem;
+    color: var(--color-nav);
+}
+
+.app-title {
+    display: flex;
+}
+
+.app-title .app-name {
+    text-align: center;
+    margin-left: 8px;
+    margin-top: 16px;
+    font-size: 2rem;
+    color: var(--color-nav);
+}
+
+.navbar .logout {
+    color: var(--color-yellow-hover);
 }
 
 @media screen and (max-width: 480px) {
     
     .navbar ul {
-        flex-direction: column;
-        position: fixed;
-        top: 0;
         left: -100%;
-        width: 40%;
-        height: 100%;
+        width: 248px;
         transition: left 0.3s ease;
         z-index: 1000;
-    }
+    }    
 
     .navbar.active ul {
         left: 0;
     }
 
-    .navbar.active ul li {
-        padding: 15px 0;
+    .navbar.active ul img {
+        visibility: visible;
+        margin: 16px;
+        width: 48px;
+    }
+
+    .navbar.active .search {
+        visibility: visible;
+        margin-top: 8px;
+        width: 200px;
+        height: auto;
+        border-radius: 4px;
+        font-size: 1.2rem;
+        margin-bottom: 4px;
+    }
+
+    .navbar ul li a {  
+        padding: 16px;
+        margin: 2px;
+        border-radius: 0px;
+        font-size: 1.2rem;
+    }
+
+    .navbar .icon-buttons {
+        visibility: visible;
+        width: 248px;
+        height: auto;
+        bottom: 12px;
+        position: fixed;
     }
 
     .navbar.active .navbar-shadow {
@@ -113,7 +231,7 @@
         transition: all 1s ease;
     }
 
-    .settings-button {
+    .burger {
         display: block;
     }
 }

@@ -1,17 +1,16 @@
 import React, { useContext } from 'react';
 import { LanguageContext } from '../../../App';
 import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import './element.css';
+import Spinner from '../../spinner/spinner';
 
 function Element({ data, columns, isLoading, relatedResource, relatedData, relatedColumns }) {
     
     const { language } = useContext(LanguageContext);
-    const navigate = useNavigate();    
-    const { t } = useTranslation();
+    const navigate = useNavigate();
 
     if (isLoading || !data) {
-        return <div className="loading">Loading...</div>;
+        return <Spinner />;
     }
 
     const formatDate = (value) => {

@@ -1,17 +1,18 @@
 .dice {
-    transition: background-color 0.3s;
 	width: var(--width-dice);
 	height: var(--height-dice);
 	background: var(--background-dice);
 	border-radius: var(--border-radius-dice);
 	margin: var(--margin-dice);
 	outline: var(--border-dice);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 12px 24px rgba(70, 70, 70, 0.1);
+    transition: background-color 0.3s, box-shadow 0.3s;
 	border: none;
 }
 
 .dice:hover:enabled {
 	background-color: var(--background-dice-hover);
+    box-shadow: 0px 12px 24px rgba(70, 70, 70, 0.15);
 }
 
 .dice img {

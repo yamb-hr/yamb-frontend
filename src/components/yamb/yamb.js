@@ -14,8 +14,8 @@ function Yamb() {
     const { t } = useTranslation();
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorContext);
-    const [game, setGame] = useState(null);
-    const [isShareModalVisible, setShareModalVisible] = useState(false);
+    const [ game, setGame ] = useState(null);
+    const [ isShareModalVisible, setShareModalVisible ] = useState(false);
 
     useEffect(() => {   
         if (id) {

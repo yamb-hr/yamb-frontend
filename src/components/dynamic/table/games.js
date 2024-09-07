@@ -31,7 +31,7 @@ function Games() {
     }, []);
 
     return (
-        <div>
+        <div className="table-page">
             <Table 
                 data={data} 
                 columns={columns} 

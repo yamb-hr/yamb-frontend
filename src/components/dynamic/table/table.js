@@ -1,6 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { LanguageContext } from '../../../App';
 import { useLocation, useNavigate } from 'react-router-dom';
+import Spinner from '../../spinner/spinner';
 import './table.css';
 
 function Table ({ data, columns, isLoading }) {
@@ -52,7 +53,7 @@ function Table ({ data, columns, isLoading }) {
   };
 
   if (isLoading) {
-	return <div>Loading...</div>;
+	return <Spinner />;
   }
   
   const localeStringFormat = {

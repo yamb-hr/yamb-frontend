@@ -22,6 +22,9 @@ import './App.css';
 import playerService from './services/playerService';
 import Logs from './components/dynamic/table/logs';
 import Log from './components/dynamic/element/log';
+import Profile from './components/profile/profile';
+import Settings from './components/settings/settings';
+import Info from './components/info/info';
 
 export const ThemeContext = createContext(null);
 export const LanguageContext = createContext(null);
@@ -226,6 +229,9 @@ function App() {
 												<Route path="/admin" element={<Admin  />} />
 												<Route path="/logs" element={<Logs  />} />
 												<Route path="/logs/:id" element={<Log  />} />
+												<Route path="/settings" element={<Settings  />} />
+												<Route path="/profile" element={<Profile  />} />
+												<Route path="/info" element={<Info  />} />
 											</Routes>
 										</Router>		
 									</LanguageContext.Provider>

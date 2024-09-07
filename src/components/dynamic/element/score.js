@@ -33,7 +33,7 @@ function Score() {
     }, []);
 
     return (
-        <div>
+        <div className="element-page">
             <Element 
                 data={data} 
                 columns={columns} 

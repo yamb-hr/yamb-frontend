@@ -1,16 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
-import Element from './element';
-import playerService from '../../../services/playerService';
-import { useNavigate, useParams } from 'react-router-dom';
-import { CurrentUserContext, LanguageContext } from '../../../App';
+import playerService from '../../services/playerService';
+import { LanguageContext } from '../../App';
+import { CurrentUserContext } from '../../App';
+import Element from '../dynamic/element/element';
 
-function Player() {
+function Profile() {
 
-    
-    const { id } = useParams();
-    const navigate = useNavigate();   
-    const [ data, setData ] = useState({});
     const { currentUser } = useContext(CurrentUserContext);
+    const [ data, setData ] = useState({});
     const [ playerStats, setPlayerStats ] = useState(undefined);
     const [ relatedData, setRelatedData ] = useState({});
     const [ isLoading, setIsLoading ] = useState(true);
@@ -31,30 +28,29 @@ function Player() {
     };
 
     const fetchData = async () => {
-        setIsLoading(true);
-        try {
-            const player = await playerService.getById(id);
-            const stats = await playerService.getStatsById(id);
-            setData(player);
-            setPlayerStats(stats);
-            const scores = await playerService.getScoresByPlayerId(id);
-            setRelatedData(scores);
-        } catch (error) {
-            console.error('Failed to fetch player:', error);
-        } finally {
-            setIsLoading(false);
+        if (currentUser) {
+            try {   
+                setIsLoading(true);
+                const player = await playerService.getById(currentUser.id);
+                const stats = await playerService.getStatsById(currentUser.id);
+                setData(player);
+                setPlayerStats(stats);
+                const scores = await playerService.getScoresByPlayerId(currentUser.id);
+                setRelatedData(scores);
+            } catch (error) {
+                console.error('Failed to fetch player:', error);
+            } finally {
+                setIsLoading(false);
+            }
         }
     };
 
     useEffect(() => {
-        if (currentUser && currentUser.id == id) {
-            navigate('/profile');
-        }
         fetchData();
-    }, []);
+    }, [currentUser]);
 
     return (
-        <div className="element-page">
+        <div>
             {playerStats && (
                 <div className="stats-container">
                     <div className="stats">
@@ -89,4 +85,4 @@ function Player() {
     );
 };
 
-export default Player;
+export default Profile;
