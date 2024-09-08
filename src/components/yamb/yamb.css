@@ -103,6 +103,31 @@
     right: -7px;
 }
 
+.restart-prompt {
+    font-size: 18px;
+    margin: 10px;
+}
+
+.restart-prompt-button {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.button-yes {
+    background-color: var(--background-share-button);
+    color: var(--color-share-button);
+    margin-right: 10px;
+}
+
+.button-no {
+    background-color: var(--background-new-game-button);
+    color: var(--color-new-game-button);
+    margin-left: 10px;
+}
+
 @media screen and (max-width: 480px) {
 
     .share-button, .new-game-button {

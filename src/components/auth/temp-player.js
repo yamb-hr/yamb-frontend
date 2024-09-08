@@ -45,8 +45,8 @@ function TempPlayer() {
 
     function validateForm() {
         let validationErrors = {};
-        if (username.length < 5) {
-            validationErrors.username = t('username-must-be-5-chars');
+        if (username.length < 3 || username.length > 15) {
+            validationErrors.username = t('username-length-invalid');
         }
         return validationErrors;
     }

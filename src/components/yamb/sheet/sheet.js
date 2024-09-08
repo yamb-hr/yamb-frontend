@@ -9,18 +9,20 @@ import './sheet.css';
 function Sheet(props) {
 
     const { t } = useTranslation();
+    const { isMobile } = useContext(DeviceContext);
+    const [ isRolling, setRolling ] = useState(false);
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
     const {
         columns,
         rollCount,
         announcement,
         status,
-        player
+        player,
+        diceToRoll
     } = props;
 
-    let restartButtonDisabled = status !== "IN_PROGRESS";
-    const { isMobile } = useContext(DeviceContext);
-    const [ isRolling, setRolling ] = useState(false);
+    const restartButtonDisabled = status !== "IN_PROGRESS";
+    const rollDisabled = isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
 
     const navigate = useNavigate();
 
@@ -182,7 +184,7 @@ function Sheet(props) {
                 </div>
             ))}
             <div className="column">
-                <button className="roll-button" onClick={handleRoll} disabled={isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS"}>
+                <button className="roll-button" onClick={handleRoll} disabled={rollDisabled}>
                     <img src={"../svg/buttons/roll-" + (3-rollCount) + ".svg"} alt="Roll"></img>
                 </button>                    
                 <div className="top-section-sum">

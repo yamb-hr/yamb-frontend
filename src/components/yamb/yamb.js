@@ -110,10 +110,6 @@ function Yamb() {
         });
     }
 
-    function handleCompleted() {
-
-    }
-
     function handleFinish() {
         gameService.finishById(
             game.id

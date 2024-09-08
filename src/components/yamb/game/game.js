@@ -1,10 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { ThemeContext } from '../../../App';
 import Dice from '../dice/dice';
 import Sheet from '../sheet/sheet';
 import './game.css';
+import { Slide, toast } from 'react-toastify';
 
 function Game(props) {
 
+    const { t } = useTranslation();
+    const { theme } = useContext(ThemeContext);
     const [fill, setFill] = useState(null);
     const [restart, setRestart] = useState(false);
     const [diceToRoll, setDiceToRoll] = useState([0, 1, 2, 3, 4]);
@@ -61,8 +66,25 @@ function Game(props) {
     };
 
     function handleRestart() {
-        setRestart(true);
-    };
+        toast.info(<div>
+            {t('confirm-restart')}
+            <div className="restart-prompt">
+                <button className="restart-prompt-button button-yes" onClick={() => setRestart(true)}>{t('yes')}</button>
+                <button className="restart-prompt-button button-no" onClick={() => toast.dismiss()}>{t('no')}</button>
+            </div>
+        </div>, {
+            position: "top-center",
+            autoClose: 2000,
+            transition: Slide,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            pauseOnFocusLoss: true,
+            draggable: true,
+            progress: undefined,
+            theme: theme
+        });
+    }
 
     function handleLogout() {
         props.onLogout();
@@ -92,6 +114,7 @@ function Game(props) {
                 status={status}
                 dices={dices}
                 player={player}
+                diceToRoll={diceToRoll}
                 onRoll={handleRoll}
                 onRestart={handleRestart}
                 onBoxClick={handleBoxClick}

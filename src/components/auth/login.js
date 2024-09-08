@@ -43,11 +43,11 @@ function Login() {
 
     function validateForm() {
         let validationErrors = {};
-        if (username.length < 5) {
-            validationErrors.username = t('username-must-be-5-chars');
+        if (username.length < 3 || username.length > 15) {
+            validationErrors.username = t('username-length-invalid');
         }
-        if (password.length < 5) {
-            validationErrors.password = t('password-must-be-5-chars');
+        if (password.length < 6 || password.length > 30) {
+            validationErrors.password = t('password-length-invalid');
         }
         return validationErrors;
     }
