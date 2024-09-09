@@ -6,8 +6,7 @@ export interface Game {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    playerId: string;
-    playerName: string;
+    playerId: number;
     sheet: Sheet;
     dices: Dice[];
     rollCount: number;

@@ -2,7 +2,7 @@ import { Player } from './Player';
 import { LogLevel } from '../enums/LogLevel';
 
 export interface Log {
-    id: string;
+    id: number;
     createdAt: Date;
     data: string;
     message: string;

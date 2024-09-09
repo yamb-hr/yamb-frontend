@@ -36,8 +36,10 @@ function Yamb() {
             })
             .catch((error) => {
                 handleError(error);
-                setCurrentUser(null);
-                authService.logout();
+                if (error?.response?.data?.status === 401) {
+                    setCurrentUser(null);
+                    authService.logout();
+                }
             });
         }
     }, [currentUser, id]);
@@ -110,8 +112,8 @@ function Yamb() {
         });
     }
 
-    function handleFinish() {
-        gameService.finishById(
+    function handleArchive() {
+        gameService.archiveById(
             game.id
         )
         .then((data) => {
@@ -154,7 +156,7 @@ function Yamb() {
                 </button>
                 <hr/>
                 <p>{t("want-to-try-again")}</p>
-                <button className="new-game-button" onClick={() => handleFinish()}>
+                <button className="new-game-button" onClick={() => handleArchive()}>
                     {t("new-game")}
                 </button>
                 <button className="close-button" onClick={() => setShareModalVisible(false)}>

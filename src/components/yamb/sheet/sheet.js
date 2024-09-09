@@ -5,6 +5,7 @@ import Column from '../column/column';
 import Label from '../label/label';
 import { useNavigate } from 'react-router-dom';
 import './sheet.css';
+import playerService from '../../../services/playerService';
 
 function Sheet(props) {
 
@@ -12,18 +13,18 @@ function Sheet(props) {
     const { isMobile } = useContext(DeviceContext);
     const [ isRolling, setRolling ] = useState(false);
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
+    const { playerName, setPlayerName } = useState();
     const {
         columns,
         rollCount,
         announcement,
         status,
-        player,
+        playerId,
         diceToRoll
     } = props;
 
     const restartButtonDisabled = status !== "IN_PROGRESS";
     const rollDisabled = isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
-
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -44,6 +45,14 @@ function Sheet(props) {
             }
         };
     }, [isMobile]);
+
+    useEffect(() => {
+        if (playerId) {
+            playerService.getById(playerId).then((data) => {
+                setPlayerName(data.name);
+            });
+        }
+    }, [playerId]);
 
     function handleRoll() {
         setRolling(true);
@@ -201,7 +210,7 @@ function Sheet(props) {
                 </div>
             </div>
             <div className="last-row">
-                <button className="username-button" onClick={() => {navigate("/players/" + player.id)}}>{player.name}</button>
+                <button className="username-button" onClick={() => {navigate("/players/" + playerId)}}>{playerName}</button>
                 <Label variant="total-sum" value={getTotalSum()}></Label>
             </div>
         </div>

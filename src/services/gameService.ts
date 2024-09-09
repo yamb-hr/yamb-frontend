@@ -82,8 +82,8 @@ class GameService {
         return data;
     }
 
-    async finishById(gameId: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/finish`);
+    async archiveById(gameId: string): Promise<Game> {
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/archive`);
         console.log(data);
         return data;
     }

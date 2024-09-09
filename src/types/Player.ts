@@ -1,7 +1,7 @@
 import { Role } from "./Role";
 
 export interface Player {
-    id: string;
+    id: number;
     createdAt: Date;
     updatedAt: Date;
     name: string;
