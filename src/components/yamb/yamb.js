@@ -170,7 +170,7 @@ function Yamb() {
                 rollCount={game.rollCount}
                 announcement={game.announcement}
                 status={game.status}
-                player={game.player}
+                playerId={game.playerId}
                 onRoll={handleRoll}
                 onFill={handleFill}
                 onAnnounce={handleAnnounce}

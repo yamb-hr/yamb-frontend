@@ -19,7 +19,7 @@ function Game(props) {
         dices,
         announcement,
         status,
-        player
+        playerId
     } = props;
 
     let diceDisabled = rollCount === 0 || rollCount === 3 || status !== "IN_PROGRESS";
@@ -113,7 +113,7 @@ function Game(props) {
                 announcement={announcement}
                 status={status}
                 dices={dices}
-                player={player}
+                playerId={playerId}
                 diceToRoll={diceToRoll}
                 onRoll={handleRoll}
                 onRestart={handleRestart}

@@ -13,7 +13,7 @@ function Sheet(props) {
     const { isMobile } = useContext(DeviceContext);
     const [ isRolling, setRolling ] = useState(false);
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
-    const { playerName, setPlayerName } = useState();
+    const [ playerName, setPlayerName ] = useState();
     const {
         columns,
         rollCount,
