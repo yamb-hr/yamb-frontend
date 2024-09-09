@@ -6,7 +6,7 @@ function Info() {
 
     return (
         <div className="settings">
-            <a href="/api/swagger-ui">Open API</a>
+            <a href="/api/swagger-ui.html">Open API</a>
         </div>
     );
 };
