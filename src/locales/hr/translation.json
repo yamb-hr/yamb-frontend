@@ -22,7 +22,7 @@
     "about": "Općenito",
     "settings": "Postavke",
     "home": "Početna",
-    "code": "Izvorni kod",
+    "code": "Kod",
     "players": "Igrači",
     "games": "Igre",
     "scores": "Rezultati",
@@ -74,6 +74,11 @@
     "player-with-most-games": "Igrač s najviše igara",
     "player-with-high-score": "Igrač s najboljim rezultatom",
     "player-with-highest-average": "Igrač s najvišim prosječnim rezultatom",
-    "average-score": "Prosječni rezultat"
-
+    "average-score": "Prosječni rezultat",
+    "clash": "Sukob",
+    "rules": "Pravila",
+    "rules-content-1": "Jamb je igra koja se igra s pet kockica. Cilj igre je popuniti tablicu s što više bodova. Tablica se sastoji od 12 polja, gdje svako polje ima svoje pravilo za popunjavanje.",
+    "rules-content-2": "Cilj igre je dobiti što više bodova i postići najviši rezultat. Igra se igra naizmjenično, gdje svaki igrač ima tri bacanja po potezu.",
+    "rules-content-3": "Nakon prvog bacanja, igrač može odabrati koje kockice zadržati, a koje ponovno baciti. Nakon trećeg bacanja, igrač mora popuniti tablicu najboljom mogućom kombinacijom.",
+    "rules-content-4": "Igra završava kada svi igrači popune tablicu. Igrač s najvišim rezultatom pobjeđuje."
 }

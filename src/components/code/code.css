@@ -1,0 +1,15 @@
+.code {
+    background-color: var(--background-window);
+    color: var(--color-text);
+    border-radius: 8px;
+    padding: 20px;
+}
+.code ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.code ul li a:hover {
+    text-decoration: underline;
+}

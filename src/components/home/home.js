@@ -12,16 +12,16 @@ function Home() {
         setExpandedSection(expandedSection === section ? null : section);
     };
 
-    useEffect(() => {
-        scoreService.getScoreboard()
-        .then(data => {
-            console.log(data);
-            setData(data);  
-        }
-        ).catch(error => {
-            handleError(error);
-        });
-    }, []);
+    // useEffect(() => {
+    //     scoreService.getScoreboard()
+    //     .then(data => {
+    //         console.log(data);
+    //         setData(data);  
+    //     }
+    //     ).catch(error => {
+    //         handleError(error);
+    //     });
+    // }, []);
 
     const renderScoreList = (scores) => {
         //short to 10

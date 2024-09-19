@@ -9,14 +9,66 @@
     padding: 0;
     background-color: var(--background-nav);
     height: 100vh;
-    width: 248px;
     z-index: 1000;
-    transition: box-shadow 0.3s;
+    width: 160px;
+    transition: width 0.3s ease !important;
     box-shadow: 12px 12px 24px rgba(70, 70, 70, 0.05);
 }
 
-.navbar ul:hover {
-    box-shadow: 12px 12px 24px rgba(70, 70, 70, 0.1);
+.navbar.active ul {
+    width: 160px;
+}
+
+.navbar.collapsed ul {
+    width: 66px;
+}
+
+.menu-toggle {
+    position: fixed;
+    top: 32px;
+    left: 128px;
+    margin: 16px;
+    padding: 8px;
+    font-size: 1.5rem;
+    border: none;
+    background: none;
+    cursor: pointer;
+    transition: left 0.3s ease;
+    color: var(--color-nav);
+    z-index: 1000;
+}
+
+.menu-toggle .icon {
+    transition: filter 1s;
+}
+
+
+.menu-toggle .icon:hover {
+    filter: var(--filter-dice);
+}
+
+.navbar.collapsed .menu-toggle {
+    left: 36px;
+}
+
+.menu-toggle .icon {
+    color: var(--color-nav);
+}
+
+.app-title {
+    display: flex;
+}
+
+.app-title .app-name {
+    text-align: center;
+    margin-left: 8px;
+    margin-top: 16px;
+    font-size: 1.5rem;
+    color: var(--color-nav);
+}
+
+.app-name.collapsed {
+    display: none;
 }
 
 .navbar ul li a {
@@ -122,7 +174,7 @@
 
 .top-bar .search {
     position: fixed;
-    left: 260px;
+    left: 174px;
     top: 12px;
     border-radius: 8px;
     width: 200px;
@@ -150,7 +202,7 @@
 
 .navbar ul img {
     margin: 16px;
-    width: 48px;
+    width: 32px;
 }
 
 .menu-label {
@@ -160,32 +212,41 @@
     color: var(--color-nav);
 }
 
-.app-title {
-    display: flex;
-}
-
-.app-title .app-name {
-    text-align: center;
-    margin-left: 8px;
-    margin-top: 16px;
-    font-size: 2rem;
-    color: var(--color-nav);
-}
-
 .navbar .logout {
     color: var(--color-yellow-hover);
+}
+
+.navbar.collapsed ul li .menu-label {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    width: 160px;
+}
+
+.navbar.collapsed ul li:hover .menu-label {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+  
+}
+
+span.menu-label {
+    padding-left: 10px;
+    white-space: nowrap;
+    word-break: keep-all;
 }
 
 @media screen and (max-width: 480px) {
     
     .navbar ul {
         left: -100%;
-        width: 248px;
-        transition: left 0.3s ease;
+        width: 256px;
         z-index: 1000;
+        transition: left 0.3s ease;
     }    
 
     .navbar.active ul {
+        width: 256px;
         left: 0;
     }
 
@@ -234,6 +295,8 @@
     .burger {
         display: block;
     }
+
+    .app-title .app-name {
+        font-size: 2rem;
+    }
 }
-
-

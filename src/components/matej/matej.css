@@ -1,0 +1,10 @@
+.matej {
+    background-color: var(--background-window);
+    color: var(--color-text);
+    border-radius: 8px;
+    padding: 20px;
+}
+
+.matej a:hover {
+    text-decoration: underline;
+}

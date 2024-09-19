@@ -130,24 +130,6 @@
   --background-username-button: var(--color-blue);
   --border-username-button: none;
   
-  --color-table-header: var(--color-gray);
-  --color-table-header-hover: var(--color-gray);
-  --color-table-row: var(--color-gray);
-  --color-table-row-alt: var(--color-gray);
-  --color-table-row-hover: var(--color-gray);
-  --color-table-row-alt-hover: var(--color-gray);
-  --color-color-pagination-button: var(--color-blue);
-  --background-table-container: var(--color-blue);
-  --background-table-header: var(--color-blue);
-  --background-table-header-hover: var(--color-blue-hover);
-  --background-table-row: var(--color-blue);
-  --background-table-row-hover: var(--color-blue-hover);
-  --background-table-row-alt: var(--color-blue);
-  --background-table-row-alt-hover: var(--color-blue-hover);
-  --background-pagination-button: var(--color-gray);
-  --background-pagination-button-hover: var(--color-gray-hover);
-  --border-table-row: var(--color-blue-hover);
-
   --color-share-modal: var(--color-gray);
   --background-share-modal: var(--color-blue);
   --color-share-button: var(--color-blue);
@@ -156,6 +138,56 @@
   --color-new-game-button: var(--color-blue);
   --background-new-game-button: var(--color-gray);
   --background-new-game-button-hover: var(--color-gray-hover);
+
+  /* TABLE */
+  
+  --background-table-container: var(--color-blue);  
+  --background-table-header: var(--color-blue);
+  --background-table-header-hover: var(--color-blue-hover);
+  --background-table-row: var(--color-blue);
+  --background-table-row-hover: var(--color-blue-hover);
+  --background-table-row-alt: var(--color-blue);
+  --background-table-row-alt-hover: var(--color-blue-hover);
+  --background-table-action-edit: var(--color-yellow);
+  --background-table-action-edit-hover: var(--color-yellow-hover);
+  --background-table-action-save: var(--color-turq);
+  --background-table-action-save-hover: var(--color-turq-hover);
+  --background-table-action-delete: var(--color-red);
+  --background-table-action-delete-hover: var(--color-red-hover);
+  --background-table-pagination-button: var(--color-gray);
+  --background-table-pagination-button-hover: var(--color-gray-hover);
+	--background-table-dropdown-actions: var(--color-gray);
+	--background-table-dropdown-actions-hover: var(--color-gray-hover);
+
+  --color-table-header: var(--color-gray);
+  --color-table-header-hover: var(--color-gray);  
+  --color-table-row: var(--color-gray);
+  --color-table-row-alt: var(--color-gray);
+  --color-table-row-hover: var(--color-gray);
+  --color-table-row-alt-hover: var(--color-gray);
+  --color-table-action-edit: var(--color-blue);
+  --color-table-action-save: var(--color-black);
+  --color-table-action-delete: var(--color-gray);
+  --color-table-pagination-button: var(--color-blue);
+  --color-table-pagination: var(--color-gray);
+	--color-table-dropdown-actions: var(--color-blue);
+
+  --border-width-table-container: 0px;
+  --border-width-table-header: 0px;
+  --border-width-table-row: 0px 0px 1px 0px;
+  --border-width-table-row-alt: 1px;
+  --border-style-table-container: solid;
+  --border-style-table-header: solid;
+  --border-style-table-row: solid;
+  --border-style-table-row-alt: solid;
+  --border-color-table-container: var(--color-gray);
+  --border-color-table-header: var(--color-gray);
+  --border-color-table-row: var(--color-black);
+  --border-color-table-row-alt: var(--color-black);
+  --border-color-table-pagination-button: var(--color-blue);
+
+  --background-window: var(--color-blue);
+  --color-text: var(--color-gray);
 
 }
 

@@ -1,6 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { Score } from '../types/Score';
-import { GlobalScoreStats } from '../types/GlobalScoreStats';
+import { Score, GlobalScoreStats, ScoreCollection } from '../types/Score';
 import authService from './authService';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/scores`;
@@ -42,8 +41,16 @@ class ScoreService {
         return data;
     }
 
-    async getAll(): Promise<Score[]> {
-        const { data }: AxiosResponse<Score[]> = await this.axiosInstance.get('/');
+    async getAll(page = 0, size = 10, sort = 'createdAt', order: 'ASC' | 'DESC' = 'DESC'): Promise<ScoreCollection> {
+        const { data }: AxiosResponse<ScoreCollection> = await this.axiosInstance.get('/', {
+            params: {
+                page,
+                size,
+                sort,
+                order
+            }
+        });
+    
         console.log(data);
         return data;
     }

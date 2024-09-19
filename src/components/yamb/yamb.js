@@ -46,7 +46,7 @@ function Yamb() {
 
     function handleRoll(diceToRoll) {
         console.time("roll");
-        gameService.rollById(game.id, diceToRoll)
+        gameService.rollById(game, diceToRoll)
         .then((data) => {
             console.timeEnd("roll");
             let newGame = {...data};
@@ -66,8 +66,7 @@ function Yamb() {
         let value = calculateScore(diceValues, boxType);
         newGame.sheet.columns[columnIndex].boxes[boxIndex].value = value;
         setGame(newGame);
-        gameService.fillById(
-            game.id, columnType, boxType
+        gameService.fillById(game, columnType, boxType
         )
         .then((data) => {
             console.timeEnd("fill");
@@ -85,7 +84,7 @@ function Yamb() {
     function handleAnnounce(type) {
         console.time("announce");
         gameService.announceById(
-            game.id, type
+            game, type
         )
         .then((data) => {
             console.timeEnd("announce");
@@ -101,7 +100,7 @@ function Yamb() {
     function handleRestart() {       
         console.time("restart");
         gameService.restartById(
-            game.id
+            game
         )
         .then((data) => {
             console.timeEnd("restart");
@@ -114,7 +113,7 @@ function Yamb() {
 
     function handleArchive() {
         gameService.archiveById(
-            game.id
+            game
         )
         .then((data) => {
             window.location.reload();

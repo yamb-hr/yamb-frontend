@@ -17,7 +17,7 @@
     "no": "No",
     "player": "Player",
     "home": "Home",
-    "code": "Source Code",
+    "code": "Code",
     "play": "Play",
     "profile": "Profile",
     "settings": "Settings",
@@ -72,5 +72,11 @@
     "player-with-most-games": "Player with most games",
     "player-with-high-score": "Player with highest score",
     "player-with-highest-average": "Player with highest average score",
-    "average-score": "Average score"
+    "average-score": "Average score",
+    "clash": "Clash",
+    "rules": "Rules",
+    "rules-content-1": "Yamb is a game played with five dice. The goal of the game is to fill in the table with as many points as possible.",
+    "rules-content-2": "The game is played in 12 rounds. In each round, the player can roll the dice up to three times. After each roll, the player can choose which dice to keep and which to roll again.",
+    "rules-content-3": "After the first roll, the player can announce the column in which they want to fill in the score. If the player doesn't announce the column, they can choose any column after the second roll.",
+    "rules-content-4": "The game ends after 12 rounds. The player with the highest score wins."
 }

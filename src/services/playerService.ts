@@ -1,15 +1,13 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { Player } from '../types/Player';
-import { Score } from '../types/Score';
-import { PlayerStats } from '../types/PlayerStats';
-import { GlobalPlayerStats } from '../types/GlobalPlayerStats';
+import { Player, PlayerCollection, PlayerPreferences, GlobalPlayerStats, PlayerStats } from '../types/Player';
+import { ScoreCollection, Score } from '../types/Score';
 import authService from './authService';
-import { PlayerPreferences } from '../types/PlayerPreferences';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;
 
 class PlayerService {
     private axiosInstance: AxiosInstance;
+    private currentPlayer: Player | null = null;
 
     constructor() {
         this.axiosInstance = axios.create({
@@ -45,14 +43,27 @@ class PlayerService {
         return data;
     }
 
-    async getStatsById(playerId: string): Promise<PlayerStats> {
-        const { data }: AxiosResponse<PlayerStats> = await this.axiosInstance.get(`/${playerId}/stats`);
+    async getAll(page = 0, size = 10, sort = 'createdAt', order: 'ASC' | 'DESC' = 'DESC'): Promise<PlayerCollection> {
+        const { data }: AxiosResponse<PlayerCollection> = await this.axiosInstance.get('/', {
+            params: {
+                page,
+                size,
+                sort,
+                order
+            }
+        });
+    
         console.log(data);
         return data;
     }
 
-    async getAll(): Promise<Player[]> {
-        const { data }: AxiosResponse<Player[]> = await this.axiosInstance.get('/');
+    async getStatsById(player: Player): Promise<PlayerStats> {
+        const statsLink = player._links?.stats?.href;
+        if (!statsLink) {
+            throw new Error("Stats link not available for this player");
+        }
+
+        const { data }: AxiosResponse<PlayerStats> = await this.axiosInstance.get(statsLink);
         console.log(data);
         return data;
     }
@@ -63,28 +74,46 @@ class PlayerService {
         return data;
     }
 
-    async getPrincipalById(playerId: string): Promise<string> {
-        const { data }: AxiosResponse<string> = await this.axiosInstance.get(`/${playerId}/principal`);
+    async getScoresByPlayerId(player: Player): Promise<Score[]> {
+        const scoresLink = player._links?.scores?.href;
+        if (!scoresLink) {
+            throw new Error("Scores link not available for this player");
+        }
+
+        const { data }: AxiosResponse<ScoreCollection> = await this.axiosInstance.get(scoresLink);
+        console.log(data);
+        return data._embedded.scores;
+    }
+
+    async getPreferencesByPlayerId(player: Player): Promise<PlayerPreferences> {
+        const preferencesLink = player._links?.preferences?.href;
+        if (!preferencesLink) {
+            throw new Error("Preferences link not available for this player");
+        }
+
+        const { data }: AxiosResponse<PlayerPreferences> = await this.axiosInstance.get(preferencesLink);
         console.log(data);
         return data;
     }
 
-    async getScoresByPlayerId(playerId: string): Promise<Score[]> {
-        const { data }: AxiosResponse<Score[]> = await this.axiosInstance.get(`/${playerId}/scores`);
+    async setPreferencesByPlayerId(player: Player, preferences: PlayerPreferences): Promise<PlayerPreferences> {
+        const preferencesLink = player._links?.preferences?.href;
+        if (!preferencesLink) {
+            throw new Error("Preferences link not available for this player");
+        }
+
+        const { data }: AxiosResponse<PlayerPreferences> = await this.axiosInstance.put(preferencesLink, preferences);
         console.log(data);
         return data;
     }
 
-    async getPreferencesByPlayerId(playerId: string): Promise<PlayerPreferences> {
-        const { data }: AxiosResponse<PlayerPreferences> = await this.axiosInstance.get(`/${playerId}/preferences`);
-        console.log(data);
-        return data;
-    }
-
-    async setPreferencesByPlayerId(playerId: string, preferences: PlayerPreferences): Promise<PlayerPreferences> {
-        const { data }: AxiosResponse<PlayerPreferences> = await this.axiosInstance.put(`/${playerId}/preferences`, preferences);
-        console.log(data);
-        return data;
+    async getCurrentPlayer(): Promise<Player | null> { 
+        if (!this.currentPlayer && authService.getAccessToken()) {
+            const { data }: AxiosResponse<Player> = await this.axiosInstance.get('/me');
+            console.log(data);
+            this.currentPlayer = data;  
+        }
+        return this.currentPlayer;
     }
 }
 

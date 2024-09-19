@@ -14,7 +14,7 @@ function Login() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const { setCurrentUser } = useContext(CurrentUserContext);
+    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -30,11 +30,10 @@ function Login() {
             password: password
         })
         .then((authData) => {
-            localStorage.setItem("player", JSON.stringify(authData.player));
             localStorage.setItem("token", authData.token);
             setCurrentUser(authData.player);
             navigate("/");
-            window.location.reload();
+            // window.location.reload();
         })
         .catch((error) => {
             handleError(error); 

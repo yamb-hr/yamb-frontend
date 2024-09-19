@@ -1,7 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { Player } from '../types/Player';
-import { PlayerCredentials } from '../types/PlayerCredentials';
-import { AuthData } from '../types/AuthData';
+import { PlayerCredentials } from '../types/Auth';
+import { AuthData } from '../types/Auth';
 
 const API_URL = process.env.REACT_APP_API_URL + "/auth";
 
@@ -38,19 +38,6 @@ class AuthService {
 
     getAccessToken(): string | null {
         return localStorage.getItem("token");
-    }
-
-    getCurrentPlayer(): Player | null {
-        const playerJson = localStorage.getItem("player");
-        if (!playerJson) return null;
-
-        try {
-            return JSON.parse(playerJson) as Player;
-        } catch (error) {
-            console.error(error);
-            this.logout();
-            return null;
-        }
     }
 
     logout(): void {

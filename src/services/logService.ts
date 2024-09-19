@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { Log } from '../types/Log';
+import { Log, LogCollection } from '../types/Log';
 import authService from './authService';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/logs`;
@@ -41,19 +41,36 @@ class LogService {
         return data;
     }
 
-    async getAll(): Promise<Log[]> {
-        const { data }: AxiosResponse<Log[]> = await this.axiosInstance.get('/');
+    async getAll(page = 0, size = 10, sort = 'updatedAt', order: 'ASC' | 'DESC' = 'DESC'): Promise<LogCollection> {
+        const { data }: AxiosResponse<LogCollection> = await this.axiosInstance.get('/', {
+            params: {
+                page,
+                size,
+                sort,
+                order
+            }
+        });
+
         console.log(data);
         return data;
     }
 
-    
-    async deleteAll(): Promise<VoidFunction> {
-        const { data }: AxiosResponse<VoidFunction> = await this.axiosInstance.delete('/');
+    async deleteById(log: Log): Promise<void> {
+        const deleteLink = log._links?.delete?.href;
+        if (!deleteLink) {
+            throw new Error('Delete link not available for this log');
+        }
+
+        const { data }: AxiosResponse<void> = await this.axiosInstance.delete(deleteLink);
         console.log(data);
         return data;
     }
 
+    async deleteAll(): Promise<void> {
+        const { data }: AxiosResponse<void> = await this.axiosInstance.delete('/');
+        console.log(data);
+        return data;
+    }
 }
 
 const logService = new LogService();

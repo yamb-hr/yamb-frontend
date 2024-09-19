@@ -1,0 +1,24 @@
+.status {
+    background-color: var(--background-window);
+    color: var(--color-text);
+    padding: 20px;
+    border-radius: 8px;
+    max-width: 600px;
+    margin: 0 auto;
+    box-shadow: 0 12px 24px rgba(70, 70, 70, 0.15);
+}
+
+.status h2 {
+    font-size: 22px;
+    margin-bottom: 10px;
+}
+
+.status h3 {
+    font-size: 18px;
+    text-align: left;
+}
+
+.status ul {
+    font-size: 14px;
+    text-align: left;
+}

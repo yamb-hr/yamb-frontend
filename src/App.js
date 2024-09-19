@@ -7,8 +7,6 @@ import Login from './components/auth/login';
 import Register from './components/auth/register';
 import Admin from './components/admin/admin';
 import Yamb from './components/yamb/yamb';
-import Chat from './components/chat/chat';
-import authService from './services/authService';
 import Logout from './components/auth/logout';
 import Navigation from './components/navigation/navigation';
 import Players from './components/dynamic/table/players';
@@ -17,14 +15,19 @@ import Games from './components/dynamic/table/games';
 import Player from './components/dynamic/element/player';
 import Score from './components/dynamic/element/score';
 import Play from './components/play/play';
-import 'react-toastify/dist/ReactToastify.css';
-import './App.css';
 import playerService from './services/playerService';
 import Logs from './components/dynamic/table/logs';
 import Log from './components/dynamic/element/log';
 import Profile from './components/profile/profile';
 import Settings from './components/settings/settings';
 import Info from './components/info/info';
+import Rankings from './components/rankings/rankings';
+import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
+import Clash from './components/clash/clash';
+import Status from './components/status/status';
+import Code from './components/code/code';
+import Matej from './components/matej/matej';
 
 export const ThemeContext = createContext(null);
 export const LanguageContext = createContext(null);
@@ -55,7 +58,7 @@ function App() {
     }, [RECAPTCHA_SITE_KEY]);
 	
 	const { t } = useTranslation();
-	const [ currentUser, setCurrentUser ] = useState(authService.getCurrentPlayer());
+	const [ currentUser, setCurrentUser ] = useState();
 	const [ isMenuOpen, setMenuOpen ] = useState(false);
 	const [ isMobile, setMobile ] = useState(window.innerWidth <= 480);
 	const [ language, setLanguage ] = useState(getCurrentLanguage());
@@ -65,24 +68,27 @@ function App() {
 
 	useEffect(() => {
         if (currentUser) {
-			playerService.getPreferencesByPlayerId(currentUser.id).then(response => {
-				if (response.data) {
-					if (response.data.language) {
-						setLanguage(response.data.language);
-						i18n.changeLanguage(response.data.language);
-						localStorage.setItem("i18nextLng", response.data.language);
+			playerService.getPreferencesByPlayerId(currentUser).then(data => {
+				if (data) {
+					if (data.language) {
+						setLanguage(data.language);
+						i18n.changeLanguage(data.language);
 					}
-					if (response.data.theme) {
-						setTheme(response.data.theme);
-						document.documentElement.setAttribute("theme", response.data.theme);	
-						localStorage.setItem("theme", response.data.language);
+					if (data.theme) {
+						setTheme(data.theme);
+						document.documentElement.setAttribute("theme", data.theme);	
+						localStorage.setItem("theme", data.theme);
 					}
 				}
 			}).catch(error => {
 				console.error(error);
 				if (error?.response?.data?.status === 404) {
-					playerService.setPreferencesByPlayerId(currentUser.id, { language: language, theme: theme }).then(response => {
+					playerService.setPreferencesByPlayerId(currentUser, { language: language, theme: theme })
+					.then(response => {
 						console.log(response);
+					})
+					.catch(error => {
+						handleError(error)
 					});
 				}
 			});
@@ -92,17 +98,24 @@ function App() {
 	useEffect(() => {
         if (currentUser) {
             if (prevLanguage.current !== language || prevTheme.current !== theme) {
-                playerService.setPreferencesByPlayerId(currentUser.id, { language: language, theme: theme })
-                    .then(response => {
-                        prevLanguage.current = language;
-                        prevTheme.current = theme;
+                playerService.setPreferencesByPlayerId(currentUser, { language: language, theme: theme })
+                    .then(preferences => {
+                        prevLanguage.current = preferences.language;
+                        prevTheme.current = preferences.theme;
                     })
-                    .catch(error => console.error(error));
-            }
+                    .catch(error => {
+						handleError(error)
+					});
+				}
         }
     }, [language, theme, currentUser]);
 
     useEffect(() => {
+		playerService.getCurrentPlayer().then(player => {
+			setCurrentUser(player);
+		}).catch(error => {	
+			console.error(error);
+		});
         const handleResize = () => {
 			setMobile(window.innerWidth <= 480);
 		}
@@ -196,12 +209,12 @@ function App() {
 	return (
 		<div className="App">
 			<header className="App-header">
-				<ErrorContext.Provider value={{ handleError}}>
-					<DeviceContext.Provider value={{ isMobile, setMobile}}>
-						<MenuContext.Provider value={{ isMenuOpen, setMenuOpen}}>
-							<CurrentUserContext.Provider value={{ currentUser, setCurrentUser}}>
-								<ThemeContext.Provider value={{ theme, toggleTheme}}>
-									<LanguageContext.Provider value={{ language, toggleLanguage}}>
+				<ErrorContext.Provider value={{ handleError }}>
+					<DeviceContext.Provider value={{ isMobile, setMobile }}>
+						<MenuContext.Provider value={{ isMenuOpen, setMenuOpen }}>
+							<CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
+								<ThemeContext.Provider value={{ theme, toggleTheme }}>
+									<LanguageContext.Provider value={{ language, toggleLanguage }}>
 										<Navigation 
 											isMenuOpen={isMenuOpen} 
 											setMenuOpen={setMenuOpen} 
@@ -217,6 +230,14 @@ function App() {
 										<Router>
 											<Routes>
 												<Route path="/" element={<Play />} />
+												<Route path="/clash" element={<Clash />} />
+												<Route path="/profile" element={<Profile  />} />
+												<Route path="/rankings" element={<Rankings  />} />
+												<Route path="/settings" element={<Settings  />} />
+												<Route path="/info" element={<Info  />} />
+												<Route path="/status" element={<Status />} />
+												<Route path="/code" element={<Code />} />
+												<Route path="/matej" element={<Matej />} />
 												<Route path="/login" element={<Login  />} />
 												<Route path="/register" element={<Register  />} />
 												<Route path="/logout" element={<Logout  />} />
@@ -226,12 +247,9 @@ function App() {
 												<Route path="/scores/:id" element={<Score />} />
 												<Route path="/games" element={<Games  />} />
 												<Route path="/games/:id" element={<Yamb  />} />
-												<Route path="/admin" element={<Admin  />} />
 												<Route path="/logs" element={<Logs  />} />
 												<Route path="/logs/:id" element={<Log  />} />
-												<Route path="/settings" element={<Settings  />} />
-												<Route path="/profile" element={<Profile  />} />
-												<Route path="/info" element={<Info  />} />
+												<Route path="/admin" element={<Admin  />} />
 											</Routes>
 										</Router>		
 									</LanguageContext.Provider>

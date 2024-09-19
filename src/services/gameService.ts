@@ -1,6 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { Game } from '../types/Game';
+import { Game, GameCollection } from '../types/Game';
 import authService from './authService';
+import playerService from './playerService';
+import { Player, PlayerCollection } from '../types/Player';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/games`;
 
@@ -41,14 +43,23 @@ class GameService {
         return data;
     }
 
-    async getAll(): Promise<Game[]> {
-        const { data }: AxiosResponse<Game[]> = await this.axiosInstance.get('/');
+    async getAll(page = 0, size = 10, sort = 'updatedAt', order: 'ASC' | 'DESC' = 'DESC'): Promise<GameCollection> {
+        const { data }: AxiosResponse<GameCollection> = await this.axiosInstance.get('/', {
+            params: {
+                page,
+                size,
+                sort,
+                order
+            }
+        });
+    
         console.log(data);
         return data;
     }
+    
 
     async getOrCreate(): Promise<Game> {
-        const currentPlayer = authService.getCurrentPlayer();
+        const currentPlayer = await playerService.getCurrentPlayer();
         if (currentPlayer) {
             const { data }: AxiosResponse<Game> = await this.axiosInstance.put('/', { playerId: currentPlayer.id });
             console.log(data);
@@ -58,35 +69,61 @@ class GameService {
         }
     }
 
-    async rollById(gameId: string, diceToRoll: number[]): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/roll`, { diceToRoll });
+    async rollById(game: Game, diceToRoll: number[]): Promise<Game> {
+        const rollLink = game._links.roll?.href;
+        if (!rollLink) {
+            throw new Error('No roll link found for this game');
+        }
+
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(rollLink, { diceToRoll });
         console.log(data);
         return data;
     }
 
-    async fillById(gameId: string, columnType: string, boxType: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/fill`, { columnType, boxType });
+    async fillById(game: Game, columnType: string, boxType: string): Promise<Game> {
+        const fillLink = game._links.fill?.href;
+        if (!fillLink) {
+            throw new Error('No fill link found for this game');
+        }
+
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(fillLink, { columnType, boxType });
         console.log(data);
         return data;
     }
 
-    async announceById(gameId: string, boxType: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/announce`, { boxType });
+    async announceById(game: Game, boxType: string): Promise<Game> {
+        const announceLink = game._links.announce?.href;
+        if (!announceLink) {
+            throw new Error('No announce link found for this game');
+        }
+
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(announceLink, { boxType });
         console.log(data);
         return data;
     }
 
-    async restartById(gameId: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/restart`);
+    async restartById(game: Game): Promise<Game> {
+        const restartLink = game._links.restart?.href;
+        if (!restartLink) {
+            throw new Error('No restart link found for this game');
+        }
+
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(restartLink);
         console.log(data);
         return data;
     }
 
-    async archiveById(gameId: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(`/${gameId}/archive`);
+    async archiveById(game: Game): Promise<Game> {
+        const archiveLink = game._links.archive?.href;
+        if (!archiveLink) {
+            throw new Error('No archive link found for this game');
+        }
+
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(archiveLink);
         console.log(data);
         return data;
     }
+
 }
 
 const gameService = new GameService();

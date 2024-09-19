@@ -1,6 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { DeviceContext, MenuContext } from '../../../App';
+import { CurrentUserContext, DeviceContext, ErrorContext, MenuContext } from '../../../App';
 import Column from '../column/column';
 import Label from '../label/label';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,9 @@ import playerService from '../../../services/playerService';
 function Sheet(props) {
 
     const { t } = useTranslation();
+    const { currentUser } = useContext(CurrentUserContext);
     const { isMobile } = useContext(DeviceContext);
+    const { handleError } = useContext(ErrorContext);
     const [ isRolling, setRolling ] = useState(false);
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
     const [ playerName, setPlayerName ] = useState();
@@ -48,9 +50,16 @@ function Sheet(props) {
 
     useEffect(() => {
         if (playerId) {
-            playerService.getById(playerId).then((data) => {
-                setPlayerName(data.name);
-            });
+            if (playerId === currentUser.id) {
+                setPlayerName(currentUser.name);
+            } else {
+                playerService.getById(playerId).then((data) => {
+                    setPlayerName(data.name);
+                })
+                .catch((error) => {
+                    handleError(error);
+                });
+            }
         }
     }, [playerId]);
 
@@ -169,7 +178,7 @@ function Sheet(props) {
                 {/* MID SECTION */}
                 <Label value={t('max')} info="Zbroj svih kockica"></Label>
                 <Label value={t('min')} info="Zbroj svih kockica"></Label>
-                <Label variant="sum" value="∆ x 1" info={t('middle-section-sum')}></Label>
+                <Label variant="sum" value="∆ x 1s" info={t('middle-section-sum')}></Label>
                 {/* BOTTOM SECTION */}
                 <Label value={t('trips')} info={t('trips-info')}></Label>
                 <Label value={t('straight')} info={t('straight-info')}></Label>
