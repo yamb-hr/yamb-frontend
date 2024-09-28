@@ -1,4 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import authService from './authService';
 
 const API_URL = process.env.REACT_APP_API_URL + "/";
 
@@ -20,6 +21,10 @@ class HomeService {
                     if (language) {
                         config.headers['Accept-Language'] = language;
                     }
+                    const token = authService.getAccessToken();
+                    if (token) {
+                        config.headers['Authorization'] = `Bearer ${token}`;
+                    }
                 }
                 return config;
             },
@@ -29,24 +34,16 @@ class HomeService {
         );
     }
 
-    getVersionInfo(): Promise<AxiosResponse> {
-        return this.axiosInstance.get('/version');
+    async getHealthCheck(): Promise<AxiosResponse> {
+        const { data }: AxiosResponse<any> = await this.axiosInstance.get("/health");
+        console.log("getHealthCheck", data);
+        return data;
     }
 
-    getHealthCheck(): Promise<AxiosResponse> {
-        return this.axiosInstance.get('/health');
-    }
-
-    getStatus(): Promise<AxiosResponse> {
-        return this.axiosInstance.get('/status');
-    }
-
-    getSystemInfo(): Promise<AxiosResponse> {
-        return this.axiosInstance.get('/system-info');
-    }
-
-    getMetrics(): Promise<AxiosResponse> {
-        return this.axiosInstance.get('/metrics');
+    async getMetrics(): Promise<AxiosResponse> {
+        const { data }: AxiosResponse<any> = await this.axiosInstance.get("/metrics");
+        console.log("getMetrics", data);
+        return data;
     }
 
 }

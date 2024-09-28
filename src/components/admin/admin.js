@@ -1,6 +1,6 @@
 import React, { useContext, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { CurrentUserContext } from '../../App';
+import { Link, useNavigate } from 'react-router-dom';
+import { CurrentUserContext } from '../../providers/currentUserProvider';
 import './admin.css';
 
 function Admin() {
@@ -9,16 +9,20 @@ function Admin() {
     const { currentUser } = useContext(CurrentUserContext);
 
     useEffect(() => {
-        if (!currentUser?.roles?.find(x => x.name === 'ADMIN')) {
-            navigate('/');
+        if (currentUser && !currentUser?.roles?.includes("ADMIN")) {
+            navigate("/")
         }
-    });
+    }, [currentUser]);
     
     return (
         <div className="admin">
-            <a href="/logs">Logs</a>
-            <br/>
-            <a href="/games">Games</a>
+            <ul>
+                <li><Link to="/logs">Logs</Link></li>
+                <li><Link to="/games">Games</Link></li>
+                <li><Link to="/players">Players</Link></li>
+                <li><Link to="/scores">Scores</Link></li>
+                <li><Link to="/clashes">Clashes</Link></li>
+            </ul>
         </div>
     );
 };

@@ -1,0 +1,19 @@
+.log, .log-list {
+    min-width: 200px;
+    width: 70%;
+    max-width: 1000px;
+    min-height: 400px;
+    height: 80vh;
+    overflow-y: auto;
+    border: 1px solid red;
+}
+
+@media (max-width: 480px) {
+
+    .log, .log-list {
+        width: 100vw;
+        margin-top: 40px;
+        height: 90vh;
+    }
+
+}

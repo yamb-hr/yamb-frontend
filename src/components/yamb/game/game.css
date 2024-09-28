@@ -1,8 +1,0 @@
-.dices {
-    display: inline-flex;
-    background: var(--color-background);
-    position: relative;
-    width: 100%;
-    justify-content: center;
-}
-

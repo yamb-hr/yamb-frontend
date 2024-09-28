@@ -1,0 +1,109 @@
+.profile {
+    background-color: var(--background-auth);
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 200px;
+    height: 200px;
+    color: var(--color-auth);
+    display: block;
+}
+
+.profile input[type="text"] {
+    width: 90%;
+    padding: 12px;
+    margin: 8px 0;
+    box-sizing: border-box;
+    font-size: 16px;
+    background-color: var(--background-auth-input);
+    color: var(--color-auth-input);
+    border-bottom: 1px solid var(--border-auth-input);
+    border-radius: 4px;
+    caret-color: var(--color-auth-input);
+}
+
+.profile input[type="text"]:disabled {
+    background-color: var(--background-profile);
+}
+
+.profile input[type="text"]:-webkit-autofill,
+.profile input[type="text"]:-webkit-autofill:hover, 
+.profile input[type="text"]:-webkit-autofill:focus, 
+.profile input[type="texts"]:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: var(--color-auth-input);
+    box-shadow: inset 0 0 20px 20px var(--background-auth-input);
+}
+
+.profile input[type="submit"] {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background-auth-button);
+    border: none;
+    color: var(--color-auth-button);
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid var(--border-auth-button);
+    border-radius: 4px;
+    margin-top: 10px;
+}
+
+.profile input[type="submit"]:hover:enabled {
+    cursor: pointer;
+    background-color: var(--background-auth-button-hover);
+}
+
+.profile input[type="submit"]:hover:enabled {
+    cursor: pointer;
+    background-color: var(--background-auth-button-hover);
+}
+
+.profile input[type="submit"]:disabled {
+    background-color: var(--background-auth-button-disabled);
+}
+
+.profile .link {
+    margin-top: 15px;
+    text-align: center;
+    font-size: 14px;
+}
+
+.profile .username {
+    display: flex;
+}
+
+.profile .link a {
+    color: var(--color-auth-link);
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.profile .link a:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+.profile img {
+    width: 64px;
+    margin-top: 20px;
+}
+
+.profile .input-label {
+    font-size: 14px;
+    width: 100%;
+    display: flex;
+}
+
+.profile .edit-button {
+    margin: auto;
+    border: none;
+    color: var(--color-auth);
+    filter: grayscale(100%);
+    font-size: 1.2rem;
+}
+
+.profile .edit-button:hover {
+    filter: none;
+    cursor: pointer;
+}

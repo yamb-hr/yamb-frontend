@@ -25,34 +25,30 @@
 
 .menu-toggle {
     position: fixed;
-    top: 32px;
-    left: 128px;
-    margin: 16px;
-    padding: 8px;
-    font-size: 1.5rem;
+    top: 8px;
+    left: 144px;
+    font-size: 2rem;
     border: none;
-    background: none;
+    border-radius: 40px;
     cursor: pointer;
     transition: left 0.3s ease;
-    color: var(--color-nav);
     z-index: 1000;
 }
 
-.menu-toggle .icon {
-    transition: filter 1s;
+.navbar.collapsed .menu-toggle {
+    left: 50px;
+}
+
+.menu-toggle span.icon {
+    color: var(--color-menu-toggle);
+    transition: background-color 1s;
+    display: block;
+    padding: 4px;
 }
 
 
 .menu-toggle .icon:hover {
-    filter: var(--filter-dice);
-}
-
-.navbar.collapsed .menu-toggle {
-    left: 36px;
-}
-
-.menu-toggle .icon {
-    color: var(--color-nav);
+    color: var(--color-menu-toggle-hover);
 }
 
 .app-title {
@@ -88,6 +84,20 @@
     cursor: pointer;
 }
 
+.navbar ul li:hover .icon {
+    filter: none;
+}
+
+.navbar ul li a.active {
+    background-color: var(--background-nav-hover);
+}
+
+.navbar.collapsed ul li a {
+    padding: 16px;
+    margin: 4px;
+    border-radius: 8px;
+}
+
 .language-button {    
     transition: filter 1s;
     border: var(--border-settings-button);
@@ -111,11 +121,11 @@
 }
 
 .theme-button:hover {
-    filter: var(--filter-dice);
+    filter: none;
 }
 
 .language-button:hover {
-    filter: var(--filter-dice);
+    filter: none;
 }
 
 .burger {
@@ -174,7 +184,8 @@
 
 .top-bar .search {
     position: fixed;
-    left: 174px;
+    left: 50%;
+    transform: translateX(-50%);
     top: 12px;
     border-radius: 8px;
     width: 200px;
@@ -207,9 +218,8 @@
 
 .menu-label {
     text-align: left;
-    margin-left: 16px;
-    font-size: 1.2rem;
     color: var(--color-nav);
+    width: 160px;
 }
 
 .navbar .logout {
@@ -219,22 +229,31 @@
 .navbar.collapsed ul li .menu-label {
     opacity: 0;
     visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
     width: 160px;
 }
 
-.navbar.collapsed ul li:hover .menu-label {
-    opacity: 1;
-    visibility: visible;
-    transition: opacity 0.3s ease;
-  
-}
-
-span.menu-label {
-    padding-left: 10px;
+.navbar.active ul li span {
     white-space: nowrap;
     word-break: keep-all;
 }
+
+.navbar.collapsed ul li:hover span.menu-label {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease;
+    color: var(--color-nav-collapsed);
+}
+
+span.menu-label {
+    padding-left: 30px;
+    white-space: nowrap;
+    word-break: keep-all;
+}
+
+.navbar ul li a:hover {
+    text-decoration: none;
+}
+
 
 @media screen and (max-width: 480px) {
     
@@ -292,11 +311,21 @@ span.menu-label {
         transition: all 1s ease;
     }
 
+    .navbar.active .language-button, .navbar.active .theme-button {
+        font-size: 1.2em;
+        
+    }
+
     .burger {
         display: block;
     }
 
     .app-title .app-name {
         font-size: 2rem;
+    }
+
+    .language-theme-buttons {
+        white-space: nowrap;
+        word-break: keep-all;
     }
 }

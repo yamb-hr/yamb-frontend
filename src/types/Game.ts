@@ -1,3 +1,4 @@
+import { Player } from './Player';
 import { BoxType } from '../enums/BoxType';
 import { ColumnType } from '../enums/ColumnType';
 import { GameStatus } from '../enums/GameStatus';
@@ -7,7 +8,7 @@ export interface Game {
     id: string;
     createdAt: Date;
     updatedAt: Date;
-    playerId: number;
+    player: Player;
     sheet: Sheet;
     dices: Dice[];
     rollCount: number;
@@ -22,7 +23,6 @@ export interface Game {
         restart?: { href: string };
         archive?: { href: string };
         complete?: { href: string };
-        player?: { href: string };
     };
 }
 

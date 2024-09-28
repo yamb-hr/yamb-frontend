@@ -1,16 +1,19 @@
-import React, { useContext, useEffect, useState } from 'react';
-import authService from '../../services/authService';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Slide, toast } from 'react-toastify';
-import { useNavigate } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { CurrentUserContext, ErrorContext, ThemeContext } from '../../App';
+import { useTranslation } from 'react-i18next';;
+import { ThemeContext } from '../../providers/themeProvider';
+import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { ErrorContext } from '../../providers/errorProvider';
+import authService from '../../services/authService';
 import './auth.css';
 
 
 function Register() {
 
     const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
-    
+
+    const navigate = useNavigate();
     const { t } = useTranslation();
     const { theme } = useContext(ThemeContext);
     const { currentUser } = useContext(CurrentUserContext);
@@ -18,7 +21,6 @@ function Register() {
     const [username, setUsername] = useState(currentUser ? currentUser.username : "");
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
-    const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -115,7 +117,7 @@ function Register() {
                 
                 <div className="link">
                     {t('already-have-account')}&nbsp;
-                    <a href="/login">{t('sign-in')}</a><br/>
+                    <Link to="/login">{t('sign-in')}</Link><br/>
                 </div>
             </form>
         </div>

@@ -11,7 +11,6 @@ export interface Log {
     level: LogLevel;
     _links: {
         self: Link;
-        delete?: Link;
     };
 }
 

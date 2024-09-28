@@ -12,7 +12,10 @@ export interface Player {
     _links: {
         self: Link;
         scores?: Link;
+        clashes?: Link;
+        logs?: Link;
         preferences?: Link;
+        username?: Link;
         stats?: Link;
     };
 }

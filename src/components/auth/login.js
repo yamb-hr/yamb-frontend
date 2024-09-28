@@ -1,20 +1,20 @@
-import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import authService from '../../services/authService';
-import { CurrentUserContext, ErrorContext } from '../../App';
+import React, { useContext, useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import authService from '../../services/authService';
 import './auth.css';
+import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { ErrorContext } from '../../providers/errorProvider';
 
 function Login() {
 
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const { setCurrentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorContext);
-
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [errors, setErrors] = useState({});
-    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+    const [ username, setUsername ] = useState('');
+    const [ password, setPassword ] = useState('');
+    const [ errors, setErrors ] = useState({});
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -25,15 +25,11 @@ function Login() {
             return;
         }
 
-        authService.login({
-            username: username,
-            password: password
-        })
+        authService.getToken({ username: username, password: password})
         .then((authData) => {
             localStorage.setItem("token", authData.token);
             setCurrentUser(authData.player);
             navigate("/");
-            // window.location.reload();
         })
         .catch((error) => {
             handleError(error); 
@@ -98,11 +94,11 @@ function Login() {
                 
                 <div className="link">
                     {t('dont-have-account')}&nbsp;
-                    <a href="/register">{t('sign-up')}</a><br/>
+                    <Link to="/register">{t('sign-up')}</Link><br/>
                 </div>
             </form>
         </div>
-    );
-};
+    )
+}
 
 export default Login;

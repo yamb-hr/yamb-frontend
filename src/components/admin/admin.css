@@ -1,0 +1,20 @@
+.admin {
+    padding: 20px;
+    background-color: var(--background-window);
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    line-height: 1.6;
+    font-size: large;
+    overflow: hidden;
+}
+
+.admin ul {
+    text-align: left;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.admin ul li a {
+    color: var(--color-yellow);
+}

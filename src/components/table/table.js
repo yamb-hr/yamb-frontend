@@ -1,229 +1,194 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { LanguageContext } from '../../providers/languageProvider';
+import { ErrorContext } from '../../providers/errorProvider';
 import Spinner from '../spinner/spinner';
 import './table.css';
 
-const flattenRow = (row, columns) => {
-	let flattened = {};
-	columns.forEach(({ accessor }) => {
-		const value = accessor.split('.').reduce((obj, key) => (obj ? obj[key] : ''), row);
-
-		if (Array.isArray(value)) {
-			flattened[accessor] = value.length
-				? value
-						.map((item) => (typeof item === 'object' && item !== null ? item.name || JSON.stringify(item) : item))
-						.join(', ')
-				: 'No data';
-		} else if (typeof value === 'object' && value !== null) {
-			flattened[accessor] = JSON.stringify(value);
-		} else {
-			flattened[accessor] = value;
-		}
-	});
-	return flattened;
+const localeStringFormat = {
+    year: 'numeric', month: 'long', day: 'numeric', 
+    hour: 'numeric', minute: 'numeric', second: 'numeric'
 };
 
-const Table = ({ service }) => {
-	const [rowsPerPage, setRowsPerPage] = useState(10);
-	const [currentPage, setCurrentPage] = useState(1);
-	const [rows, setRows] = useState([]);
-	const [columns, setColumns] = useState([]);
-	const [sortConfig, setSortConfig] = useState({ key: null, direction: 'asc' });
-	const [editIdx, setEditIdx] = useState(-1);
-	const [loading, setLoading] = useState(true);
-	const [selectedRows, setSelectedRows] = useState([]);
-	const [showActions, setShowActions] = useState({});
+const Table = ({ columns, data, service }) => {
 
-	useEffect(() => {
-		const fetchData = async () => {
-			setLoading(true);
-			try {
-				const data = await service.getAll();
-				setRows(data);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const [ tableData, setTableData ] = useState([]);
+    const [ loading, setLoading ] = useState(false);
+    const [ page, setPage ] = useState(0);
+    const [ pageSize, setPageSize ] = useState(50);
+    const [ sortColumn, setSortColumn ] = useState(null);
+    const [ sortDirection, setSortDirection ] = useState('asc');
+    const { handleError } = useContext(ErrorContext);
+    const { language } = useContext(LanguageContext);
 
-				if (data.length > 0) {
-					const cols = Object.keys(data[0]).map((key) => {
-						if (typeof data[0][key] === 'object' && data[0][key] !== null) {
-							return Object.keys(data[0][key]).map((nestedKey) => ({
-								header: `${key.charAt(0).toUpperCase() + key.slice(1)} ${nestedKey.charAt(0).toUpperCase() + nestedKey.slice(1)}`,
-								accessor: `${key}.${nestedKey}`,
-								nested: true
-							}));
-						} else {
-							return {
-								header: key.charAt(0).toUpperCase() + key.slice(1),
-								accessor: key,
-								nested: false
-							};
-						}
-					});
+    useEffect(() => {
+        if (service) {
+            fetchData();
+        } else if (data) {
+            setTableData(data);
+        }
+    }, [data, service]);
 
-					setColumns(cols.flat());
-				}
-			} catch (error) {
-				console.error("Error fetching data", error);
-			} finally {
-				setLoading(false);
-			}
-		};
-		fetchData();
-	}, [service]);
+    const fetchData = async () => {
+        setLoading(true);
+        try {
+            const result = await service.getAll(0, 9999, sortColumn, sortDirection);
+            const fetchedData = result._embedded[Object.keys(result._embedded)[0]];
+            setTableData(fetchedData);
+        } catch (error) {
+            handleError(error);
+        } finally {
+            setLoading(false);
+        }
+    };
 
-	const sortedData = [...rows].sort((a, b) => {
-		if (sortConfig.key) {
-			const key = sortConfig.key;
-			const direction = sortConfig.direction === 'asc' ? 1 : -1;
-			const aValue = a[key];
-			const bValue = b[key];
-			return (aValue > bValue ? 1 : -1) * direction;
-		}
-		return 0;
-	});
+    const formatDate = (value) => {
+        return new Date(value).toLocaleString(language, localeStringFormat);
+    };
+    
+    const formatValue = (value) => {
+        return typeof value === 'string' && !isNaN(Date.parse(value))
+            ? formatDate(value)
+            : typeof value === 'boolean'
+                ? (value ? '✔' : '✘')
+                : value;
+    };
 
-	const startRowIndex = (currentPage - 1) * rowsPerPage;
-	const paginatedData = sortedData.slice(startRowIndex, startRowIndex + rowsPerPage).map((row) => flattenRow(row, columns));
-	const totalPages = Math.ceil(rows.length / rowsPerPage);
+    const handleSort = (columnKey) => {
+        if (sortColumn === columnKey) {
+            setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+        } else {
+            setSortColumn(columnKey);
+            setSortDirection('asc');
+        }
+    };
 
-	const requestSort = (key) => {
-		let direction = 'asc';
-		if (sortConfig.key === key && sortConfig.direction === 'asc') {
-			direction = 'desc';
-		}
-		setSortConfig({ key, direction });
-	};
+    const sortData = (data) => {
+        if (!sortColumn) return data;
+        return [...data].sort((a, b) => {
+            const valueA = getValue(a, sortColumn);
+            const valueB = getValue(b, sortColumn);
+            if (valueA === valueB) return 0;
+            if (sortDirection === 'asc') {
+                return valueA > valueB ? 1 : -1;
+            } else {
+                return valueA < valueB ? 1 : -1;
+            }
+        });
+    };
 
-	const handleEdit = (idx) => setEditIdx(idx);
-	const handleDelete = (idx) => setEditIdx(-1);
+    const getPaginatedData = (data) => {
+        if (data.length > 0) {
+            if (service) {
+                const startIndex = page * pageSize;
+                const endIndex = startIndex + pageSize;
+                return data.slice(startIndex, endIndex);
+            }
+            return data;
+        }
+    };
 
-	const handleGlobalSave = () => {
-		const updatedRows = rows.filter((_, idx) => selectedRows.includes(idx));
-		console.log('Global Save for rows:', updatedRows);
-	};
+    const getValue = (row, key) => {
+        const value = key.split('.').reduce((acc, part) => acc && acc[part], row);
+        if (value && typeof value === 'object') {
+            const link = value._links?.self?.href;
+            if (link) {
+                const segments = link.split('/');
+                const resource = segments[segments.length - 2];
+                const id = segments[segments.length - 1];
+                const truncatedId = id.substring(0, 5);
+                const name = value.name || `View ${truncatedId}`;
+    
+                return (
+                    <a 
+                        onClick={(e) => {
+                            e.stopPropagation();
+                            navigate(`/${resource}/${id}`);
+                        }}
+                    >
+                        {name}
+                    </a>
+                );
+            }
+        }
+    
+        return formatValue(value);
+    };
 
-	const handleGlobalDelete = () => {
-		const updatedRows = rows.filter((_, idx) => !selectedRows.includes(idx));
-		setRows(updatedRows);
-		setSelectedRows([]);
-	};
+    const handleRowClick = (row) => {
+        if (row.id) {
+            const resourceId = row.id;
+            if (resourceId) {
+                const link = row._links?.self?.href;
+                if (link) {
+                    const segments = link.split('/');
+                    const resource = segments[segments.length - 2];
+                    navigate(`/${resource}/${resourceId}`);
+                }
+            }
+        }        
+    };
+    
+    const sortedData = sortData(tableData); 
+    const displayData = getPaginatedData(sortedData);
 
-	const handleChange = (e, rowIndex, columnName) => {
-		const newRows = rows.map((row, index) => {
-			if (index === rowIndex) {
-				return { ...row, [columnName]: e.target.value };
-			}
-			return row;
-		});
-		setRows(newRows);
-	};
+    const totalPages = Math.ceil(tableData.length / pageSize);
 
-	const handleRowCheckboxChange = (idx) => {
-		if (selectedRows.includes(idx)) {
-			setSelectedRows(selectedRows.filter((rowIdx) => rowIdx !== idx));
-		} else {
-			setSelectedRows([...selectedRows, idx]);
-		}
-	};
+    if (loading) {
+        return (<Spinner />);
+    }
 
-	const toggleRowActions = (idx) => {
-		setShowActions((prevState) => ({
-			...prevState,
-			[idx]: !prevState[idx]
-		}));
-	};
+    return (
+        <div className="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        {columns && columns.map((column) => (
+                            <th key={column.key} onClick={() => handleSort(column.key)}>
+                                {column.label} {sortColumn === column.key ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+                            </th>
+                        ))}
+                    </tr>
+                </thead>
+                <tbody>
+                    {displayData && displayData.map((row) => (
+                        <tr key={row.id} onClick={() => handleRowClick(row)}>
+                            {columns.map((column) => (
+                                <td key={column.key}>
+                                    {getValue(row, column.key)}
+                                </td>
+                            ))}
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
 
-	const handleRowsPerPageChange = (e) => {
-		setRowsPerPage(Number(e.target.value));
-		setCurrentPage(1);
-	};
-
-	const nextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
-	const prevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
-
-	if (loading) {
-		return <Spinner />;
-	}
-
-	return (
-		<div className="table-container">
-			<div className="global-actions">
-				<button className="save" onClick={handleGlobalSave} disabled={selectedRows.length === 0}>
-					Save
-				</button>
-				<button className="delete" onClick={handleGlobalDelete} disabled={selectedRows.length === 0}>
-					Delete
-				</button>
-			</div>
-			<table>
-				<thead>
-					<tr>
-						<th></th>
-						{columns.map((col) => (
-							<th key={col.accessor} onClick={() => requestSort(col.accessor)}>
-								{col.header}
-								<span className={sortConfig.key === col.accessor ? (sortConfig.direction === 'asc' ? 'sort-asc' : 'sort-desc') : ''}></span>
-							</th>
-						))}
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{paginatedData.map((row, rowIndex) => (
-						<tr key={row.id}>
-							<td>
-								<input
-									type="checkbox"
-									checked={selectedRows.includes(rowIndex)}
-									onChange={() => handleRowCheckboxChange(rowIndex)}
-								/>
-							</td>
-							{columns.map((col) => (
-								<td key={col.accessor}>
-									{editIdx === rowIndex && (typeof row[col.accessor] !== 'object' && !Array.isArray(row[col.accessor])) ? (
-										<input
-											type="text"
-											value={row[col.accessor]}
-											onChange={(e) => handleChange(e, rowIndex, col.accessor)}
-										/>
-									) : (
-										<span>{row[col.accessor]}</span>
-									)}
-								</td>
-							))}
-							<td>
-								<button className="dropdown-actions-button" onClick={() => toggleRowActions(rowIndex)}><span className="icon">&#11167;</span></button>
-								{showActions[rowIndex] && (
-									<div className="dropdown-actions">
-										<button onClick={() => handleEdit(rowIndex)}>Edit</button>
-										<button onClick={() => handleDelete(rowIndex)}>Delete</button>
-									</div>
-								)}
-							</td>
-						</tr>
-					))}
-				</tbody>
-			</table>
-
-			<div className="pagination">
-				<button onClick={prevPage} disabled={currentPage === 1}>
-					Previous
-				</button>
-				<span>
-					Page {currentPage} of {totalPages}
-				</span>
-				<button onClick={nextPage} disabled={currentPage === totalPages}>
-					Next
-				</button>
-				<select value={rowsPerPage} onChange={handleRowsPerPageChange}>
-					<option value={2}>2</option>
-					<option value={10}>10</option>
-					<option value={20}>20</option>
-					<option value={50}>50</option>
-					<option value={100}>100</option>
-					<option value={200}>200</option>
-					<option value={500}>500</option>
-				</select>
-			</div>
-		</div>
-	);
+            {service && <div className="pagination-controls">
+                <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+                    Previous
+                </button>
+                <span>
+                    Page {page + 1} of {totalPages}
+                </span>
+                <button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>
+                    Next
+                </button>
+                <select value={pageSize}
+                    onChange={(e) => {
+                        setPageSize(Number(e.target.value));
+                        setPage(0);
+                    }}>
+                    <option value={5}>5</option>
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
+                    <option value={50}>50</option>
+                    <option value={100}>100</option>
+                </select>
+            </div>}
+        </div>
+    );
 };
 
 export default Table;

@@ -37,7 +37,7 @@ class LogService {
 
     async getById(logId: string): Promise<Log> {
         const { data }: AxiosResponse<Log> = await this.axiosInstance.get(`/${logId}`);
-        console.log(data);
+        console.log("LogService.getById", data);
         return data;
     }
 
@@ -51,24 +51,24 @@ class LogService {
             }
         });
 
-        console.log(data);
+        console.log("LogService.getAll", data);
         return data;
     }
 
     async deleteById(log: Log): Promise<void> {
-        const deleteLink = log._links?.delete?.href;
+        const deleteLink = log._links?.self?.href;
         if (!deleteLink) {
             throw new Error('Delete link not available for this log');
         }
 
         const { data }: AxiosResponse<void> = await this.axiosInstance.delete(deleteLink);
-        console.log(data);
+        console.log("LogService.deleteById", data);
         return data;
     }
 
     async deleteAll(): Promise<void> {
         const { data }: AxiosResponse<void> = await this.axiosInstance.delete('/');
-        console.log(data);
+        console.log("LogService.deleteAll", data);
         return data;
     }
 }

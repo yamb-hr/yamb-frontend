@@ -39,7 +39,7 @@ class GameService {
 
     async getById(gameId: string): Promise<Game> {
         const { data }: AxiosResponse<Game> = await this.axiosInstance.get(`/${gameId}`);
-        console.log(data);
+        console.log("GameService.getById", data);
         return data;
     }
 
@@ -53,16 +53,15 @@ class GameService {
             }
         });
     
-        console.log(data);
+        console.log("GameService.getAll", data);
         return data;
     }
     
-
     async getOrCreate(): Promise<Game> {
-        const currentPlayer = await playerService.getCurrentPlayer();
-        if (currentPlayer) {
-            const { data }: AxiosResponse<Game> = await this.axiosInstance.put('/', { playerId: currentPlayer.id });
-            console.log(data);
+        
+        if (authService.getAccessToken()) {
+            const { data }: AxiosResponse<Game> = await this.axiosInstance.put('/');
+            console.log("GameService.getOrCreate", data);
             return data;
         } else {
             throw new Error('Player not logged in');
@@ -76,7 +75,7 @@ class GameService {
         }
 
         const { data }: AxiosResponse<Game> = await this.axiosInstance.put(rollLink, { diceToRoll });
-        console.log(data);
+        console.log("rollById", data);
         return data;
     }
 
@@ -87,7 +86,7 @@ class GameService {
         }
 
         const { data }: AxiosResponse<Game> = await this.axiosInstance.put(fillLink, { columnType, boxType });
-        console.log(data);
+        console.log("fillById", data);
         return data;
     }
 
@@ -98,7 +97,7 @@ class GameService {
         }
 
         const { data }: AxiosResponse<Game> = await this.axiosInstance.put(announceLink, { boxType });
-        console.log(data);
+        console.log("announceById", data);
         return data;
     }
 
@@ -109,7 +108,7 @@ class GameService {
         }
 
         const { data }: AxiosResponse<Game> = await this.axiosInstance.put(restartLink);
-        console.log(data);
+        console.log("restartById", data);
         return data;
     }
 
@@ -120,7 +119,7 @@ class GameService {
         }
 
         const { data }: AxiosResponse<Game> = await this.axiosInstance.put(archiveLink);
-        console.log(data);
+        console.log("archiveById", data);
         return data;
     }
 

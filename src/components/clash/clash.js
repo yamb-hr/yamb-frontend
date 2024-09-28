@@ -1,84 +1,70 @@
-import React, { useEffect, useState } from 'react';
-import Table from '../dynamic/table/table';
-import playerService from '../../services/playerService';
-import { useTranslation } from 'react-i18next';
+import React, { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { ErrorContext } from '../../providers/errorProvider';
+import clashService from '../../services/clashService';
+import Element from '../element/element';
+import Spinner from '../spinner/spinner';
+import Table from '../table/table';
+import './clash.css';
 
 function Clash() {
-    
-    const { t } = useTranslation();
-    const [data, setData] = useState([]);
-    const [globalPlayerStats, setGlobalPlayerStats] = useState(undefined);
-    const [isLoading, setIsLoading] = useState(true);
 
-    const columns = [
-        { name: 'name', label: 'Name' }
-    ];
-
-    const fetchData = async () => {
-        setIsLoading(true);
-        try {
-            const players = await playerService.getAll(0, 9999);
-            const globalPlayerStats = await playerService.getStats();
-            setGlobalPlayerStats(globalPlayerStats);
-            setData(players._embedded.players);
-        } catch (error) {
-            console.error('Failed to fetch players:', error);
-        } finally {
-            setIsLoading(false);
-        }
-    };
+    const { id } = useParams();
+    const [ data, setData ] = useState(null);
+    const [ gameId, setGameId ] = useState(null);
+    const [ loading, setLoading ] = useState(true);
+    const { playing, setPlaying } = useState(false);
+    const { handleError } = useContext(ErrorContext);
 
     useEffect(() => {
-        fetchData();
-    }, []);
+        if (id && !data) {
+            fetchData();
+        }
+    }, [id]);
+
+    const fetchData = () => {
+        setLoading(true);
+        clashService.getById(id).then(data => {
+            setData(data);
+        }).catch(error => {
+            handleError(error);
+        }).finally(() => {
+            setLoading(false);
+        });
+    }
+
+    const columns = [
+        { label: 'Id', key: 'id' },
+        { label: 'Owner', key: 'owner' },
+        { label: 'Status', key: 'status' },
+        { label: 'Type', key: 'type' },
+        { label: 'CurrentPlayer', key: 'currentPlayer' },
+        { label: 'Winner', key: 'winner' },
+        { label: 'Started', key: 'createdAt' },
+        { label: 'Last Played', key: 'updatedAt' }
+    ];
+
+    const playerColumns = [
+        { label: 'Player', key: 'name' }
+    ];
+
+    if (loading) {
+        return (<Spinner></Spinner>);
+    }
+
+    if (playing) {
+        // return <Game></Game>
+    }
 
     return (
-        <div className="table-page">
-            {globalPlayerStats && (
-                <div className="stats-container">
-                    <div className="stats">
-                        <div className="stat-item">
-                            <span className="stat-label">{t('total-players')}</span>
-                            <span className="stat-value">{globalPlayerStats.playerCount}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">{t('newest-player')}</span>
-                            <span className="stat-value">{globalPlayerStats.newestPlayer?.name}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">{t('player-with-most-games')}</span>
-                            <span className="stat-value">{globalPlayerStats.playerWithMostScores?.name}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">{t('total-games')}</span>
-                            <span className="stat-value">{globalPlayerStats.mostScoresByAnyPlayer}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">{t('player-with-highest-average')}</span>
-                            <span className="stat-value">{globalPlayerStats.playerWithHighestAverageScore?.name}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">{t('average-score')}</span>
-                            <span className="stat-value">{globalPlayerStats.highestAverageScoreByAnyPlayer}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">{t('player-with-high-score')}</span>
-                            <span className="stat-value">{globalPlayerStats.highScore?.player?.name}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">{t('high-score')}</span>
-                            <span className="stat-value">{globalPlayerStats.highScore?.value}</span>
-                        </div>
-                    </div>
-                </div>
-            )}
-            <Table 
-                data={data} 
-                columns={columns} 
-                isLoading={isLoading} 
-            />
+        <div className="clash">
+            <button className="button-play">Play</button>
+            {data && <Element data={data} columns={columns}></Element>}
+            <br/>
+            {data && data.players && <Table data={data.players} columns={playerColumns}></Table>}
         </div>
     );
+
 };
 
 export default Clash;

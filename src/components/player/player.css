@@ -1,0 +1,18 @@
+.player, .player-list {
+    min-width: 200px;
+    width: 70%;
+    max-width: 1000px;
+    min-height: 400px;
+    height: 80vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 480px) {
+
+    .player, .player-list {
+        width: 100vw;
+        margin-top: 40px;
+        height: 90vh;
+    }
+    
+}

@@ -37,7 +37,7 @@ class ScoreService {
 
     async getById(scoreId: string): Promise<Score> {
         const { data }: AxiosResponse<Score> = await this.axiosInstance.get(`/${scoreId}`);
-        console.log(data);
+        console.log("ScoreService.getById", data);
         return data;
     }
 
@@ -51,13 +51,13 @@ class ScoreService {
             }
         });
     
-        console.log(data);
+        console.log("ScoreService.getAll", data);
         return data;
     }
 
     async getStats(): Promise<GlobalScoreStats> {
         const { data }: AxiosResponse<GlobalScoreStats> = await this.axiosInstance.get('/stats');
-        console.log(data);
+        console.log("ScoreService.getStats", data);
         return data;
     }
 }

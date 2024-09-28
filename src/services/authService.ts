@@ -4,6 +4,7 @@ import { PlayerCredentials } from '../types/Auth';
 import { AuthData } from '../types/Auth';
 
 const API_URL = process.env.REACT_APP_API_URL + "/auth";
+const LOCAL_STORAGE_KEY_TOKEN = "token";
 
 class AuthService {
     private axiosInstance: AxiosInstance;
@@ -37,18 +38,18 @@ class AuthService {
     }
 
     getAccessToken(): string | null {
-        return localStorage.getItem("token");
+        return localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN);
     }
 
     logout(): void {
-        localStorage.clear();
+        localStorage.removeItem(LOCAL_STORAGE_KEY_TOKEN);
     }
 
     async createTempPlayer(tempPlayerRequest: PlayerCredentials, recaptchaToken: string): Promise<AuthData> {
-        const { data }: AxiosResponse<AuthData> = await this.axiosInstance.post('/anonymous', tempPlayerRequest, {
+        const { data }: AxiosResponse<AuthData> = await this.axiosInstance.post('/register-guest', tempPlayerRequest, {
             headers: { "X-Recaptcha-Token": recaptchaToken },
         });
-        console.log(data);
+        console.log("createTempPlayer", data);
         return data;
     }
 
@@ -56,14 +57,25 @@ class AuthService {
         const { data }: AxiosResponse<Player> = await this.axiosInstance.post('/register', authRequest, {
             headers: { "X-Recaptcha-Token": recaptchaToken },
         });
-        console.log(data);
+        console.log("register", data);
         return data;
     }
 
-    async login(authRequest: PlayerCredentials): Promise<AuthData> {
-        const { data }: AxiosResponse<AuthData> = await this.axiosInstance.post('/login', authRequest);
-        console.log(data);
+    async getToken(authRequest: PlayerCredentials): Promise<AuthData> {
+        const { data }: AxiosResponse<AuthData> = await this.axiosInstance.post('/token', authRequest);
+        console.log("getToken", data);
         return data;
+    }
+
+    async resetPassword(authRequest: PlayerCredentials, recaptchaToken: string): Promise<void> {
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.post('/password-reset', authRequest, {
+            headers: { "X-Recaptcha-Token": recaptchaToken },
+        });
+        console.log("resetPassword", data);
+    }
+
+    isAuthenticated(): boolean {
+        return this.getAccessToken() != null;
     }
 
 }

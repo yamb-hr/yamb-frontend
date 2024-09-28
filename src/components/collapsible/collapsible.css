@@ -1,0 +1,29 @@
+.collapsible-section {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: small;
+}
+
+.collapsible-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f5f5f5;
+    cursor: pointer;
+}
+
+.collapsible-header:hover {
+    background-color: #e0e0e0;
+}
+
+.collapsible-content {
+    padding: 10px;
+}
+
+@media (max-width: 480px) {
+
+    .collapsible-content {
+        padding: 0;
+    }
+
+}

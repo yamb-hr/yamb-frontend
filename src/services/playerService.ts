@@ -2,12 +2,13 @@ import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 
 import { Player, PlayerCollection, PlayerPreferences, GlobalPlayerStats, PlayerStats } from '../types/Player';
 import { ScoreCollection, Score } from '../types/Score';
 import authService from './authService';
+import { Clash, ClashCollection } from '../types/Clash';
+import { LogCollection } from '../types/Log';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;
 
 class PlayerService {
     private axiosInstance: AxiosInstance;
-    private currentPlayer: Player | null = null;
 
     constructor() {
         this.axiosInstance = axios.create({
@@ -39,7 +40,7 @@ class PlayerService {
 
     async getById(playerId: string): Promise<Player> {
         const { data }: AxiosResponse<Player> = await this.axiosInstance.get(`/${playerId}`);
-        console.log(data);
+        console.log("PlayerService.getById", data);
         return data;
     }
 
@@ -53,7 +54,7 @@ class PlayerService {
             }
         });
     
-        console.log(data);
+        console.log("PlayerService.getAll", data);
         return data;
     }
 
@@ -64,25 +65,36 @@ class PlayerService {
         }
 
         const { data }: AxiosResponse<PlayerStats> = await this.axiosInstance.get(statsLink);
-        console.log(data);
+        console.log("PlayerService.getStatsById", data);
         return data;
     }
 
     async getStats(): Promise<GlobalPlayerStats> {
         const { data }: AxiosResponse<GlobalPlayerStats> = await this.axiosInstance.get('/stats');
-        console.log(data);
+        console.log("PlayerService.getStats", data);
         return data;
     }
 
-    async getScoresByPlayerId(player: Player): Promise<Score[]> {
+    async getScoresByPlayerId(player: Player): Promise<ScoreCollection> {
         const scoresLink = player._links?.scores?.href;
         if (!scoresLink) {
             throw new Error("Scores link not available for this player");
         }
 
         const { data }: AxiosResponse<ScoreCollection> = await this.axiosInstance.get(scoresLink);
-        console.log(data);
-        return data._embedded.scores;
+        console.log("getScoresByPlayerId", data);
+        return data;
+    }
+
+    async getClashesByPlayerId(player: Player): Promise<ClashCollection> {
+        const clashesLink = player._links?.clashes?.href;
+        if (!clashesLink) {
+            throw new Error("Clashes link not available for this player");
+        }
+
+        const { data }: AxiosResponse<ClashCollection> = await this.axiosInstance.get(clashesLink);
+        console.log("getClashesByPlayerId", data);
+        return data;
     }
 
     async getPreferencesByPlayerId(player: Player): Promise<PlayerPreferences> {
@@ -92,7 +104,7 @@ class PlayerService {
         }
 
         const { data }: AxiosResponse<PlayerPreferences> = await this.axiosInstance.get(preferencesLink);
-        console.log(data);
+        console.log("getPreferencesByPlayerId", data);
         return data;
     }
 
@@ -103,17 +115,35 @@ class PlayerService {
         }
 
         const { data }: AxiosResponse<PlayerPreferences> = await this.axiosInstance.put(preferencesLink, preferences);
-        console.log(data);
+        console.log("setPreferencesByPlayerId", data);
         return data;
     }
 
     async getCurrentPlayer(): Promise<Player | null> { 
-        if (!this.currentPlayer && authService.getAccessToken()) {
-            const { data }: AxiosResponse<Player> = await this.axiosInstance.get('/me');
-            console.log(data);
-            this.currentPlayer = data;  
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.get('/me');
+        console.log("getCurrentPlayer", data);
+        return data;
+    }
+
+    async changeUsername(player: Player, username: String): Promise<Player> { 
+        const usernameLink = player._links?.username?.href;
+        if (!usernameLink) {
+            throw new Error("Username link not available for this player");
         }
-        return this.currentPlayer;
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.put(usernameLink, { username: username });
+        console.log("changeUsername", data);
+        return data;
+    }
+
+    async getLogsByPlayerId(player: Player): Promise<LogCollection> {
+        const logsLink = player._links?.logs?.href;
+        if (!logsLink) {
+            throw new Error("Logs link not available for this player");
+        }
+
+        const { data }: AxiosResponse<LogCollection> = await this.axiosInstance.get(logsLink);
+        console.log("getLogsByPlayerId", data);
+        return data;
     }
 }
 

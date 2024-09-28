@@ -73,18 +73,20 @@
 .login-container .link a {
     color: var(--color-auth-link);
     text-decoration: none;
+    font-size: 14px;
 }
 
 .login-container .link a:hover {
+    cursor: pointer;
     text-decoration: underline;
 }
 
 .login-container img {
-    width: 100px;
+    width: 64px;
     margin-top: 20px;
 }
 
-.input-label {
+.login-container .input-label {
     font-size: 14px;
     width: 100%;
     display: flex;

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import Table from '../dynamic/table/table';
 import scoreService from '../../services/scoreService';
 import { useTranslation } from 'react-i18next';
 import './rankings.css';
@@ -8,7 +7,7 @@ function Rankings() {
 
     const { t } = useTranslation();
     const [data, setData] = useState([]);
-    const [isLoading, setIsLoading] = useState(true);
+    const [isLoading, setLoading] = useState(true);
     const [globalScoreStats, setGlobalScoreStats] = useState(undefined);
 
     const columns = [
@@ -18,16 +17,16 @@ function Rankings() {
     ];
 
     const fetchData = async () => {
-        setIsLoading(true);
+        setLoading(true);
         try {
             const scores = await scoreService.getAll(0, 9999);
             const globalScoreStats = await scoreService.getStats();
             setGlobalScoreStats(globalScoreStats);
-            setData(scores._embedded.scores);
+            setData(scores);
         } catch (error) {
             console.error('Failed to fetch scores:', error);
         } finally {
-            setIsLoading(false);
+            setLoading(false);
         }
     };
 
@@ -59,11 +58,6 @@ function Rankings() {
                     </div>
                 </div>
             )}
-            <Table
-                data={data} 
-                columns={columns} 
-                isLoading={isLoading} 
-            />
         </div>
     );
 };

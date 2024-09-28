@@ -35,7 +35,10 @@
   --background-nav-hover: var(--color-blue-hover);
   --color-nav: var(--color-gray);
   --color-nav-hover: var(--color-gray-hover);
+  --color-nav-collapsed: var(--color-gray-hover);
   --filter-nav: var(--filter-gray);
+  --color-menu-toggle: var(--color-yellow);
+  --color-menu-toggle-hover: var(--color-yellow-hover);
 
   --color-label: var(--color-gray);
   --background-label: var(--color-blue);
@@ -188,6 +191,15 @@
 
   --background-window: var(--color-blue);
   --color-text: var(--color-gray);
+  
+  --background-form: var(--color-blue-hover);
+  --color-form: var(--color-gray);
+  --background-form-submit: var(--color-gray);
+  --background-form-submit-hover: var(--color-gray-hover);
+  --color-form-submit: var(--color-blue);
+
+  --background-settings: var(--color-blue);
+  --color-settings: var(--color-gray);
 
 }
 
@@ -213,7 +225,10 @@
   --background-nav-hover: var(--color-blue-hover);
   --color-nav: var(--color-gray);
   --color-nav-hover: var(--color-gray-hover);
+  --color-nav-collapsed: var(--color-blue-hover);
   --filter-nav: var(--filter-gray);
+  --color-menu-toggle: var(--color-yellow);
+  --color-menu-toggle-hover: var(--color-yellow-hover);
 
   --background-sheet: var(--color-gray);
 
@@ -280,6 +295,7 @@
 
   --color-info-button: var(--color-blue);
   --background-info-button: var(--color-gray);
+  --background-info-button-hover: var(--color-gray-hover);
   --filter-info-button: var(--filter-blue);
 
   --color-admin-button: var(--color-blue);
@@ -326,6 +342,9 @@
   --color-new-game-button: var(--color-gray);
   --background-new-game-button: var(--color-blue);
   --background-new-game-button-hover: var(--color-blue-hover);
+  
+  --background-settings: var(--color-blue);
+  --color-settings: var(--color-gray);
 
 }
 
@@ -380,6 +399,11 @@ a {
   text-decoration: none;
   color: var(--color-yellow);
   font-size: medium;
+}
+
+a:hover {
+  cursor: pointer;
+  text-decoration: underline;
 }
 
 [theme="light"] a {

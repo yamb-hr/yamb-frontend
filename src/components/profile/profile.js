@@ -1,88 +1,83 @@
 import React, { useContext, useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
+import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { ErrorContext } from '../../providers/errorProvider';
+import { useTranslation } from 'react-i18next';
+import './profile.css';
 import playerService from '../../services/playerService';
-import { LanguageContext } from '../../App';
-import { CurrentUserContext } from '../../App';
-import Element from '../dynamic/element/element';
 
 function Profile() {
 
-    const { currentUser } = useContext(CurrentUserContext);
-    const [ data, setData ] = useState({});
-    const [ playerStats, setPlayerStats ] = useState(undefined);
-    const [ relatedData, setRelatedData ] = useState({});
-    const [ isLoading, setIsLoading ] = useState(true);
-    const { language } = useContext(LanguageContext);
+    const { t } = useTranslation();
+    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+    const { handleError } = useContext(ErrorContext);
+    const [ username, setUsername ] = useState('');
+    const [ errors, setErrors ] = useState({});
+    const [ isEditing, setIsEditing ] = useState(false);  // New state for edit mode
 
-    const columns = [
-        { name: 'name', label: 'Name' },
-        { name: 'createdAt', label: 'Started on' }
-    ];
+    useEffect(() => {
+        if (currentUser) {
+            setUsername(currentUser.name);
+        }
+    }, [currentUser]);
 
-    const relatedColumns = [
-        { name: 'createdAt', label: 'Date' },
-        { name: 'value', label: 'Score' }
-    ];
+    function handleSubmit(event) {
+        event.preventDefault();
 
-    const localeStringFormat = {
-        year: 'numeric', month: 'long', day: 'numeric', hour: 'numeric', minute: 'numeric', second: 'numeric'
+        const validationErrors = validateForm();
+        if (Object.keys(validationErrors).length > 0) {
+            setErrors(validationErrors);
+            return;
+        }
+
+        playerService.changeUsername(currentUser, username)
+            .then((player) => {
+                setCurrentUser(player);
+                setIsEditing(false);
+            })
+            .catch((error) => {
+                handleError(error);
+            });
     };
 
-    const fetchData = async () => {
-        if (currentUser) {
-            try {   
-                setIsLoading(true);
-                const player = await playerService.getById(currentUser.id);
-                const stats = await playerService.getStatsById(currentUser.id);
-                setData(player);
-                setPlayerStats(stats);
-                const scores = await playerService.getScoresByPlayerId(currentUser.id);
-                setRelatedData(scores);
-            } catch (error) {
-                console.error('Failed to fetch player:', error);
-            } finally {
-                setIsLoading(false);
-            }
+    function validateForm() {
+        let validationErrors = {};
+        if (username.length < 3 || username.length > 15) {
+            validationErrors.username = t('username-length-invalid');
+        }
+        return validationErrors;
+    }
+
+    function handleUsernameChange(event) {
+        setUsername(event.target.value);
+        if (errors.username) {
+            setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
         }
     };
 
-    useEffect(() => {
-        fetchData();
-    }, [currentUser]);
+    const submitDisabled = currentUser?.name === username;
 
     return (
-        <div>
-            {playerStats && (
-                <div className="stats-container">
-                    <div className="stats">
-                        <div className="stat-item">
-                            <span className="stat-label">Last active on:</span>
-                            <span className="stat-value">{new Date(playerStats.lastActivity).toLocaleString(language, localeStringFormat)}</span>
+        <div className="profile">
+            
+            <form onSubmit={handleSubmit}>
+                    {isEditing ? (
+                        <div className="username">
+                            <input type="text" onChange={handleUsernameChange} value={username}/>
+                            <div className="edit-button" onClick={() => setIsEditing(false)} aria-label="Cancel">&#10060;</div>   
                         </div>
-                        <div className="stat-item">
-                            <span className="stat-label">Total games played:</span>
-                            <span className="stat-value">{playerStats.scoreCount}</span>
+                    ) : (<div className="username">
+                            <input type="text" disabled={true} value={username}/>
+                            <div className="edit-button" onClick={() => setIsEditing(true)} aria-label="Edit Username">✏️</div>
                         </div>
-                        <div className="stat-item">
-                            <span className="stat-label">High score:</span>
-                            <span className="stat-value">{playerStats.highScore?.value}</span>
-                        </div>
-                        <div className="stat-item">
-                            <span className="stat-label">Average Score:</span>
-                            <span className="stat-value">{playerStats.averageScore?.toFixed(2)}</span>
-                        </div>
-                    </div>
-                </div>
-            )}
-            <Element 
-                data={data} 
-                columns={columns} 
-                isLoading={isLoading} 
-                relatedResource={"scores"} 
-                relatedData={relatedData} 
-                relatedColumns={relatedColumns} 
-            />
+                    )}
+                <input type="submit" value={t('submit')} disabled={submitDisabled}/>
+            </form>
+            <div>
+                <Link to="/password-reset">{t('reset-password')}</Link>
+            </div>
         </div>
     );
-};
+}
 
 export default Profile;
