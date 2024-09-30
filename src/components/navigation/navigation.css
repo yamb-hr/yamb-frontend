@@ -46,7 +46,6 @@
     padding: 4px;
 }
 
-
 .menu-toggle .icon:hover {
     color: var(--color-menu-toggle-hover);
 }
@@ -73,6 +72,7 @@
     padding: 16px;
     margin: 4px;
     border-radius: 8px;
+    box-sizing: border-box;
     transition: background-color 0.3s;
 }
 
@@ -153,6 +153,11 @@
     color: var(--color-nav);
     filter: grayscale(100%);
     font-size: 1.5rem;
+    transition: filter 0.3s ease;
+}
+
+.top-bar .icon:hover {
+    filter: none;
 }
 
 .top-bar ul {
@@ -220,10 +225,6 @@
     text-align: left;
     color: var(--color-nav);
     width: 160px;
-}
-
-.navbar .logout {
-    color: var(--color-yellow-hover);
 }
 
 .navbar.collapsed ul li .menu-label {
@@ -313,7 +314,6 @@ span.menu-label {
 
     .navbar.active .language-button, .navbar.active .theme-button {
         font-size: 1.2em;
-        
     }
 
     .burger {

@@ -3,9 +3,9 @@
     flex-direction: column;
     gap: 1rem;
     padding: 1rem;
-    border: 1px solid #ddd;
+    border: var(--border-width-table-container) var(--border-style-table-container) var(--border-color-table-container);
     border-radius: 8px;
-    background-color: #f9f9f9;
+    background-color: var(--background-table-container);
     max-width: 600px;
     margin: 0 auto;
     font-size: 1rem;
@@ -19,20 +19,21 @@
 
 .field strong {
     font-weight: bold;
-    color: #333;
+    color: var(--color-table-header);
 }
 
 .field span {
-    color: #555;
+    color: var(--color-table-row);
     word-wrap: break-word;
 }
 
 .field a {
-    color: #007bff;
+    color: var(--color-table-pagination-button);
     text-decoration: none;
     cursor: pointer;
 }
 
 .field a:hover {
     text-decoration: underline;
+    color: var(--background-table-pagination-button-hover);
 }

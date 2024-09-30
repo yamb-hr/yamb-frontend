@@ -1,14 +1,13 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
+import { PreferencesContext } from '../../providers/preferencesProvider';
 import './settings.css';
-import { ThemeContext } from '../../providers/themeProvider';
-import { LanguageContext } from '../../providers/languageProvider';
 
 function Settings() {
 
     const { t } = useTranslation();
-    const { theme, setTheme } = useContext(ThemeContext);
-    const { language, setLanguage } = useContext(LanguageContext);
+    const { theme, setTheme } = useContext(PreferencesContext);
+    const { language, setLanguage } = useContext(PreferencesContext);
 
     function handleThemeChange(event) {
         setTheme(event.target.value);

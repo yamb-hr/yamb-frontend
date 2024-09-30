@@ -1,11 +1,11 @@
 import React, { useContext } from 'react';
 import { Slide, toast } from 'react-toastify';
-import { ThemeContext } from '../../../providers/themeProvider';
+import { PreferencesContext } from '../../../providers/preferencesProvider';
 import './label.css';
 
 function Label(props) {
 
-    const { theme } = useContext(ThemeContext);
+    const { theme } = useContext(PreferencesContext);
 
     function handleClick() {
         if (props.info) {

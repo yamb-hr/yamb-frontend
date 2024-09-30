@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { LanguageContext } from '../../providers/languageProvider';
+import { PreferencesContext } from '../../providers/preferencesProvider';
 import { ErrorContext } from '../../providers/errorProvider';
 import Spinner from '../spinner/spinner';
 import './table.css';
@@ -13,7 +13,6 @@ const localeStringFormat = {
 const Table = ({ columns, data, service }) => {
 
     const navigate = useNavigate();
-    const location = useLocation();
     const [ tableData, setTableData ] = useState([]);
     const [ loading, setLoading ] = useState(false);
     const [ page, setPage ] = useState(0);
@@ -21,7 +20,7 @@ const Table = ({ columns, data, service }) => {
     const [ sortColumn, setSortColumn ] = useState(null);
     const [ sortDirection, setSortDirection ] = useState('asc');
     const { handleError } = useContext(ErrorContext);
-    const { language } = useContext(LanguageContext);
+    const { language } = useContext(PreferencesContext);
 
     useEffect(() => {
         if (service) {

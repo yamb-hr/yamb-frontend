@@ -1,8 +1,8 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Slide, toast } from 'react-toastify';
-import { useTranslation } from 'react-i18next';;
-import { ThemeContext } from '../../providers/themeProvider';
+import { useTranslation } from 'react-i18next';
+import { PreferencesContext } from '../../providers/preferencesProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { ErrorContext } from '../../providers/errorProvider';
 import authService from '../../services/authService';
@@ -15,7 +15,7 @@ function Register() {
 
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { theme } = useContext(ThemeContext);
+    const { theme } = useContext(PreferencesContext);
     const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorContext);
     const [username, setUsername] = useState(currentUser ? currentUser.username : "");

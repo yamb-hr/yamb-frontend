@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ErrorContext } from '../../providers/errorProvider';
-import { LanguageContext } from '../../providers/languageProvider';
+import { PreferencesContext } from '../../providers/preferencesProvider';
 import Spinner from '../spinner/spinner';
 import './element.css';
 
@@ -16,7 +16,7 @@ const Element = ({ columns, data, service, id }) => {
     const [ elementData, setElementData ] = useState(null);
     const [ loading, setLoading ] = useState(false);
     const { handleError } = useContext(ErrorContext);
-    const { language } = useContext(LanguageContext);
+    const { language } = useContext(PreferencesContext);
 
     useEffect(() => {
         if (service && id) {

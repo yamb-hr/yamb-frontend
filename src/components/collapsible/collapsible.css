@@ -1,29 +1,32 @@
 .collapsible-section {
-    border: 1px solid #ccc;
+    border: var(--border-width-table-container) var(--border-style-table-container) var(--border-color-table-container);
     border-radius: 5px;
     font-size: small;
+    background-color: var(--background-table-container);
 }
 
 .collapsible-header {
     display: flex;
     justify-content: space-between;
     padding: 10px;
-    background-color: #f5f5f5;
+    background-color: var(--background-table-header);
     cursor: pointer;
+    color: var(--color-table-header);
 }
 
 .collapsible-header:hover {
-    background-color: #e0e0e0;
+    background-color: var(--background-table-header-hover);
+    color: var(--color-table-header-hover);
 }
 
 .collapsible-content {
     padding: 10px;
+    background-color: var(--background-table-row);
+    color: var(--color-table-row);
 }
 
 @media (max-width: 480px) {
-
     .collapsible-content {
         padding: 0;
     }
-
 }

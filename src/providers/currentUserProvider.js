@@ -6,7 +6,7 @@ export const CurrentUserContext = createContext(null);
 
 export const CurrentUserProvider = ({ children }) => {
     
-    const [currentUser, setCurrentUser] = useState(null);
+    const [ currentUser, setCurrentUser ] = useState(null);
 
     useEffect(() => {
         playerService.getCurrentPlayer()
