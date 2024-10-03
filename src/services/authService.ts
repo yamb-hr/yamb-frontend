@@ -68,7 +68,7 @@ class AuthService {
     }
 
     async resetPassword(authRequest: PlayerCredentials, recaptchaToken: string): Promise<void> {
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.post('/password-reset', authRequest, {
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.put('/password-reset', authRequest, {
             headers: { "X-Recaptcha-Token": recaptchaToken },
         });
         console.log("resetPassword", data);

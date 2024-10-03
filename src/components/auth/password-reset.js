@@ -5,13 +5,14 @@ import { ErrorContext } from '../../providers/errorProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import authService from '../../services/authService';
 import './auth.css';
+import playerService from '../../services/playerService';
 
 function PasswordReset() {
 
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { handleError } = useContext(ErrorContext);
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const [ newPassword, setNewPassword ] = useState('');
     const [ oldPassword, setOldPassword ] = useState('');
     const [ errors, setErrors ] = useState({});
@@ -28,6 +29,11 @@ function PasswordReset() {
         authService.resetPassword({ oldPassword: oldPassword, newPassword: newPassword})
         .then(() => {
             navigate("/profile")
+            playerService.getCurrentPlayer().then(player => {
+                setCurrentUser(player);
+            }).catch(error => {
+                handleError(error);
+            });
         })
         .catch((error) => {
             handleError(error); 

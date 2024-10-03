@@ -44,7 +44,7 @@ function Game({ id: propId }) {
 			gameService.getById(id).then(setGame).catch(handleError);
 			setSubscribed(true);
 		} else if (!game && currentUser) {
-			gameService.getOrCreate().then((data) => {
+			gameService.getOrCreate(currentUser.id).then((data) => {
 				setGame(data);
 				if (data.status === 'COMPLETED') handleShareModal();
 			}).catch(handleError);

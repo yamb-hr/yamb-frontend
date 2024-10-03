@@ -57,10 +57,10 @@ class GameService {
         return data;
     }
     
-    async getOrCreate(): Promise<Game> {
+    async getOrCreate(playerId: String): Promise<Game> {
         
         if (authService.getAccessToken()) {
-            const { data }: AxiosResponse<Game> = await this.axiosInstance.put('/');
+            const { data }: AxiosResponse<Game> = await this.axiosInstance.put('/', { playerId: playerId });
             console.log("GameService.getOrCreate", data);
             return data;
         } else {

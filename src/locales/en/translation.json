@@ -13,6 +13,7 @@
     "password-length-invalid": "Password must be 6-30 characters long",
     "registration-success": "Registration successful!",
     "confirm-restart": "Are you sure you want to restart?",
+    "confirm-logout": "Are you sure you want to logout?",
     "yes": "Yes",
     "no": "No",
     "player": "Player",

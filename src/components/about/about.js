@@ -104,22 +104,20 @@ function About() {
                     <section>
                         <ul>
                             <li><strong>Version:</strong> {healthInfo.version}</li>
-                            <li><strong>Uptime:</strong> {healthInfo.uptime}</li>
                             <li><strong>PostgreSQL:</strong> {healthInfo.postgres}</li>
                             <li><strong>MongoDB:</strong> {healthInfo.mongo}</li>
                             <li><strong>reCAPTCHA API:</strong> {healthInfo.recaptchaAPI}</li>
                         </ul>
-                        {currentUser?.roles.includes("ADMIN") && (
+                        {currentUser?.roles.includes("ADMIN") && metricsInfo && (
                             <ul>
-                                <li><strong>Memory Usage:</strong> {metricsInfo.memoryUsage}</li>
-                                <li><strong>CPU Usage:</strong> {metricsInfo.cpuUsage}</li>
-                                <li><strong>Disk Space:</strong> {metricsInfo.diskSpace}</li>
-                                <li><strong>Uptime:</strong> {metricsInfo.uptime}</li>
-                                <li><strong>Average Response Time:</strong> {metricsInfo.averageResponseTime}</li>
+                                <li><strong>CPU Usage:</strong> {metricsInfo.cpuUsage.toFixed(2)}%</li>
                                 <li><strong>Requests Processed:</strong> {metricsInfo.requestsProcessed}</li>
+                                <li><strong>Average Response Time:</strong> {metricsInfo.averageResponseTime.toFixed(2)} ms</li>
                                 <li><strong>Error Count:</strong> {metricsInfo.errorCount}</li>
-                                <li><strong>Error Rate:</strong> {metricsInfo.errorRate}</li>
-                            </ul>
+                                <li><strong>Error Rate:</strong> {metricsInfo.errorRate.toFixed(2)}%</li>
+                                <li><strong>Disk Space:</strong> {(metricsInfo.diskSpace / (1024 * 1024 * 1024)).toFixed(2)} GB</li>
+                                <li><strong>Free Space:</strong> {(metricsInfo.memoryUsage / (1024 * 1024 * 1024)).toFixed(2)} GB</li>
+                            </ul>                                         
                         )}
                         <button className="button-refresh" onClick={handleRefresh}>
                             Refresh
