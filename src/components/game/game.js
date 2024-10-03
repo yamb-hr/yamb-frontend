@@ -100,7 +100,7 @@ function Game({ id: propId }) {
             })
             .catch(handleError)
             .finally(() => {
-                setRolling(false); // End the rolling animation
+                setRolling(false);
             });
     };
 
@@ -151,6 +151,7 @@ function Game({ id: propId }) {
 			handleAnnounce(boxType);
 		} else {
 			setFill({ columnType, boxType });
+			setDiceToRoll(DEFAULT_DICE);
 		}
 	};
 
