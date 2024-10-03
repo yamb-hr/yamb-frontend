@@ -27,7 +27,7 @@ function Navigation() {
 
     useEffect(() => {
         const recaptchaBadge = document.querySelector('.grecaptcha-badge');
-        if (isMobile && (activePage !== 'login' && activePage !== 'register')) {
+        if (true/*isMobile && (activePage !== 'login' && activePage !== 'register')*/) {
             if (recaptchaBadge) {
                 recaptchaBadge.style.visibility = 'hidden';
             }
@@ -38,7 +38,7 @@ function Navigation() {
         }
         return () => {
             if (recaptchaBadge) {
-                recaptchaBadge.style.visibility = 'visible';
+                recaptchaBadge.style.visibility = 'hidden';
             }
         };        
     }, [isMobile]);

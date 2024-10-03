@@ -1,8 +1,8 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { Player, PlayerCollection, PlayerPreferences, GlobalPlayerStats, PlayerStats } from '../types/Player';
-import { ScoreCollection, Score } from '../types/Score';
+import { ScoreCollection } from '../types/Score';
 import authService from './authService';
-import { Clash, ClashCollection } from '../types/Clash';
+import {  ClashCollection } from '../types/Clash';
 import { LogCollection } from '../types/Log';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;

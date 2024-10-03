@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { PreferencesContext } from '../../providers/preferencesProvider';
 import { ErrorContext } from '../../providers/errorProvider';
 import Spinner from '../spinner/spinner';

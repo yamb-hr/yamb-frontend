@@ -1,8 +1,6 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { Game, GameCollection } from '../types/Game';
 import authService from './authService';
-import playerService from './playerService';
-import { Player, PlayerCollection } from '../types/Player';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/games`;
 
