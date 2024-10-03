@@ -102,19 +102,21 @@ function About() {
                 )}
                 {activeTab === 'status' && (
                     <section>
-                        <ul>
-                            <li><strong>Version:</strong> {healthInfo.version}</li>
-                            <li><strong>PostgreSQL:</strong> {healthInfo.postgres}</li>
-                            <li><strong>MongoDB:</strong> {healthInfo.mongo}</li>
-                            <li><strong>reCAPTCHA API:</strong> {healthInfo.recaptchaAPI}</li>
-                        </ul>
+                        {healthInfo && (
+                            <ul>
+                                <li><strong>Version:</strong> {healthInfo.version}</li>
+                                <li><strong>PostgreSQL:</strong> {healthInfo.postgres}</li>
+                                <li><strong>MongoDB:</strong> {healthInfo.mongo}</li>
+                                <li><strong>reCAPTCHA API:</strong> {healthInfo.recaptchaAPI}</li>
+                            </ul>
+                        )}
                         {currentUser?.roles.includes("ADMIN") && metricsInfo && (
                             <ul>
-                                <li><strong>CPU Usage:</strong> {metricsInfo.cpuUsage.toFixed(2)}%</li>
+                                <li><strong>CPU Usage:</strong> {metricsInfo.cpuUsage?.toFixed(2)}%</li>
                                 <li><strong>Requests Processed:</strong> {metricsInfo.requestsProcessed}</li>
-                                <li><strong>Average Response Time:</strong> {metricsInfo.averageResponseTime.toFixed(2)} ms</li>
+                                <li><strong>Average Response Time:</strong> {metricsInfo.averageResponseTime?.toFixed(2)} ms</li>
                                 <li><strong>Error Count:</strong> {metricsInfo.errorCount}</li>
-                                <li><strong>Error Rate:</strong> {metricsInfo.errorRate.toFixed(2)}%</li>
+                                <li><strong>Error Rate:</strong> {metricsInfo.errorRate?.toFixed(2)}%</li>
                                 <li><strong>Disk Space:</strong> {(metricsInfo.diskSpace / (1024 * 1024 * 1024)).toFixed(2)} GB</li>
                                 <li><strong>Free Space:</strong> {(metricsInfo.memoryUsage / (1024 * 1024 * 1024)).toFixed(2)} GB</li>
                             </ul>                                         

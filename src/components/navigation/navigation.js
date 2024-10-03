@@ -45,24 +45,15 @@ function Navigation() {
 
     function handleShare() {
         if (navigator.share) {
-            fetch('/logo.png')
-                .then(response => response.blob())
-                .then(blob => {
-                    const file = new File([blob], 'yamb.png', { type: 'image/png' });
-                    navigator.share({
-                        title: t('yamb'),
-                        text: t('share-text'),
-                        url: `/`,
-                        files: [file]
-                    }).then(() => {
-                        console.log('Shared successfully!');
-                    }).catch((error) => {
-                        console.error('Error sharing:', error);
-                    });
-                })
-                .catch(error => {
-                    console.error('Error fetching the image:', error);
-                });
+            navigator.share({
+                title: t('yamb'),
+                text: t('share-text'),
+                url: `/`
+            }).then(() => {
+                console.log('Shared successfully!');
+            }).catch((error) => {
+                console.error('Error sharing:', error);
+            });
         } else {
             alert("Your browser doesn't support the Web Share API.");
         }

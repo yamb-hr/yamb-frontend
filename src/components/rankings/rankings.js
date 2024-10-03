@@ -35,7 +35,7 @@ function Rankings() {
     }, []);
 
     return (
-        <div className="table-page">
+        <div className="rankings">
             {globalScoreStats && (
                 <div className="stats-container">
                     <div className="stats">
