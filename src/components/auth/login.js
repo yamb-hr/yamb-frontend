@@ -85,7 +85,7 @@ function Login() {
                     autoComplete="current-password" 
                     value={password}  
                     onChange={handlePasswordChange} 
-                    placeholder={t('enter-password') + "..."} 
+                    placeholder={t('enter-password')} 
                     required
                 />
                 {errors.password && <span className="error-text">{errors.password}</span>}
