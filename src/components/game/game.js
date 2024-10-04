@@ -31,6 +31,7 @@ function Game({ id: propId }) {
 	const [restart, setRestart] = useState(false);
 	const [diceToRoll, setDiceToRoll] = useState(DEFAULT_DICE);
 	const [isRolling, setRolling] = useState(false);
+	const [modalShowing, setModalShowing] = useState(false);
 
 	const everythingDisabled = currentUser?.id !== game?.player.id;
 	const rollCount = game?.rollCount || 0;
@@ -154,19 +155,25 @@ function Game({ id: propId }) {
 	};
 
 	const handleShareModal = () => {
-		showInfoToast(
-			<div>
-				<img src="/logo.png" alt="Yamb" className="share-logo" />
-				<h2>{t("congrats")}</h2>
-				<p>{t("congrats-score")}</p>
-				{game && <h2>{game.totalSum}</h2>}
-				<button className="share-button" onClick={handleShare}>{t("share-score")}</button>
-				<hr />
-				<p>{t("want-to-try-again")}</p>
-				<button className="new-game-button" onClick={handleArchive}>{t("new-game")}</button>
-				<button className="close-button" onClick={() => toast.dismiss()}>X</button>
-			</div>
-		);
+		if (!modalShowing) {
+			setModalShowing(true);
+			let autoClose = 99999;
+			showInfoToast(
+				<div>
+					<img src="/logo.png" alt="Yamb" className="share-logo" />
+					<h2>{t("congrats")}</h2>
+					<p>{t("congrats-score")}</p>
+					{game && <h2>{game.totalSum}</h2>}
+					<button className="share-button" onClick={handleShare}>{t("share-score")}</button>
+					<hr />
+					<p>{t("want-to-try-again")}</p>
+					<button className="new-game-button" onClick={handleArchive}>{t("new-game")}</button>
+				</div>, autoClose
+			);
+			setTimeout(() => {
+				setModalShowing(false)
+			}, 99999)
+		}
 	};
 
 	const handleShare = () => {

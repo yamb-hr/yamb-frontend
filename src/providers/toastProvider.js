@@ -40,10 +40,10 @@ export const ToastProvider = ({ children }) => {
         });
     };
 
-    const showInfoToast = (message) => {
+    const showInfoToast = (message, autoClose) => {
         toast.info(message, {
             position: "top-center",
-            autoClose: 3000,
+            autoClose: autoClose || 3000,
             hideProgressBar: true,
             closeOnClick: true,
             pauseOnHover: true,
