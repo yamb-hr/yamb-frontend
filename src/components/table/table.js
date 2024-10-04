@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { PreferencesContext } from '../../providers/preferencesProvider';
 import { ErrorContext } from '../../providers/errorProvider';
 import Spinner from '../spinner/spinner';
@@ -101,14 +101,9 @@ const Table = ({ columns, data, service }) => {
                 const name = value.name || `View ${truncatedId}`;
     
                 return (
-                    <a 
-                        onClick={(e) => {
-                            e.stopPropagation();
-                            navigate(`/${resource}/${id}`);
-                        }}
-                    >
+                    <Link to={`/${resource}/${id}`}>
                         {name}
-                    </a>
+                    </Link>
                 );
             }
         }

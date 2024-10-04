@@ -26,14 +26,3 @@
     color: var(--color-table-row);
     word-wrap: break-word;
 }
-
-.field a {
-    color: var(--color-table-pagination-button);
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.field a:hover {
-    text-decoration: underline;
-    color: var(--background-table-pagination-button-hover);
-}

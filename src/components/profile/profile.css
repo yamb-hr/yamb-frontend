@@ -1,3 +1,10 @@
+.profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
 .profile {
     background-color: var(--background-auth);
     padding: 20px 30px;
@@ -5,7 +12,6 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     width: 100%;
     max-width: 200px;
-    height: 200px;
     color: var(--color-auth);
     display: block;
 }

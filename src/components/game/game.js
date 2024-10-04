@@ -11,6 +11,7 @@ import gameService from '../../services/gameService';
 import Sheet from './sheet/sheet';
 import Dice from './dice/dice';
 import './game.css';
+import { init } from 'i18next';
 
 const DEFAULT_DICE = [0, 1, 2, 3, 4];
 
@@ -81,27 +82,24 @@ function Game({ id: propId }) {
         setGame(gameData);
 
         if (gameData.action === 'ROLL') {
-            initiateRoll();
+            initiateRollAnimation();
         }
     };
 
-	const initiateRoll = () => {
+	const initiateRollAnimation = () => {
         setRolling(true);
-
         setTimeout(() => {
-            handleRoll();
+            setRolling(false);
         }, 500);
     };
 
 	const handleRoll = () => {
+		initiateRollAnimation();
         gameService.rollById(game, diceToRoll)
             .then((data) => {
                 setGame(data);
             })
-            .catch(handleError)
-            .finally(() => {
-                setRolling(false);
-            });
+            .catch(handleError);
     };
 
 	const handleFill = (columnType, boxType) => {
@@ -184,7 +182,7 @@ function Game({ id: propId }) {
 	};
 
 	return (
-		<div className="game">
+		<div className="game-container">
 			{game && (
 				<div>
 					<div className="dices">

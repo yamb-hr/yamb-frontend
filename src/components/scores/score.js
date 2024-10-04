@@ -41,8 +41,10 @@ function Score() {
     }
 
     return (
-        <div className="score">
-            <Element data={data} columns={columns}></Element>
+        <div className="score-container">
+            <div className="score">
+                <Element data={data} columns={columns}></Element>
+            </div>
         </div>
     );
 };

@@ -30,7 +30,7 @@ function Sheet(props) {
     const everythingDisabled = currentUser?.id !== player.id;
     const restartButtonDisabled = everythingDisabled || status !== "IN_PROGRESS";
     const rollDisabled = everythingDisabled || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
-
+    
     function handleRoll() {
         props.onRoll();
     }

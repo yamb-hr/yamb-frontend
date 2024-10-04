@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { ErrorContext } from '../../providers/errorProvider';
 import { PreferencesContext } from '../../providers/preferencesProvider';
 import Spinner from '../spinner/spinner';
@@ -60,7 +60,11 @@ const Element = ({ columns, data, service, id }) => {
                 const id = segments[segments.length - 1];
                 const name = value.name || `View ${id}`;
 
-                return <a onClick={() => navigate(`/${resource}/${id}`)}>{name}</a>;
+                return (
+                    <Link to={`/${resource}/${id}`}>
+                        {name}
+                    </Link>
+                );
             }
         }
 

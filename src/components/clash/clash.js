@@ -57,11 +57,13 @@ function Clash() {
     }
 
     return (
-        <div className="clash">
-            <button className="button-play">Play</button>
-            {data && <Element data={data} columns={columns}></Element>}
-            <br/>
-            {data && data.players && <Table data={data.players} columns={playerColumns}></Table>}
+        <div className="clash-container">
+            <div className="clash">
+                <button className="button-play">Play</button>
+                {data && <Element data={data} columns={columns}></Element>}
+                <br/>
+                {data && data.players && <Table data={data.players} columns={playerColumns}></Table>}
+            </div>
         </div>
     );
 

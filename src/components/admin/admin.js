@@ -15,14 +15,16 @@ function Admin() {
     }, [currentUser]);
     
     return (
-        <div className="admin">
-            <ul>
-                <li><Link to="/logs">Logs</Link></li>
-                <li><Link to="/games">Games</Link></li>
-                <li><Link to="/players">Players</Link></li>
-                <li><Link to="/scores">Scores</Link></li>
-                <li><Link to="/clashes">Clashes</Link></li>
-            </ul>
+        <div className="admin-container">
+            <div className="admin">
+                <ul>
+                    <li><Link to="/logs">Logs</Link></li>
+                    <li><Link to="/games">Games</Link></li>
+                    <li><Link to="/players">Players</Link></li>
+                    <li><Link to="/scores">Scores</Link></li>
+                    <li><Link to="/clashes">Clashes</Link></li>
+                </ul>
+            </div>
         </div>
     );
 };

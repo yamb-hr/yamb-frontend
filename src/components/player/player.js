@@ -88,20 +88,22 @@ function Player() {
     }
 
     return (
-        <div className="player">
-            {data && <Element data={data} columns={columns}></Element>}
-            <br/>
-            {scoreData && (
-                <Collapsible title="Scores">
-                    <Table data={scoreData._embedded?.scores} columns={scoreColumns}></Table>
-                </Collapsible>
-            )}
-            <br/>
-            {currentUser && currentUser.roles?.includes("ADMIN") && logData && (
-                <Collapsible title="Logs">
-                    <Table data={logData._embedded?.logs} columns={logColumns}></Table>
-                </Collapsible>
-            )}
+        <div className="player-container">
+            <div className="player">
+                {data && <Element data={data} columns={columns}></Element>}
+                <br/>
+                {scoreData && (
+                    <Collapsible title="Scores">
+                        <Table data={scoreData._embedded?.scores} columns={scoreColumns}></Table>
+                    </Collapsible>
+                )}
+                <br/>
+                {currentUser && currentUser.roles?.includes("ADMIN") && logData && (
+                    <Collapsible title="Logs">
+                        <Table data={logData._embedded?.logs} columns={logColumns}></Table>
+                    </Collapsible>
+                )}
+            </div>
         </div>
     );
 };

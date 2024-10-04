@@ -58,23 +58,25 @@ function Profile() {
     const submitDisabled = currentUser?.name === username;
 
     return (
-        <div className="profile">
-            
-            <form onSubmit={handleSubmit}>
-                    {isEditing ? (
-                        <div className="username">
-                            <input type="text" onChange={handleUsernameChange} value={username}/>
-                            <div className="edit-button" onClick={() => setIsEditing(false)} aria-label="Cancel">&#10060;</div>   
-                        </div>
-                    ) : (<div className="username">
-                            <input type="text" disabled={true} value={username}/>
-                            <div className="edit-button" onClick={() => setIsEditing(true)} aria-label="Edit Username">✏️</div>
-                        </div>
-                    )}
-                <input type="submit" value={t('submit')} disabled={submitDisabled}/>
-            </form>
-            <div>
-                <Link to="/password-reset">{t('reset-password')}</Link>
+        <div className="profile-container">
+            <div className="profile">
+                <form onSubmit={handleSubmit}>
+                        {isEditing ? (
+                            <div className="username">
+                                <input type="text" onChange={handleUsernameChange} value={username}/>
+                                <div className="edit-button" onClick={() => setIsEditing(false)} aria-label="Cancel">&#10060;</div>   
+                            </div>
+                        ) : (<div className="username">
+                                <input type="text" disabled={true} value={username}/>
+                                <div className="edit-button" onClick={() => setIsEditing(true)} aria-label="Edit Username">✏️</div>
+                            </div>
+                        )}
+                    <input type="submit" value={t('submit')} disabled={submitDisabled}/>
+                </form>
+                <br/>
+                <div>
+                    <Link to="/password-reset">{t('reset-password')}</Link>
+                </div>
             </div>
         </div>
     );

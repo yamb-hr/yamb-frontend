@@ -1,6 +1,20 @@
-.rankings {
+.rankings-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.rankings {    
     background-color: var(--background-window);
     color: var(--color-text);
     border-radius: 20px;
     padding: 30px;
+    text-align: left;
+}
+
+.rankings ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
 }

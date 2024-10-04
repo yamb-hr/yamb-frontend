@@ -106,5 +106,6 @@
     "share-text": "Let’s play Yamb!",
     "share-score-text": "I scored {{value}} points in Yamb! Can you beat my score?",
     "submit": "Submit",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "refresh": "Refresh"
 }

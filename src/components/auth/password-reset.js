@@ -60,35 +60,37 @@ function PasswordReset() {
     };
 
     return (
-        <div className="login-container">
-            <img src="/logo.png" alt="Yamb" />
-            <h2>{t('reset-password')}</h2>
-            <form onSubmit={handleSubmit}>
-                {currentUser?.registered && (<div>
-                    <label className="input-label" htmlFor="password">{t('old-password')}</label>
+        <div className="auth-container">
+            <div className="auth">
+                <img src="/logo.png" alt="Yamb" />
+                <h2>{t('reset-password')}</h2>
+                <form onSubmit={handleSubmit}>
+                    {currentUser?.registered && (<div>
+                        <label className="input-label" htmlFor="password">{t('old-password')}</label>
+                        <input 
+                            type="password" 
+                            name="oldPassword" 
+                            autoComplete="username" 
+                            value={oldPassword} 
+                            onChange={handleOldPasswordChange} 
+                            placeholder={t('enter-old-password')} 
+                            required
+                        />
+                    </div>)}
+
+                    <label className="input-label" htmlFor="password">{t('new-password')}</label>
                     <input 
                         type="password" 
-                        name="oldPassword" 
-                        autoComplete="username" 
-                        value={oldPassword} 
-                        onChange={handleOldPasswordChange} 
-                        placeholder={t('enter-old-password')} 
+                        name="newPassword" 
+                        value={newPassword}  
+                        onChange={handleNewPasswordChange} 
+                        placeholder={t('enter-new-password')} 
                         required
                     />
-                </div>)}
-
-                <label className="input-label" htmlFor="password">{t('new-password')}</label>
-                <input 
-                    type="password" 
-                    name="newPassword" 
-                    value={newPassword}  
-                    onChange={handleNewPasswordChange} 
-                    placeholder={t('enter-new-password')} 
-                    required
-                />
-                {errors.password && <span className="error-text">{errors.newPassword}</span>}
-                <input type="submit" value={t('reset-password')} />
-            </form>
+                    {errors.password && <span className="error-text">{errors.newPassword}</span>}
+                    <input type="submit" value={t('reset-password')} />
+                </form>
+            </div>
         </div>
     )
 }

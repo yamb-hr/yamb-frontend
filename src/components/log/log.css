@@ -1,3 +1,10 @@
+.log-list-container, .log-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
 .log, .log-list {
     min-width: 200px;
     width: 70%;
@@ -5,7 +12,6 @@
     min-height: 400px;
     height: 80vh;
     overflow-y: auto;
-    border: 1px solid red;
 }
 
 @media (max-width: 480px) {

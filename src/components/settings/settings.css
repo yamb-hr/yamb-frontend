@@ -1,3 +1,10 @@
+.settings-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
 .settings {
     background-color: var(--background-settings);
     color: var(--color-settings);

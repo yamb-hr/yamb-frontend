@@ -12,8 +12,10 @@ function PlayerList() {
     ];
 
     return (
-        <div className="player-list">
-            <Table service={playerService} columns={columns}></Table>
+        <div className="player-list-container">
+            <div className="player-list">
+                <Table service={playerService} columns={columns}></Table>
+            </div>
         </div>
     );
 };

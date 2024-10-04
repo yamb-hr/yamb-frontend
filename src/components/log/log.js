@@ -43,8 +43,10 @@ function Log() {
     }
 
     return (
-        <div className="log">
-            <Element data={data} columns={columns}></Element>
+        <div className="log-container">
+            <div className="log">
+                <Element data={data} columns={columns}></Element>
+            </div>
         </div>
     );
 };

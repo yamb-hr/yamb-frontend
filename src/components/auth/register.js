@@ -85,41 +85,43 @@ function Register() {
     };
 
     return (
-        <div className="login-container">
-            <img src="/logo.png" alt="Yamb" />
-            <h2>{t('Register')}</h2>
-            <form onSubmit={handleSubmit}>
-                <label className="input-label" htmlFor="username">{t('username')}</label>
-                <input 
-                    type="text" 
-                    name="username" 
-                    autoComplete="username" 
-                    value={username} 
-                    onChange={handleUsernameChange} 
-                    placeholder={t('enter-username')} 
-                    required
-                />
-                {errors.username && <span className="error-text">{errors.username}</span>}
+        <div className="auth-container">
+            <div className="auth">
+                <img src="/logo.png" alt="Yamb" />
+                <h2>{t('Register')}</h2>
+                <form onSubmit={handleSubmit}>
+                    <label className="input-label" htmlFor="username">{t('username')}</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        autoComplete="username" 
+                        value={username} 
+                        onChange={handleUsernameChange} 
+                        placeholder={t('enter-username')} 
+                        required
+                    />
+                    {errors.username && <span className="error-text">{errors.username}</span>}
 
-                <label className="input-label" htmlFor="password">{t('password')}</label>
-                <input 
-                    type="password" 
-                    name="password" 
-                    autoComplete="new-password" 
-                    value={password}  
-                    onChange={handlePasswordChange} 
-                    placeholder={t('enter-password')} 
-                    required
-                />
-                {errors.password && <span className="error-text">{errors.password}</span>}
+                    <label className="input-label" htmlFor="password">{t('password')}</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        autoComplete="new-password" 
+                        value={password}  
+                        onChange={handlePasswordChange} 
+                        placeholder={t('enter-password')} 
+                        required
+                    />
+                    {errors.password && <span className="error-text">{errors.password}</span>}
 
-                <input type="submit" value={t('register')} />
-                
-                <div className="link">
-                    {t('already-have-account')}&nbsp;
-                    <Link to="/login">{t('sign-in')}</Link><br/>
-                </div>
-            </form>
+                    <input type="submit" value={t('register')} />
+                    
+                    <div className="link">
+                        {t('already-have-account')}&nbsp;
+                        <Link to="/login">{t('sign-in')}</Link><br/>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };

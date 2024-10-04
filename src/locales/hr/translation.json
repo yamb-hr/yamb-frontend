@@ -107,5 +107,6 @@
     "share-text": "Zaigrajmo Jamb!",
     "share-score-text": "Imam {{score}} bodova u Yambu! Možeš li nadmašiti moj rezultat?",
     "submit": "Potvrdi",
-    "cancel": "Odustani"
+    "cancel": "Odustani",
+    "refresh": "Osvježi"
 }

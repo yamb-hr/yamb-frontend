@@ -1,10 +1,16 @@
+.admin-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
 .admin {
-    min-width: 200px;
-    width: 70%;
-    max-width: 1000px;
-    min-height: 400px;
-    height: 80vh;
-    overflow-y: auto;
+    background-color: var(--background-settings);
+    color: var(--color-settings);
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .admin ul {
@@ -14,16 +20,13 @@
     margin: 0;
 }
 
-.admin ul li a {
+.admin ul li {
     color: var(--color-yellow);
+    margin: 10px;
+    padding: 10px;
+    border-radius: 4px;
+    text-align: center;
 }
-
-@media (max-width: 480px) {
-
-    .admin {
-        width: 100vw;
-        margin-top: 40px;
-        height: 90vh;
-    }
-    
+.admin ul li:hover {
+    background-color: var(--background-nav-hover);
 }

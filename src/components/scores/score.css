@@ -1,3 +1,10 @@
+.score-list-container, .score-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
 .score, .score-list {
     min-width: 200px;
     width: 70%;

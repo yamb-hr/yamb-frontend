@@ -12,8 +12,10 @@ function LogList() {
     ];
 
     return (
-        <div className="log-list">
-            <Table service={logService} columns={columns}></Table>
+        <div className="log-list-container">
+            <div className="log-list">
+                <Table service={logService} columns={columns}></Table>
+            </div>
         </div>
     );
 };

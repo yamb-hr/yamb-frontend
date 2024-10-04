@@ -12,8 +12,10 @@ function GameList() {
     ];
 
     return (
-        <div className="game-list">
-            <Table service={gameService} columns={columns}></Table>
+        <div className="game-list-container">
+            <div className="game-list">
+                <Table service={gameService} columns={columns}></Table>
+            </div>
         </div>
     );
 };

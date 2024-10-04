@@ -38,8 +38,10 @@ function ClashList() {
     ];
 
     return (
-        <div className="clash-list">
-            {data && <Table data={data._embedded?.clashes} columns={columns}></Table>}
+        <div className="clash-list-container">
+            <div className="clash-list">
+                {data && <Table data={data._embedded?.clashes} columns={columns}></Table>}
+            </div>
         </div>
     );
 };

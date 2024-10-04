@@ -11,8 +11,10 @@ function ScoreList() {
     ];
 
     return (
-        <div className="score-list">
-            <Table service={scoreService} columns={columns}></Table>
+        <div className="score-list-container">
+            <div className="score-list">
+                <Table service={scoreService} columns={columns}></Table>
+            </div>
         </div>
     );
 };

@@ -1,22 +1,29 @@
-.login-container {
+.auth-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+.auth {
     background-color: var(--background-auth);
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    width: 100%;
     max-width: 312px;
     color: var(--color-auth);
 }
 
-.login-container h2 {
+.auth h2 {
     margin-bottom: 20px;
     font-size: 24px;
     text-align: center;
     font-weight: normal;
 }
 
-.login-container input[type="text"],
-.login-container input[type="password"] {
+.auth input[type="text"],
+.auth input[type="password"] {
     width: 100%;
     padding: 12px;
     margin: 8px 0;
@@ -29,20 +36,20 @@
     caret-color: var(--color-auth-input);
 }
 
-.login-container input[type="text"]:-webkit-autofill,
-.login-container input[type="text"]:-webkit-autofill:hover, 
-.login-container input[type="text"]:-webkit-autofill:focus, 
-.login-container input[type="texts"]:-webkit-autofill:active,
-.login-container input[type="password"]:-webkit-autofill,
-.login-container input[type="password"]:-webkit-autofill:hover, 
-.login-container input[type="password"]:-webkit-autofill:focus, 
-.login-container input[type="password"]:-webkit-autofill:active {
+.auth input[type="text"]:-webkit-autofill,
+.auth input[type="text"]:-webkit-autofill:hover, 
+.auth input[type="text"]:-webkit-autofill:focus, 
+.auth input[type="texts"]:-webkit-autofill:active,
+.auth input[type="password"]:-webkit-autofill,
+.auth input[type="password"]:-webkit-autofill:hover, 
+.auth input[type="password"]:-webkit-autofill:focus, 
+.auth input[type="password"]:-webkit-autofill:active {
     -webkit-background-clip: text;
     -webkit-text-fill-color: var(--color-auth-input);
     box-shadow: inset 0 0 20px 20px var(--background-auth-input);
 }
 
-.login-container input[type="submit"] {
+.auth input[type="submit"] {
     width: 100%;
     padding: 12px;
     background-color: var(--background-auth-button);
@@ -55,44 +62,44 @@
     margin-top: 10px;
 }
 
-.login-container input[type="submit"]:hover:enabled {
+.auth input[type="submit"]:hover:enabled {
     cursor: pointer;
     background-color: var(--background-auth-button-hover);
 }
 
-.login-container input[type="submit"]:disabled {
+.auth input[type="submit"]:disabled {
     background-color: var(--background-auth-button-disabled);
 }
 
-.login-container .link {
+.auth .link {
     margin-top: 15px;
     text-align: center;
     font-size: 14px;
 }
 
-.login-container .link a {
+.auth .link a {
     color: var(--color-auth-link);
     text-decoration: none;
     font-size: 14px;
 }
 
-.login-container .link a:hover {
+.auth .link a:hover {
     cursor: pointer;
     text-decoration: underline;
 }
 
-.login-container img {
+.auth img {
     width: 64px;
     margin-top: 20px;
 }
 
-.login-container .input-label {
+.auth .input-label {
     font-size: 14px;
     width: 100%;
     display: flex;
 }
 
-.login-container img:hover {
+.auth img:hover {
     outline: none !important;
 }
 
@@ -105,7 +112,7 @@
 
 
 @media screen and (max-width: 480px) {
-    .login-container {
+    .auth {
         max-width: 80vw;
     }
     

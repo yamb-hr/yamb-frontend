@@ -30,28 +30,28 @@ function Rankings() {
     }, []);
 
     return (
-        <div className="rankings">
+        <div className="rankings-container">
             {loading && <Spinner />}
             {globalScoreStats && (
-                <div className="stats-container">
-                    <div className="stats">
-                        <div className="stat-item">
+                <div className="rankings">
+                    <ul>
+                        <li>
                             <span className="stat-label">{t('total-games')}:</span>
                             <span className="stat-value">&nbsp;{globalScoreStats.scoreCount}</span>
-                        </div>
-                        <div className="stat-item">
+                        </li>
+                        <li>
                             <span className="stat-label">{t('average-score')}:</span>
                             <span className="stat-value">&nbsp;{globalScoreStats.averageScore?.toFixed(2)}</span>
-                        </div>
-                        <div className="stat-item">
+                        </li>
+                        <li>
                             <span className="stat-label">{t('player-with-high-score')}:</span>
                             <span className="stat-value">&nbsp;{globalScoreStats.highScore?.player?.name}</span>
-                        </div>
-                        <div className="stat-item">
+                        </li>
+                        <li>
                             <span className="stat-label">{t('high-score')}:</span>
                             <span className="stat-value">&nbsp;{globalScoreStats.highScore?.value}</span>
-                        </div>
-                    </div>
+                        </li>
+                    </ul>
                 </div>
             )}
         </div>

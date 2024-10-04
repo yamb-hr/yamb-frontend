@@ -27,7 +27,7 @@ function Navigation() {
 
     useEffect(() => {
         const recaptchaBadge = document.querySelector('.grecaptcha-badge');
-        if (true/*isMobile && (activePage !== 'login' && activePage !== 'register')*/) {
+        if (isMobile && activePage !== 'login' && activePage !== 'register') {
             if (recaptchaBadge) {
                 recaptchaBadge.style.visibility = 'hidden';
             }
@@ -38,10 +38,10 @@ function Navigation() {
         }
         return () => {
             if (recaptchaBadge) {
-                recaptchaBadge.style.visibility = 'hidden';
+                recaptchaBadge.style.visibility = 'visible';
             }
         };        
-    }, [isMobile]);
+    }, [isMobile, activePage]);
 
     function handleShare() {
         if (navigator.share) {
@@ -161,7 +161,7 @@ function Navigation() {
                     <hr style={{ width: '90%' }} />
                     <li>
                         <Link to="/admin" className={activePage === 'admin' ? 'active' : ''} onClick={() => setMenuOpen(false)}>
-                        &nbsp;<span className="icon">&#128736;</span>
+                        <span className="icon">&#128736;</span>
                             {isMenuOpen ? <span>&nbsp;&nbsp;&nbsp;{t('admin')}</span> : <span className="menu-label">&nbsp;&nbsp;&nbsp;{t('admin')}</span>}
                         </Link>
                     </li>

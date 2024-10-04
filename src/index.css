@@ -200,6 +200,10 @@
 
   --background-settings: var(--color-blue);
   --color-settings: var(--color-gray);
+  
+  --background-button-play: var(--color-gray);
+  --background-button-play-hover: var(--color-gray-hover);
+  --color-button-play: var(--color-blue);
 
 }
 
@@ -345,6 +349,10 @@
   
   --background-settings: var(--color-blue);
   --color-settings: var(--color-gray);
+
+  --background-button-play: var(--color-blue);
+  --background-button-play-hover: var(--color-blue-hover);
+  --color-button-play: var(--color-gray);
 
 }
 

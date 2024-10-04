@@ -62,29 +62,31 @@ function RegisterGuest() {
     };
 
     return (
-        <div className="login-container">
-            <img src="/logo.png" alt="Yamb" />
-            <h2>{t('play-as-guest')}</h2>
-            <form onSubmit={handleSubmit}>
-                <label className="input-label" htmlFor="username">{t('username')}</label>
-                <input 
-                    type="text" 
-                    name="username" 
-                    autoComplete="username" 
-                    value={username} 
-                    onChange={handleUsernameChange} 
-                    placeholder={t('enter-username')} 
-                    required
-                />
-                {errors.username && <span className="error-text">{errors.username}</span>}
-                
-                <input type="submit" value={t('play')} />
-                
-                <div className="link">
-                    {t('already-have-account')}&nbsp;
-                    <Link to="/login">{t('sign-in')}</Link><br/>
-                </div>
-            </form>
+        <div className="auth-container">
+            <div className="auth">
+                <img src="/logo.png" alt="Yamb" />
+                <h2>{t('play-as-guest')}</h2>
+                <form onSubmit={handleSubmit}>
+                    <label className="input-label" htmlFor="username">{t('username')}</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        autoComplete="username" 
+                        value={username} 
+                        onChange={handleUsernameChange} 
+                        placeholder={t('enter-username')} 
+                        required
+                    />
+                    {errors.username && <span className="error-text">{errors.username}</span>}
+                    
+                    <input type="submit" value={t('play')} />
+                    
+                    <div className="link">
+                        {t('already-have-account')}&nbsp;
+                        <Link to="/login">{t('sign-in')}</Link><br/>
+                    </div>
+                </form>
+            </div>
         </div>
     );
 };
