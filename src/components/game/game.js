@@ -46,10 +46,7 @@ function Game({ id: propId }) {
 			gameService.getById(id).then(setGame).catch(handleError);
 			setSubscribed(true);
 		} else if (!game && currentUser) {
-			gameService.getOrCreate(currentUser.id).then((data) => {
-				setGame(data);
-				if (data.status === 'COMPLETED') handleShareModal();
-			}).catch(handleError);
+			gameService.getOrCreate(currentUser.id).then(setGame).catch(handleError);
 		}
 	}, [currentUser, id]);
 
@@ -96,11 +93,7 @@ function Game({ id: propId }) {
 
 	const handleRoll = () => {
 		initiateRollAnimation();
-        gameService.rollById(game, diceToRoll)
-            .then((data) => {
-                setGame(data);
-            })
-            .catch(handleError);
+        gameService.rollById(game, diceToRoll).then(setGame).catch(handleError);
     };
 
 	const handleFill = (columnType, boxType) => {
