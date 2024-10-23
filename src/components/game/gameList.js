@@ -6,9 +6,9 @@ import './game.css';
 function GameList() {
 
     const columns = [
-        { label: 'Player', key: 'player' },
-        { label: 'Status', key: 'status' },
-        { label: 'Created Date', key: 'createdAt' }
+        { label: 'Player', key: 'player', type: 'string' },
+        { label: 'Status', key: 'status', type: 'string' },
+        { label: 'Created Date', key: 'createdAt', type: 'date' }
     ];
 
     return (

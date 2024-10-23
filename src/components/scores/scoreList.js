@@ -6,8 +6,9 @@ import './score.css';
 function ScoreList() {
 
     const columns = [
-        { label: 'Player', key: 'player' },
-        { label: 'Created Date', key: 'createdAt' }
+        { label: 'Player', key: 'player', type: 'string' },
+        { label: 'Score', key: 'value', type: 'number' },
+        { label: 'Created Date', key: 'createdAt', type: 'date' }
     ];
 
     return (

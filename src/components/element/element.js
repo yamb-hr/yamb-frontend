@@ -1,41 +1,53 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { useQuery } from 'react-query';
 import { ErrorContext } from '../../providers/errorProvider';
 import { PreferencesContext } from '../../providers/preferencesProvider';
 import Spinner from '../spinner/spinner';
 import './element.css';
 
 const localeStringFormat = {
-    year: 'numeric', month: 'long', day: 'numeric', 
+    year: 'numeric', month: 'long', day: 'numeric',
     hour: 'numeric', minute: 'numeric', second: 'numeric'
 };
 
 const Element = ({ columns, data, service, id }) => {
-
     const navigate = useNavigate();
-    const [ elementData, setElementData ] = useState(null);
-    const [ loading, setLoading ] = useState(false);
     const { handleError } = useContext(ErrorContext);
     const { language } = useContext(PreferencesContext);
+    const [elementData, setElementData] = useState(null);
 
     useEffect(() => {
-        if (service && id) {
-            fetchData();
-        } else if (data) {
+        if (data) {
             setElementData(data);
         }
-    }, [ data, service, id ]);
+    }, [data]);
 
-    const fetchData = async () => {
-        setLoading(true);
-        service.getById(id).then(data => {
-            setElementData(data);
-        }).catch(error => {
-            handleError(error);
-        }).finally(() => {
-            setLoading(false);
-        });
+    const fetchElementData = async () => {
+        const fetchedData = await service.getById(id);
+        return fetchedData;
     };
+
+    const { data: fetchedData, isLoading, isError, error } = useQuery(
+        ['elementData', id],
+        fetchElementData,
+        {
+            enabled: !!service && !!id,
+            staleTime: 60000,
+            cacheTime: 5 * 60 * 1000,
+            onError: handleError,
+        }
+    );
+
+    const element = fetchedData || elementData;
+
+    if (service && isLoading) {
+        return <Spinner />;
+    }
+
+    if (service && isError) {
+        return <div>Error: {error.message}</div>;
+    }
 
     const formatDate = (value) => {
         return new Date(value).toLocaleString(language, localeStringFormat);
@@ -71,11 +83,7 @@ const Element = ({ columns, data, service, id }) => {
         return formatValue(value);
     };
 
-    if (loading) {
-        return <Spinner />;
-    }
-
-    if (!elementData) {
+    if (!element) {
         return <div>No data available</div>;
     }
 
@@ -84,7 +92,7 @@ const Element = ({ columns, data, service, id }) => {
             {columns.map((column) => (
                 <div key={column.key} className="field">
                     <strong>{column.label}:</strong>
-                    <span>{getValue(elementData, column.key)}</span>
+                    <span>{getValue(element, column.key)}</span>
                 </div>
             ))}
         </div>

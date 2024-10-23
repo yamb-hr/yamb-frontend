@@ -3,12 +3,13 @@ import scoreService from '../../services/scoreService';
 import { useTranslation } from 'react-i18next';
 import './rankings.css';
 import Spinner from '../spinner/spinner';
+import ScoreList from '../scores/scoreList';
 
 function Rankings() {
 
     const { t } = useTranslation();
     const [ data, setData ] = useState([]);
-    const [ loading, setLoading ] = useState(true);
+    const [ loading, setLoading ] = useState(false);
     const [ globalScoreStats, setGlobalScoreStats ] = useState(undefined);
 
     const fetchData = async () => {
@@ -26,13 +27,16 @@ function Rankings() {
     };
 
     useEffect(() => {
-        fetchData();
+        // fetchData();
     }, []);
+
+    if (loading) {
+        return <Spinner />
+    }
 
     return (
         <div className="rankings-container">
-            {loading && <Spinner />}
-            {globalScoreStats && (
+            {/* {globalScoreStats && (
                 <div className="rankings">
                     <ul>
                         <li>
@@ -53,7 +57,9 @@ function Rankings() {
                         </li>
                     </ul>
                 </div>
-            )}
+            )} */}
+            
+            <ScoreList />
         </div>
     );
 };

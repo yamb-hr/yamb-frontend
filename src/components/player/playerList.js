@@ -6,9 +6,8 @@ import './player.css';
 function PlayerList() {
 
     const columns = [
-        { label: 'Id', key: 'id' },
-        { label: 'Name', key: 'name' },
-        { label: 'Created Date', key: 'createdAt' }
+        { label: 'Name', key: 'name', type: 'string' },
+        { label: 'Created Date', key: 'createdAt', type: 'date' }
     ];
 
     return (

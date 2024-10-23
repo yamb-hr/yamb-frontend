@@ -7,8 +7,10 @@ export const CurrentUserContext = createContext(null);
 export const CurrentUserProvider = ({ children }) => {
     
     const [ currentUser, setCurrentUser ] = useState(null);
+    const [ loading, setLoading ] = useState(true);
 
     useEffect(() => {
+        setLoading(true);
         playerService.getCurrentPlayer()
             .then(player => setCurrentUser(player))
             .catch(error => {
@@ -16,11 +18,13 @@ export const CurrentUserProvider = ({ children }) => {
                     authService.logout();
                     setCurrentUser(null);
                 }
-            });
+            }).finally(() => {
+                setLoading(false);
+            })
     }, []);
 
     return (
-        <CurrentUserContext.Provider value={{ currentUser, setCurrentUser }}>
+        <CurrentUserContext.Provider value={{ currentUser, setCurrentUser, loading }}>
             {children}
         </CurrentUserContext.Provider>
     );
