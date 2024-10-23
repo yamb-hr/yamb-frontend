@@ -8,7 +8,7 @@ function GameList() {
     const columns = [
         { label: 'Player', key: 'player', type: 'string' },
         { label: 'Status', key: 'status', type: 'string' },
-        { label: 'Created Date', key: 'createdAt', type: 'date' }
+        { label: 'Last Played', key: 'updatedAt', type: 'date' }
     ];
 
     return (
