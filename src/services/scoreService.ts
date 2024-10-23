@@ -5,9 +5,12 @@ import authService from './authService';
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/scores`;
 
 class ScoreService {
+
     private axiosInstance: AxiosInstance;
+    public name: String;
 
     constructor() {
+        this.name = 'ScoreService';
         this.axiosInstance = axios.create({
             baseURL: API_BASE_URL,
             headers: {

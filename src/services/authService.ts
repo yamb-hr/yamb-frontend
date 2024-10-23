@@ -7,9 +7,12 @@ const API_URL = process.env.REACT_APP_API_URL + "/auth";
 const LOCAL_STORAGE_KEY_TOKEN = "token";
 
 class AuthService {
+    
     private axiosInstance: AxiosInstance;
+    public name: String;
 
     constructor() {
+        this.name = 'AuthService';
         this.axiosInstance = axios.create({
             baseURL: API_URL,
             headers: {

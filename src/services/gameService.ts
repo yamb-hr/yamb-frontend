@@ -5,9 +5,12 @@ import authService from './authService';
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/games`;
 
 class GameService {
+
     private axiosInstance: AxiosInstance;
+    public name: String;
 
     constructor() {
+        this.name = 'GameService';
         this.axiosInstance = axios.create({
             baseURL: API_BASE_URL,
             headers: {

@@ -1,4 +1,4 @@
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useCallback, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { PreferencesContext } from '../../providers/preferencesProvider';
@@ -21,13 +21,14 @@ const Table = ({ columns, data, service }) => {
     const [sortColumn, setSortColumn] = useState(null);
     const [sortDirection, setSortDirection] = useState('asc');
 
-    const fetchTableData = async () => {
+    const fetchTableData = useCallback(async () => {
+        if (!service) return [];
         const result = await service.getAll(0, 9999, sortColumn, sortDirection);
         return result._embedded[Object.keys(result._embedded)[0]];
-    };
+    }, [service?.name, sortColumn, sortDirection]);
 
     const { data: fetchedData, isLoading, isError, error } = useQuery(
-        ['tableData', service?.constructor?.name, sortColumn, sortDirection],
+        ['tableData', service?.name, sortColumn, sortDirection],
         fetchTableData,
         {
             enabled: !!service,

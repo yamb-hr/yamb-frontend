@@ -4,9 +4,12 @@ import authService from './authService';
 const API_URL = process.env.REACT_APP_API_URL + "/";
 
 class HomeService {
+    
     private axiosInstance: AxiosInstance;
+    public name: String;
 
     constructor() {
+        this.name = 'HomeService';
         this.axiosInstance = axios.create({
             baseURL: API_URL,
             headers: {

@@ -5,9 +5,12 @@ import { Clash, ClashCollection } from '../types/Clash';
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/clashes`;
 
 class ClashService {
+
     private axiosInstance: AxiosInstance;
+    public name: String;
 
     constructor() {
+        this.name = 'ClashService';
         this.axiosInstance = axios.create({
             baseURL: API_BASE_URL,
             headers: {

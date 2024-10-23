@@ -8,9 +8,12 @@ import { LogCollection } from '../types/Log';
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;
 
 class PlayerService {
+    
     private axiosInstance: AxiosInstance;
+    public name: String;
 
     constructor() {
+        this.name = 'PlayerService';
         this.axiosInstance = axios.create({
             baseURL: API_BASE_URL,
             headers: {
