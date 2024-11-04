@@ -3,8 +3,8 @@ import { Link } from 'react-router-dom';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { ErrorContext } from '../../providers/errorProvider';
 import { useTranslation } from 'react-i18next';
-import './profile.css';
 import playerService from '../../services/playerService';
+import './profile.css';
 
 function Profile() {
 

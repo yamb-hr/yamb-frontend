@@ -12,6 +12,7 @@ export interface Player {
     _links: {
         self: Link;
         scores?: Link;
+        games?: Link;
         clashes?: Link;
         logs?: Link;
         preferences?: Link;

@@ -146,12 +146,11 @@ const Table = ({ columns, data, service }) => {
         }
     };
 
-    // Apply sorting directly here
     const sortedData = sortData(tableData);
     const displayData = getPaginatedData(sortedData);
     const totalPages = Math.ceil(tableData.length / pageSize);
 
-    return (
+    if (displayData && displayData.length > 0) return (
         <div className="table-container">
             <table>
                 <thead>

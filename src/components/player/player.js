@@ -14,6 +14,7 @@ function Player() {
     const { id } = useParams();
     const [ data, setData ] = useState(null);
     const [ scoreData, setScoreData ] = useState(null);
+    const [ gameData, setGameData ] = useState(null);
     const [ logData, setLogData ] = useState(null);
     const [ loading, setLoading ] = useState(true);
     const { handleError } = useContext(ErrorContext);
@@ -28,6 +29,9 @@ function Player() {
     useEffect(() => {
         if (id && data && !scoreData) {
             fetchScoreData();
+        }
+        if (id && data && !gameData) {
+            fetchGameData();
         }
         if (id && data && !logData) {
             fetchLogData();
@@ -49,6 +53,17 @@ function Player() {
         setLoading(true);
         playerService.getScoresByPlayerId(data).then(data => {
             setScoreData(data);
+        }).catch(error => {
+            handleError(error);
+        }).finally(() => {
+            setLoading(false);
+        });
+    }
+
+    const fetchGameData = () => {
+        setLoading(true);
+        playerService.getGamesByPlayerId(data).then(data => {
+            setGameData(data);
         }).catch(error => {
             handleError(error);
         }).finally(() => {
@@ -78,6 +93,12 @@ function Player() {
         { label: 'Date', key: 'createdAt' }
     ];
 
+    const gameColumns = [
+        { label: 'Status', key: 'status', type: 'string' },
+        { label: 'Last Played', key: 'updatedAt', type: 'date' }
+    ];
+
+
     const logColumns = [
         { label: 'Level', key: 'level' },
         { label: 'Date', key: 'createdAt' }
@@ -95,6 +116,12 @@ function Player() {
                 {scoreData && (
                     <Collapsible title="Scores">
                         <Table data={scoreData._embedded?.scores} columns={scoreColumns}></Table>
+                    </Collapsible>
+                )}
+                <br/>
+                {gameData && (
+                    <Collapsible title="Games">
+                        <Table data={gameData._embedded?.games} columns={gameColumns}></Table>
                     </Collapsible>
                 )}
                 <br/>

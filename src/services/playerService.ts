@@ -4,6 +4,7 @@ import { ScoreCollection } from '../types/Score';
 import authService from './authService';
 import {  ClashCollection } from '../types/Clash';
 import { LogCollection } from '../types/Log';
+import { GameCollection } from '../types/Game';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;
 
@@ -86,6 +87,17 @@ class PlayerService {
 
         const { data }: AxiosResponse<ScoreCollection> = await this.axiosInstance.get(scoresLink);
         console.log("getScoresByPlayerId", data);
+        return data;
+    }
+
+    async getGamesByPlayerId(player: Player): Promise<GameCollection> {
+        const gamesLink = player._links?.games?.href;
+        if (!gamesLink) {
+            throw new Error("Games link not available for this player");
+        }
+
+        const { data }: AxiosResponse<GameCollection> = await this.axiosInstance.get(gamesLink);
+        console.log("getGamesByPlayerId", data);
         return data;
     }
 
