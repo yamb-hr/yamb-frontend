@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useSearchParams, useNavigate } from 'react-router-dom';
+import { useSearchParams, useNavigate, Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import authService from '../../services/authService';
@@ -47,12 +47,9 @@ function EmailVerification() {
                     {message}
                 </p>
                 {isSuccess && (
-                    <button
-                        className="submit-button"
-                        onClick={() => navigate('/login')}
-                    >
-                        {t('go-to-login')}
-                    </button>
+                    <Link to="/">
+                        {t('home')}
+                    </Link>
                 )}
             </div>
         </div>

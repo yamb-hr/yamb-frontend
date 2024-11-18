@@ -27,6 +27,7 @@
     "email-not-verified": "Email nije verificiran.",
     "resend-verification-email": "Ponovno pošalji verifikacijski email",
     "send-password-reset-email": "Pošalji email za resetiranje lozinke",
+    "verification-email-sent": "Verifikacijski email je poslan na: ",
     "password-reset-email-sent": "Email za resetiranje lozinke je poslan na: ",
     "update-email": "Promijenite email",
     "check-your-email": "Provjerite email",

@@ -22,6 +22,7 @@
     "email-verification": "Email verification",
     "email-verification-success": "Email verified successfully!",
     "email-verification-failed": "Email verification failed!",
+    "verification-email-sent": "Verification email sent to: ",
     "forgot-password": "Forgot Your Password?",
     "email-not-verified": "Email not verified.",
     "resend-verification-email": "Resend verification email",

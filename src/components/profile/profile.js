@@ -24,15 +24,12 @@ function Profile() {
     const [emailVerified, setEmailVerified] = useState(false);
 
     useEffect(() => {
-        if (!currentUser) {
-            // Redirect to login if user is not logged in
-            navigate('/login');
-            return;
+        if (currentUser) {
+            setUsername(currentUser.name);
+            setEmail(currentUser.email || '');
+            setProfilePicture(currentUser.profilePicture || '');
+            setEmailVerified(currentUser.emailVerified || false);
         }
-        setUsername(currentUser.name);
-        setEmail(currentUser.email || '');
-        setProfilePicture(currentUser.profilePicture || '');
-        setEmailVerified(currentUser.emailVerified || false);
     }, [currentUser, navigate]);
 
     function handleUsernameSubmit(event) {
@@ -60,12 +57,11 @@ function Profile() {
             setErrors(validationErrors);
             return;
         }
-        playerService
-            .updateEmail(currentUser, email)
+        playerService.updateEmail(currentUser, email)
             .then((player) => {
                 setCurrentUser(player);
                 setIsEditingEmail(false);
-                showInfoToast(t("verification-email-sent"));
+                showInfoToast(t("verification-email-sent") + player.email);
             })
             .catch((error) => {
                 handleError(error);
@@ -79,7 +75,7 @@ function Profile() {
         }
         authService.sendVerificationEmail(currentUser.email)
             .then(() => {
-                alert(t('verification-email-sent'));
+                alert(t('verification-email-sent') + currentUser.email);
             })
             .catch((error) => {
                 handleError(error);
