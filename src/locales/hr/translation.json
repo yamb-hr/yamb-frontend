@@ -14,6 +14,7 @@
     "enter-username": "Unesi ime...",
     "enter-password": "Unesi lozinku...",
     "enter-email": "Unesi email...",
+    "enter-username-or-email": "Unesi ime ili email...",
     "username-must-be-5-chars": "Korisničko ime mora imati između 3 i 15 znakova",
     "password-must-be-5-chars": "Lozinka mora imati između 6 i 30 znakova",    
     "email-invalid": "Neispravna email adresa",

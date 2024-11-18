@@ -13,6 +13,7 @@
     "enter-username": "Enter username...",
     "enter-password": "Enter password...",
     "enter-email": "Enter email...",
+    "enter-username-or-email": "Enter username or email...",
     "username-length-invalid": "Username must be 3-15 characters long",
     "password-length-invalid": "Password must be 6-30 characters long",
     "email-invalid": "Invalid email address",
