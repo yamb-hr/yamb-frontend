@@ -2,36 +2,45 @@ import React, { useEffect, useState } from 'react';
 import './dice.css';
 
 function Dice(props) {
-
-    const [ isRolling, setRolling ] = useState(false);
-    const [ rollCount, setRollCount ] = useState(props.rollCount); 
-    const [ diceClass, setDiceClass ] = useState("dice");
-    const [ diceStyle, setDiceStyle ] = useState({});
-    const [ diceDisabled, setDiceDisabled ] = useState(props.diceDisabled);
-    const [ value, setValue ] = useState(props.value);
+    const [isRolling, setRolling] = useState(false);
+    const [rollCount, setRollCount] = useState(props.rollCount);
+    const [diceClass, setDiceClass] = useState("dice");
+    const [diceStyle, setDiceStyle] = useState({});
+    const [diceDisabled, setDiceDisabled] = useState(props.diceDisabled);
+    const [value, setValue] = useState(props.value);
 
     function handleClick() {
         props.onDiceClick(props.index);
-    };
+    }
 
     useEffect(() => {
         if (!isRolling) {
-            setDiceDisabled(props.diceDisabled)
+            setDiceDisabled(props.diceDisabled);
             setValue(props.value);
         }
     }, [props.value, isRolling]);
 
     useEffect(() => {
         let intervalId;
+        let stopUpdatingTime;
+
         if (isRolling) {
+            const animationDuration = parseInt(diceStyle.animationDuration, 10) || 1000;
+            stopUpdatingTime = animationDuration - 500;
+
             intervalId = setInterval(() => {
                 setValue(Math.floor(Math.random() * 6) + 1);
             }, 150);
+
+            setTimeout(() => {
+                clearInterval(intervalId);
+                setValue(props.value);
+            }, stopUpdatingTime);
         } else {
             clearInterval(intervalId);
         }
         return () => clearInterval(intervalId);
-    }, [isRolling]);
+    }, [isRolling, diceStyle.animationDuration]);
 
     useEffect(() => {
         let newDiceClass = "dice " + (props.saved ? "saved " : " ");
@@ -39,8 +48,9 @@ function Dice(props) {
         if (isRolling) {
             newDiceClass += "rolling ";
             newDiceClass += Math.random() > 0.5 ? "clockwise" : "counter-clockwise";
-            let time = Math.round(800 + Math.random() * 1000)
-            newDiceStyle = { animationDuration: time + "ms" }
+            const time = Math.round(800 + Math.random() * 1000);
+            newDiceStyle = { animationDuration: time + "ms" };
+
             setTimeout(() => {
                 setRolling(false);
             }, time);
@@ -61,7 +71,7 @@ function Dice(props) {
 
     return (
         <button className={diceClass} style={diceStyle} onClick={handleClick} disabled={diceDisabled}>
-            <img src={'../svg/dice/' + value + '.svg'} alt={value}/>
+            <img src={'../svg/dice/' + value + '.svg'} alt={value} />
         </button>
     );
 }

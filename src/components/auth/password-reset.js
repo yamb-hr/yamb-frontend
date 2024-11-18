@@ -1,21 +1,34 @@
-import React, { useContext, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useContext, useState, useEffect } from 'react';
+import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { ErrorContext } from '../../providers/errorProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
+import { ToastContext } from '../../providers/toastProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import authService from '../../services/authService';
-import './auth.css';
 import playerService from '../../services/playerService';
+import './auth.css';
 
 function PasswordReset() {
-
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { handleError } = useContext(ErrorContext);
+    const { handleError } = useContext(ErrorHandlerContext);
+    const { showSuccessToast } = useContext(ToastContext);
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-    const [ newPassword, setNewPassword ] = useState('');
-    const [ oldPassword, setOldPassword ] = useState('');
-    const [ errors, setErrors ] = useState({});
+
+    const [newPassword, setNewPassword] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [errors, setErrors] = useState({});
+    const [searchParams] = useSearchParams();
+
+    const [isTokenBased, setIsTokenBased] = useState(false);
+
+    useEffect(() => {
+        // Check if the URL contains a `token` query parameter
+        const token = searchParams.get('token');
+        if (token) {
+            setIsTokenBased(true);
+        }
+    }, [searchParams]);
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -26,19 +39,21 @@ function PasswordReset() {
             return;
         }
 
-        authService.resetPassword({ oldPassword: oldPassword, newPassword: newPassword})
-        .then(() => {
-            navigate("/profile")
-            playerService.getCurrentPlayer().then(player => {
-                setCurrentUser(player);
-            }).catch(error => {
+        authService.resetPassword(oldPassword, newPassword, searchParams.get('token'))
+            .then(() => {
+                navigate('/profile');
+                playerService
+                    .getCurrentPlayer()
+                    .then((player) => {
+                        setCurrentUser(player);
+                    })
+                    .catch((error) => {
+                        handleError(error);
+                    });
+            }).catch((error) => {
                 handleError(error);
             });
-        })
-        .catch((error) => {
-            handleError(error); 
-        });
-    };
+    }
 
     function validateForm() {
         let validationErrors = {};
@@ -53,11 +68,11 @@ function PasswordReset() {
         if (errors.newPassword) {
             setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
         }
-    };
+    }
 
     function handleOldPasswordChange(event) {
         setOldPassword(event.target.value);
-    };
+    }
 
     return (
         <div className="auth-container">
@@ -65,34 +80,43 @@ function PasswordReset() {
                 <img src="/logo.png" alt="Yamb" />
                 <h2>{t('reset-password')}</h2>
                 <form onSubmit={handleSubmit}>
-                    {currentUser?.registered && (<div>
-                        <label className="input-label" htmlFor="password">{t('old-password')}</label>
-                        <input 
-                            type="password" 
-                            name="oldPassword" 
-                            autoComplete="username" 
-                            value={oldPassword} 
-                            onChange={handleOldPasswordChange} 
-                            placeholder={t('enter-old-password')} 
-                            required
-                        />
-                    </div>)}
+                    {!isTokenBased && (
+                        <div>
+                            <label className="input-label" htmlFor="oldPassword">{t('old-password')}</label>
+                            <input
+                                type="password"
+                                name="oldPassword"
+                                autoComplete="username"
+                                value={oldPassword}
+                                onChange={handleOldPasswordChange}
+                                placeholder={t('enter-old-password')}
+                                required
+                            />
+                        </div>
+                    )}
 
-                    <label className="input-label" htmlFor="password">{t('new-password')}</label>
-                    <input 
-                        type="password" 
-                        name="newPassword" 
-                        value={newPassword}  
-                        onChange={handleNewPasswordChange} 
-                        placeholder={t('enter-new-password')} 
+                    <label className="input-label" htmlFor="newPassword">{t('new-password')}</label>
+                    <input
+                        type="password"
+                        name="newPassword"
+                        value={newPassword}
+                        onChange={handleNewPasswordChange}
+                        placeholder={t('enter-new-password')}
                         required
                     />
-                    {errors.password && <span className="error-text">{errors.newPassword}</span>}
+                    {errors.newPassword && <span className="error-text">{errors.newPassword}</span>}
                     <input type="submit" value={t('reset-password')} />
+                    {!isTokenBased && (
+                        <div className="link">
+                            <Link to="/forgot-password">
+                                {t('forgot-password')}
+                            </Link>
+                        </div>
+                    )}
                 </form>
             </div>
         </div>
-    )
+    );
 }
 
 export default PasswordReset;

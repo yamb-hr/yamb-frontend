@@ -4,22 +4,22 @@ import { Slide, toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { PreferencesContext } from '../../providers/preferencesProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
-import { ErrorContext } from '../../providers/errorProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import authService from '../../services/authService';
 import './auth.css';
 
-
 function Register() {
-
     const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
 
     const navigate = useNavigate();
     const { t } = useTranslation();
     const { theme } = useContext(PreferencesContext);
     const { currentUser } = useContext(CurrentUserContext);
-    const { handleError } = useContext(ErrorContext);
+    const { handleError } = useContext(ErrorHandlerContext);
+
     const [username, setUsername] = useState(currentUser ? currentUser.username : "");
     const [password, setPassword] = useState('');
+    const [email, setEmail] = useState(''); // Optional email field
     const [errors, setErrors] = useState({});
 
     function handleSubmit(event) {
@@ -34,8 +34,9 @@ function Register() {
         window.grecaptcha.ready(() => {
             window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'register' }).then((token) => {
                 authService.register({
-                    username: username,
-                    password: password
+                    username,
+                    password,
+                    email: email || null, // Include email if provided
                 }, token)
                 .then((player) => {
                     toast.success(t('registration-success'), {
@@ -67,6 +68,9 @@ function Register() {
         if (password.length < 6 || password.length > 30) {
             validationErrors.password = t('password-length-invalid');
         }
+        if (email && !/\S+@\S+\.\S+/.test(email)) {
+            validationErrors.email = t('email-invalid');
+        }
         return validationErrors;
     }
 
@@ -75,14 +79,21 @@ function Register() {
         if (errors.username) {
             setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
         }
-    };
+    }
 
     function handlePasswordChange(event) {
         setPassword(event.target.value);
         if (errors.password) {
             setErrors((prevErrors) => ({ ...prevErrors, password: '' }));
         }
-    };
+    }
+
+    function handleEmailChange(event) {
+        setEmail(event.target.value);
+        if (errors.email) {
+            setErrors((prevErrors) => ({ ...prevErrors, email: '' }));
+        }
+    }
 
     return (
         <div className="auth-container">
@@ -102,6 +113,16 @@ function Register() {
                     />
                     {errors.username && <span className="error-text">{errors.username}</span>}
 
+                    <label className="input-label" htmlFor="email">{t('email')} ({t('optional')})</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        value={email} 
+                        onChange={handleEmailChange} 
+                        placeholder={t('enter-email')}
+                    />
+                    {errors.email && <span className="error-text">{errors.email}</span>}
+
                     <label className="input-label" htmlFor="password">{t('password')}</label>
                     <input 
                         type="password" 
@@ -118,12 +139,12 @@ function Register() {
                     
                     <div className="link">
                         {t('already-have-account')}&nbsp;
-                        <Link to="/login">{t('sign-in')}</Link><br/>
+                        <Link to="/login">{t('sign-in')}</Link><br />
                     </div>
                 </form>
             </div>
         </div>
     );
-};
+}
 
 export default Register;

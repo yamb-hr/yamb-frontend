@@ -17,6 +17,7 @@ export interface Player {
         logs?: Link;
         preferences?: Link;
         username?: Link;
+        email?: Link;
         stats?: Link;
     };
 }

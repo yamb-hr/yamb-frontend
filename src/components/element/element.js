@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
-import { ErrorContext } from '../../providers/errorProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { PreferencesContext } from '../../providers/preferencesProvider';
 import Spinner from '../spinner/spinner';
 import './element.css';
@@ -13,7 +13,7 @@ const localeStringFormat = {
 
 const Element = ({ columns, data, service, id }) => {
     const navigate = useNavigate();
-    const { handleError } = useContext(ErrorContext);
+    const { handleError } = useContext(ErrorHandlerContext);
     const { language } = useContext(PreferencesContext);
     const [elementData, setElementData] = useState(null);
 

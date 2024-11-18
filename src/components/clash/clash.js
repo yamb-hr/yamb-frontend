@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import { ErrorContext } from '../../providers/errorProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import clashService from '../../services/clashService';
 import Element from '../element/element';
 import Spinner from '../spinner/spinner';
@@ -14,7 +14,7 @@ function Clash() {
     const [ gameId, setGameId ] = useState(null);
     const [ loading, setLoading ] = useState(true);
     const { playing, setPlaying } = useState(false);
-    const { handleError } = useContext(ErrorContext);
+    const { handleError } = useContext(ErrorHandlerContext);
 
     useEffect(() => {
         if (id && !data) {

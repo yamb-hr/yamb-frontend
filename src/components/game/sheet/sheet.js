@@ -128,6 +128,14 @@ function Sheet(props) {
         return true;
     }
 
+    function handleUsernameClick() {
+        if (player.id === currentUser.id) {
+            navigate("/profile");
+        } else {
+            navigate("/players/" + player.id);
+        }
+    }
+
     return (
         <div className="sheet">
             <div className="column">
@@ -188,7 +196,7 @@ function Sheet(props) {
                 </div>
             </div>
             <div className="last-row">
-                <button className="username-button" onClick={() => { navigate("/players/" + player.id) }}>
+                <button className="username-button" onClick={() => { handleUsernameClick() }}>
                     {player.name}
                 </button>
                 {location?.pathname !== '/' && (<div className="switch-container">

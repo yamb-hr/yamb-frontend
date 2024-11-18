@@ -1,24 +1,23 @@
 import { createContext, useContext } from 'react';
 import { ToastContext } from './toastProvider';
 
-export const ErrorContext = createContext(null);
+export const ErrorHandlerContext = createContext(null);
 
-export const ErrorProvider = ({ children }) => {
-
+export const ErrorHandlerProvider = ({ children }) => {
+    
     const { showErrorToast } = useContext(ToastContext);
-
 
     const handleError = (error) => {
         console.error(error);
-        let message = error?.response?.data?.message ? error.response.data.message : error.message;
+        const message = error?.response?.data?.message || error.message;
         if (message) {
             showErrorToast(message);
         }
     };
 
     return (
-        <ErrorContext.Provider value={{ handleError }}>
+        <ErrorHandlerContext.Provider value={{ handleError }}>
             {children}
-        </ErrorContext.Provider>
+        </ErrorHandlerContext.Provider>
     );
 };

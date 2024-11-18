@@ -9,7 +9,7 @@ function Admin() {
     const { currentUser } = useContext(CurrentUserContext);
 
     useEffect(() => {
-        if (currentUser && !currentUser?.roles?.includes("ADMIN")) {
+        if (currentUser && !currentUser?.admin) {
             navigate("/")
         }
     }, [currentUser]);

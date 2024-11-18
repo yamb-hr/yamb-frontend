@@ -48,11 +48,11 @@ class AuthService {
         localStorage.removeItem(LOCAL_STORAGE_KEY_TOKEN);
     }
 
-    async createTempPlayer(tempPlayerRequest: PlayerCredentials, recaptchaToken: string): Promise<AuthData> {
+    async registerGuest(tempPlayerRequest: PlayerCredentials, recaptchaToken: string): Promise<AuthData> {
         const { data }: AxiosResponse<AuthData> = await this.axiosInstance.post('/register-guest', tempPlayerRequest, {
             headers: { "X-Recaptcha-Token": recaptchaToken },
         });
-        console.log("createTempPlayer", data);
+        console.log("registerGuest", data);
         return data;
     }
 
@@ -70,11 +70,26 @@ class AuthService {
         return data;
     }
 
-    async resetPassword(authRequest: PlayerCredentials, recaptchaToken: string): Promise<void> {
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.put('/password-reset', authRequest, {
-            headers: { "X-Recaptcha-Token": recaptchaToken },
-        });
+    async resetPassword(oldPassword: string, newPassword: string, passwordResetToken: string): Promise<void> {
+        const resetPasswordEndpoint = '/password-reset' + (passwordResetToken ? ('?token=' + passwordResetToken) : '');
+        console.log(resetPasswordEndpoint);
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.put(resetPasswordEndpoint, { oldPassword: oldPassword, newPassword: newPassword });
         console.log("resetPassword", data);
+    }
+
+    async sendPasswordResetEmail(email: string): Promise<void> {
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.post('/password-reset-token', { email: email });
+        console.log("sendPasswordResetToken", data);
+    }
+
+    async verifyEmail(emailVerificationToken: string): Promise<void> {
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.put('/email-verification?token=' + emailVerificationToken);
+        console.log("verifyEmail", data);
+    }
+
+    async sendVerificationEmail(email: string): Promise<void> {
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.post('/email-verification-token', { email: email });
+        console.log("sendVerificationEmail", data);
     }
 
     isAuthenticated(): boolean {

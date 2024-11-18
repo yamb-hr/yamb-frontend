@@ -5,7 +5,7 @@ import { toast } from 'react-toastify';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { StompClientContext } from '../../providers/stompClientProvider';
 import { ToastContext } from '../../providers/toastProvider';
-import { ErrorContext } from '../../providers/errorProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import scoreCalculator from '../../util/scoreCalculator';
 import gameService from '../../services/gameService';
 import Sheet from './sheet/sheet';
@@ -23,7 +23,7 @@ function Game({ id: propId }) {
 	const { showInfoToast } = useContext(ToastContext);
 	const { currentUser } = useContext(CurrentUserContext);
 	const { stompClient, isConnected } = useContext(StompClientContext);
-	const { handleError } = useContext(ErrorContext);
+	const { handleError } = useContext(ErrorHandlerContext);
 
 	const [game, setGame] = useState(null);
 	const [subscribed, setSubscribed] = useState(false);
@@ -165,7 +165,7 @@ function Game({ id: propId }) {
 			);
 			setTimeout(() => {
 				setModalShowing(false)
-			}, 99999)
+			}, 99999);
 		}
 	};
 

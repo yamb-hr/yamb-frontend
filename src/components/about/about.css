@@ -33,18 +33,26 @@
 }
 
 .button-refresh {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background-auth-button);
     border: none;
+    color: var(--color-auth-button);
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid var(--border-auth-button);
     border-radius: 4px;
-    padding: 8px;
-    background-color: var(--background-info-button);
-    color: var(--color-info-button);
-    float: right;
-    transition: background-color 0.3 ease;
-    font-size: large;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 
-.button-refresh:hover {
-    background-color: var(--background-info-button-hover);
+.button-refresh:hover:enabled {
+    cursor: pointer;
+    background-color: var(--background-auth-button-hover);
+}
+
+.button-refresh:disabled {
+    background-color: var(--background-auth-button-disabled);
 }
 
 .section-buttons button {

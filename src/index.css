@@ -115,9 +115,10 @@
   --border-info-button: none;
   --filter-info-button: var(--filter-turq);
 
-  --color-admin-button: var(--color-turq);
-  --background-admin-button: var(--color-blue);
-  --border-admin-button: 1px solid var(--color-blue);
+  --color-admin: var(--color-gray);
+  --color-admin-hover: var(--color-gray-hover);
+  --background-admin: var(--color-blue);
+  --background-admin-hover: var(--color-blue-hover);
 
   --background-restart-button: var(--color-blue);
   --background-restart-button-hover: var(--color-blue-hover);
@@ -333,6 +334,7 @@
   --background-pagination-button: var(--color-blue);
   --background-pagination-button-hover: var(--color-blue-hover);  
   --border-table-row: var(--color-gray-hover);
+  --color-table-pagination: var(--color-black);
 
   --color-username-button: var(--color-blue);
   --background-username-button: var(--color-gray);

@@ -268,10 +268,6 @@ span.menu-label {
     font-size: 16px;
 }
 
-.grecaptcha-badge {
-    visibility: hidden;
-}
-
 @media screen and (max-width: 480px) {
     
     .navbar ul {

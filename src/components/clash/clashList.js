@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
-import { ErrorContext } from '../../providers/errorProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import playerService from '../../services/playerService';
 import Table from '../table/table';
 import './clash.css';
@@ -10,7 +10,7 @@ function ClashList() {
     
     const [ data, setData ] = useState(null);
     const { currentUser } = useContext(CurrentUserContext);
-    const { handleError } = useContext(ErrorContext);
+    const { handleError } = useContext(ErrorHandlerContext);
 
     const fetchData = async () => {
         playerService.getClashesByPlayerId(currentUser).then(data => {

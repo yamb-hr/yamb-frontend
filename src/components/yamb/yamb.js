@@ -21,6 +21,8 @@ import Score from '../scores/score';
 import LogList from '../log/logList';
 import Log from '../log/log';
 import Home from '../home/home';
+import EmailVerification from '../auth/email-verification';
+import ForgotPassword from '../auth/forgot-password';
 
 function Yamb() {
 
@@ -28,6 +30,7 @@ function Yamb() {
 
 	useEffect(() => {
         const script = document.createElement('script');
+        console.log(RECAPTCHA_SITE_KEY);
         script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
         script.async = true;
 
@@ -65,6 +68,8 @@ function Yamb() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/logs" element={<LogList />} />
             <Route path="/logs/:id" element={<Log />} />
+            <Route path="/email-verification" element={<EmailVerification />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
         <Navigation/>
         <div id="recaptcha-container"></div>

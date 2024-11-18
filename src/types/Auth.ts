@@ -1,6 +1,7 @@
 import { Player } from "./Player";
 
 export interface PlayerCredentials {
+    email: String;
     username: string;
     password: string;
 }

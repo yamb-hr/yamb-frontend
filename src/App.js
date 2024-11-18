@@ -1,11 +1,12 @@
 import { ToastProvider } from './providers/toastProvider';
-import { ErrorProvider } from './providers/errorProvider';
+import { ErrorHandlerProvider } from './providers/errorHandlerProvider';
 import { PreferencesProvider } from './providers/preferencesProvider';
 import { DeviceProvider } from './providers/deviceProvider';
 import { MenuProvider } from './providers/menuProvider';
 import { CurrentUserProvider } from './providers/currentUserProvider';
 import { StompClientProvider } from './providers/stompClientProvider';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import ErrorBoundary from './components/errorBoundary';
 import Yamb from './components/yamb/yamb';
 import './App.css';
 
@@ -17,21 +18,23 @@ function App() {
 		<div className="App">
 			<header className="App-header">
 				<QueryClientProvider client={queryClient}>
-					<ToastProvider>
-						<ErrorProvider>
-							<PreferencesProvider>
-								<DeviceProvider>
-									<MenuProvider>
-										<CurrentUserProvider>
-											<StompClientProvider>
-												<Yamb></Yamb>
-											</StompClientProvider>
-										</CurrentUserProvider>
-									</MenuProvider>
-								</DeviceProvider>
-							</PreferencesProvider>
-						</ErrorProvider>
-					</ToastProvider>
+					<ErrorBoundary>
+						<ToastProvider>
+							<ErrorHandlerProvider>
+								<CurrentUserProvider>
+									<PreferencesProvider>
+										<DeviceProvider>
+											<MenuProvider>
+												<StompClientProvider>
+													<Yamb></Yamb>
+												</StompClientProvider>
+											</MenuProvider>
+										</DeviceProvider>
+									</PreferencesProvider>
+								</CurrentUserProvider>
+							</ErrorHandlerProvider>
+						</ToastProvider>
+					</ErrorBoundary>
 				</QueryClientProvider>
 			</header>
 		</div>

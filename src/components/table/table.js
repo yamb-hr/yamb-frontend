@@ -2,7 +2,7 @@ import React, { useState, useContext, useCallback, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { PreferencesContext } from '../../providers/preferencesProvider';
-import { ErrorContext } from '../../providers/errorProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import Spinner from '../spinner/spinner';
 import './table.css';
 
@@ -14,7 +14,7 @@ const localeStringFormat = {
 const Table = ({ columns, data, service }) => {
     
     const navigate = useNavigate();
-    const { handleError } = useContext(ErrorContext);
+    const { handleError } = useContext(ErrorHandlerContext);
     const { language } = useContext(PreferencesContext);
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(50);
@@ -124,7 +124,7 @@ const Table = ({ columns, data, service }) => {
                 const name = value.name || `View ${truncatedId}`;
 
                 return (
-                    <Link to={`/${resource}/${id}`}>
+                    <Link to={`/${resource}/${id}`} onClick={(e) => e.stopPropagation()}>
                         {name}
                     </Link>
                 );

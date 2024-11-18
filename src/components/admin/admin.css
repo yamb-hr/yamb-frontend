@@ -6,8 +6,8 @@
 }
 
 .admin {
-    background-color: var(--background-settings);
-    color: var(--color-settings);
+    background-color: var(--background-admin);
+    color: var(--color-admin);
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -20,13 +20,36 @@
     margin: 0;
 }
 
-.admin ul li {
-    color: var(--color-yellow);
-    margin: 10px;
-    padding: 10px;
-    border-radius: 4px;
-    text-align: center;
+.admin ul li a:hover {
+    text-decoration: none;
 }
+
 .admin ul li:hover {
-    background-color: var(--background-nav-hover);
+    background-color: var(--background-admin-hover);
+}
+
+.admin ul li a {
+    display: flex;
+    color: var(--color-admin);
+    padding: 16px;
+    margin: 4px;
+    box-sizing: border-box;
+    transition: background-color 0.3s;
+    border-radius: 8px;
+}
+
+.admin ul li {
+    border-radius: 8px;
+}
+
+.admin ul li:hover a {
+    background-color: var(--background-admin-hover);
+}
+
+.admin ul li:hover {
+    cursor: pointer;
+}
+
+.admin ul li:hover .icon {
+    filter: none;
 }

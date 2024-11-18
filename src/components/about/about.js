@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
-import { ErrorContext } from '../../providers/errorProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import homeService from '../../services/homeService';
 import './about.css';
 
@@ -11,7 +11,7 @@ function About() {
     const navigate = useNavigate();
     const location = useLocation();
     const { t } = useTranslation(); 
-    const [ activeTab, setActiveTab ] = useState('');
+    const [ activeTab, setActiveTab ] = useState(localStorage.getItem('tab'));
     const [ healthInfo, setHealthInfo ] = useState(null);
     const [ metricsInfo, setMetricsInfo ] = useState(null);
     const [ loading, setLoading ] = useState(false);
@@ -21,10 +21,10 @@ function About() {
         description: ''
     });
     const { currentUser } = useContext(CurrentUserContext);
-    const { handleError } = useContext(ErrorContext);
+    const { handleError } = useContext(ErrorHandlerContext);
     
     useEffect(() => {   
-        const tab = location.pathname.split("#")[1] || 'rules'
+        const tab = location.pathname.split("#")[1] || localStorage.getItem('tab') || 'rules'
         handleTabChange(tab)
     }, []);
 
@@ -37,13 +37,14 @@ function About() {
     const handleTabChange = (tab) => {
         setActiveTab(tab);
         navigate(`/about#${tab}`);
+        localStorage.setItem('tab', tab);
     };
   
     const fetchData = async () => {
         setLoading(true);
         homeService.getHealthCheck().then(data => {
             setHealthInfo(data);
-            if (currentUser.roles.includes("ADMIN")) {
+            if (currentUser.admin) {
                 homeService.getMetrics().then(data => {
                     setMetricsInfo(data);
                 }).catch(error => {
@@ -137,7 +138,7 @@ function About() {
                                     <li><strong>reCAPTCHA API:</strong> {healthInfo.recaptchaAPI}</li>
                                 </ul>
                             )}
-                            {currentUser?.roles.includes("ADMIN") && metricsInfo && (
+                            {currentUser?.admin && metricsInfo && (
                                 <ul>
                                     <li><strong>CPU Usage:</strong> {metricsInfo.cpuUsage?.toFixed(2)}%</li>
                                     <li><strong>Uptime:</strong> {formatUptime(metricsInfo.uptime)}</li>
@@ -152,12 +153,6 @@ function About() {
                             <button disabled={loading || cooldown} className="button-refresh" onClick={handleRefresh}>
                                 {cooldown ? `${t('refresh')} (${Math.ceil(15 - cooldown / 1000)}s)` : t('refresh')}
                             </button>
-                            <br/>
-                            <br/>
-                            <p>
-                                <a href="https://status.jamb.com.hr">Keep Yourself Alive</a>
-                            </p>
-                            <br/>
                         </section>
                     )}
                     {activeTab === 'contact' && (

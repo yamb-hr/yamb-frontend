@@ -2,7 +2,7 @@ import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import authService from '../../services/authService';
-import { ErrorContext } from '../../providers/errorProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import './auth.css';
 
@@ -14,7 +14,7 @@ function RegisterGuest() {
     const { t } = useTranslation();
     const [username, setUsername] = useState("");
     const [errors, setErrors] = useState({});
-    const { handleError } = useContext(ErrorContext);
+    const { handleError } = useContext(ErrorHandlerContext);
     const { setCurrentUser } = useContext(CurrentUserContext);
 
 
@@ -30,7 +30,7 @@ function RegisterGuest() {
         window.grecaptcha.ready(() => {
             window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'register' })
             .then((recaptchaToken) => {
-                authService.createTempPlayer({username: username}, recaptchaToken)
+                authService.registerGuest({username: username}, recaptchaToken)
                 .then((authData) => {
                     localStorage.setItem("token", authData.token);
                     setCurrentUser(authData.player);

@@ -5,7 +5,6 @@
     height: 100vh;
 }
 
-
 .auth {
     background-color: var(--background-auth);
     padding: 20px 30px;
@@ -23,6 +22,7 @@
 }
 
 .auth input[type="text"],
+.auth input[type="email"],
 .auth input[type="password"] {
     width: 100%;
     padding: 12px;
@@ -39,7 +39,11 @@
 .auth input[type="text"]:-webkit-autofill,
 .auth input[type="text"]:-webkit-autofill:hover, 
 .auth input[type="text"]:-webkit-autofill:focus, 
-.auth input[type="texts"]:-webkit-autofill:active,
+.auth input[type="text"]:-webkit-autofill:active,
+.auth input[type="email"]:-webkit-autofill,
+.auth input[type="email"]:-webkit-autofill:hover, 
+.auth input[type="email"]:-webkit-autofill:focus, 
+.auth input[type="email"]:-webkit-autofill:active,
 .auth input[type="password"]:-webkit-autofill,
 .auth input[type="password"]:-webkit-autofill:hover, 
 .auth input[type="password"]:-webkit-autofill:focus, 
@@ -49,7 +53,7 @@
     box-shadow: inset 0 0 20px 20px var(--background-auth-input);
 }
 
-.auth input[type="submit"] {
+.auth input[type="submit"], .button-send-password-reset-email {
     width: 100%;
     padding: 12px;
     background-color: var(--background-auth-button);
@@ -62,13 +66,17 @@
     margin-top: 10px;
 }
 
-.auth input[type="submit"]:hover:enabled {
+.auth input[type="submit"]:hover:enabled, .button-send-password-reset-email:hover:enabled {
     cursor: pointer;
     background-color: var(--background-auth-button-hover);
 }
 
-.auth input[type="submit"]:disabled {
+.auth input[type="submit"]:disabled, .button-send-password-reset-email:disabled {
     background-color: var(--background-auth-button-disabled);
+}
+
+.check-email {
+    font-size: medium;
 }
 
 .auth .link {
@@ -110,6 +118,9 @@
     display: block;
 }
 
+.forgot-password {
+    font-size: medium;
+}
 
 @media screen and (max-width: 480px) {
     .auth {

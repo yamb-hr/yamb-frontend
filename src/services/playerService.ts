@@ -128,7 +128,7 @@ class PlayerService {
         if (!preferencesLink) {
             throw new Error("Preferences link not available for this player");
         }
-
+        
         const { data }: AxiosResponse<PlayerPreferences> = await this.axiosInstance.put(preferencesLink, preferences);
         console.log("setPreferencesByPlayerId", data);
         return data;
@@ -140,13 +140,23 @@ class PlayerService {
         return data;
     }
 
-    async changeUsername(player: Player, username: String): Promise<Player> { 
+    async updateUsername(player: Player, username: String): Promise<Player> { 
         const usernameLink = player._links?.username?.href;
         if (!usernameLink) {
             throw new Error("Username link not available for this player");
         }
         const { data }: AxiosResponse<Player> = await this.axiosInstance.put(usernameLink, { username: username });
-        console.log("changeUsername", data);
+        console.log("updateUsername", data);
+        return data;
+    }
+
+    async updateEmail(player: Player, email: String): Promise<Player> { 
+        const emailLink = player._links?.email?.href;
+        if (!emailLink) {
+            throw new Error("Email link not available for this player");
+        }
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.put(emailLink, { email: email });
+        console.log("updateEmail", data);
         return data;
     }
 
