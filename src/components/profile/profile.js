@@ -1,10 +1,11 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { ToastContext } from '../../providers/toastProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { useTranslation } from 'react-i18next';
+import authService from '../../services/authService';
 import playerService from '../../services/playerService';
-import authService from '../../services/authService'; // Added for sending verification email
 import './profile.css';
 
 function Profile() {
@@ -12,6 +13,7 @@ function Profile() {
     const navigate = useNavigate();
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
+    const { showInfoToast } = useContext(ToastContext);
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
@@ -63,6 +65,7 @@ function Profile() {
             .then((player) => {
                 setCurrentUser(player);
                 setIsEditingEmail(false);
+                showInfoToast(t("verification-email-sent"));
             })
             .catch((error) => {
                 handleError(error);
@@ -74,8 +77,7 @@ function Profile() {
             handleError(t('email-missing'));
             return;
         }
-        authService
-            .sendVerificationEmail(currentUser.email)
+        authService.sendVerificationEmail(currentUser.email)
             .then(() => {
                 alert(t('verification-email-sent'));
             })

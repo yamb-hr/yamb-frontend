@@ -23,7 +23,7 @@
     "email-verification-failed": "Email verification failed!",
     "forgot-password": "Forgot Your Password?",
     "email-not-verified": "Email not verified.",
-    "send-verification-email": "Send verification email",
+    "resend-verification-email": "Resend verification email",
     "send-password-reset-email": "Send password reset email",
     "password-reset-email-sent": "Password reset email was sent to: ",
     "update-email": "Update Email",
