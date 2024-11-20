@@ -7,8 +7,8 @@
 
 .about {
     padding: 20px;
-    background-color: var(--background-window);
-    color: var(--color-text);
+    background-color: var(--background-auth);
+    color: var(--color-auth);
     border-radius: 8px;
     min-width: 300px;
     max-width: 600px;
@@ -56,7 +56,7 @@
 }
 
 .section-buttons button {
-    color: var(--color-nav);
+    color: var(--color-auth);
     padding: 10px;
     margin: 4px;
     border: none;
@@ -65,21 +65,17 @@
 }
 
 .section-buttons button:hover {
-    background-color: var(--background-nav-hover);
+    background-color: var(--background-auth-hover);
 }
 
 .section-buttons button.active {
-    background-color: var(--background-nav-hover);
+    background-color: var(--background-auth-hover);
 }
 
 .about p {
     text-align: center;
     margin: 0;
     padding: 0;
-}
-
-.about section a {
-    color: var(--color-yellow);
 }
 
 .about .icon {
@@ -107,17 +103,15 @@
 }
 
 .about form label {
-    color: var(--color-text);
+    color: var(--color-auth);
     margin-bottom: 4px;
 }
 
 .about form input[type="text"],
 .about form textarea {
     padding: 10px;
-    border: none;
+    border: 1px solid gray;
     border-radius: 4px;
-    background-color: var(--background-form);
-    color: var(--color-form);
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
     box-sizing: border-box;
@@ -125,7 +119,7 @@
 
 .about form input[type="text"]:focus,
 .about form textarea:focus {
-    border: none;
+    border: 1px solid gray;
     outline: none;
     box-shadow: 0 0 6px rgba(0, 0, 0, 0.1);
 }
@@ -137,21 +131,20 @@
 }
 
 .about form button[type="submit"] {
-    width: 150px;
-    padding: 8px;
-    color: var(--color-form-submit);
-    background-color: var(--background-form-submit);
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background-auth-button);
     border: none;
+    color: var(--color-auth-button);
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s;
     border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-    margin: 0 auto;
-    display: block;
-    margin-top: 20px;
+    margin-top: 15px;
 }
 
 .about form button[type="submit"]:hover {
-    background-color: var(--background-form-submit-hover);
+    background-color: var(--background-auth-button-hover);
 }
 
 @media screen and (max-width: 480px) {
@@ -165,7 +158,6 @@
 
     .about section {
         height: auto;
-        /* height: 550px; */
         max-height: 550px;
     }
 

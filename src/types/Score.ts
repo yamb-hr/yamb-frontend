@@ -2,7 +2,7 @@ import { Link } from './Link';
 import { Player } from './Player';
 
 export interface Score {
-    id: number;
+    id: string;
     createdAt: Date;
     player: Player;
     value: number;

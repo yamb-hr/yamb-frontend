@@ -128,8 +128,14 @@
     "share": "Podijeli",
     "share-text": "Zaigrajmo Jamb!",
     "share-score-text": "Imam {{score}} bodova u Yambu! Možeš li nadmašiti moj rezultat?",
-    "submit": "Potvrdi",
+    "submit": "Pošalji",
     "save": "Spremi",
     "cancel": "Odustani",
-    "refresh": "Osvježi"
+    "refresh": "Osvježi",
+    "submit-a-ticket": "Podnesite zahtjev",
+    "title": "Naslov",
+    "enter-title": "Unesite naslov...",
+    "enter-description": "Opišite problem",
+    "email-addresses": "Email adrese (opcionalno)",
+    "enter-email-addresses-comma-separated": "Unesite email adrese (odvojene zarezima)"
 }

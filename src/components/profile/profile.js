@@ -113,6 +113,20 @@ function Profile() {
         }
     }
 
+    function toggleIsEditingEmail() {   
+        setIsEditingEmail(!isEditingEmail);
+        if (isEditingEmail) {
+            setEmail(currentUser.email);
+        }
+    }
+
+    function toggleIsEditingUsername() {   
+        setIsEditingUsername(!isEditingUsername);
+        if (isEditingUsername) {
+            setUsername(currentUser.name);
+        }
+    }
+
     const usernameSubmitDisabled = currentUser?.name === username;
     const emailSubmitDisabled = currentUser?.email === email;
 
@@ -136,7 +150,7 @@ function Profile() {
                             <button
                                 type="button"
                                 className={isEditingUsername ? 'cancel-button' : 'edit-button'}
-                                onClick={() => setIsEditingUsername(!isEditingUsername)}
+                                onClick={() => toggleIsEditingUsername()}
                                 aria-label={isEditingUsername ? 'Cancel' : 'Edit Username'}
                             >
                                 {isEditingUsername ? '✖' : '✏️'}
@@ -166,7 +180,7 @@ function Profile() {
                             <button
                                 type="button"
                                 className={isEditingEmail ? 'cancel-button' : 'edit-button'}
-                                onClick={() => setIsEditingEmail(!isEditingEmail)}
+                                onClick={() => toggleIsEditingEmail()}
                                 aria-label={isEditingEmail ? 'Cancel' : 'Edit Email'}
                             >
                                 {isEditingEmail ? '✖' : '✏️'}
@@ -187,7 +201,7 @@ function Profile() {
                             </strong>
                         </p>
                         {!emailVerified && (
-                            <button onClick={handleResendVerificationEmail}>
+                            <button onClick={handleResendVerificationEmail} className="button-resend-verification-email">
                                 {t('resend-verification-email')}
                             </button>
                         )}

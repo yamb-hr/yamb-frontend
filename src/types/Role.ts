@@ -1,7 +1,7 @@
 import { Link } from "./Link";
 
 export interface Role {
-    id: number;
+    id: string;
     name: string;
     description: string;
 }

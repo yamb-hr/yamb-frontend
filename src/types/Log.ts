@@ -3,7 +3,7 @@ import { LogLevel } from '../enums/LogLevel';
 import { Link } from './Link';
 
 export interface Log {
-    id: number;
+    string: number;
     createdAt: Date;
     data: string;
     message: string;

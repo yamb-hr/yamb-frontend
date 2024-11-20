@@ -164,6 +164,30 @@
     font-size: 14px;
 }
 
+.profile .button-resend-verification-email {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background-auth-button);
+    border: none;
+    color: var(--color-auth-button);
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s;
+    border-radius: 4px;
+    margin-top: 15px;
+}
+
+.profile .button-resend-verification-email:hover:enabled {
+    cursor: pointer;
+    background-color: var(--background-auth-button-hover);
+}
+
+.profile .button-resend-verification-email:disabled {
+    background-color: var(--background-auth-button-disabled);
+    color: var(--color-auth-disabled);
+    cursor: not-allowed;
+}
+
 /* Profile Picture Section */
 .profile-picture-container {
     display: flex;
