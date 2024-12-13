@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { ToastContext } from '../../providers/toastProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import homeService from '../../services/homeService';
@@ -14,6 +15,7 @@ function About() {
     const { t } = useTranslation();
     const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
+    const { showSuccessToast } = useContext(ToastContext);
 
     const [activeTab, setActiveTab] = useState(localStorage.getItem('tab') || 'rules');
     const [loading, setLoading] = useState(false);
@@ -84,7 +86,7 @@ function About() {
             };
             ticketService.create(newTicket)
                 .then(() => {
-                    alert(t('ticket-submitted-successfully'));
+                    showSuccessToast(t('ticket-submitted-successfully'));
                     setTicket({ title: '', description: '', emailAddresses: '' });
                 }).catch(error => {
                     handleError(error);
@@ -118,16 +120,16 @@ function About() {
         <div className="about-container">
             <div className="about">
                 <div className="section-buttons">
-                    <button className={activeTab === 'rules' ? 'active' : ''} onClick={() => setActiveTab('rules')}>
+                    <button className={activeTab === 'rules' ? 'active' : ''} onClick={() => handleTabChange('rules')}>
                         <span className="icon">&#128221;</span>&nbsp;{t('rules')}
                     </button>
-                    <button className={activeTab === 'project' ? 'active' : ''} onClick={() => setActiveTab('project')}>
+                    <button className={activeTab === 'project' ? 'active' : ''} onClick={() => handleTabChange('project')}>
                         <span className="icon">&#128679;</span>&nbsp;{t('project')}
                     </button>
-                    <button className={activeTab === 'status' ? 'active' : ''} onClick={() => setActiveTab('status')}>
+                    <button className={activeTab === 'status' ? 'active' : ''} onClick={() => handleTabChange('status')}>
                         <span className="icon">&#128340;</span>&nbsp;{t('status')}
                     </button>
-                    <button className={activeTab === 'contact' ? 'active' : ''} onClick={() => setActiveTab('contact')}>
+                    <button className={activeTab === 'contact' ? 'active' : ''} onClick={() => handleTabChange('contact')}>
                         <span className="icon">&#128388;</span>&nbsp;{t('contact')}
                     </button>
                 </div>
@@ -148,7 +150,8 @@ function About() {
                     )}
                     {activeTab === 'project' && (
                         <section>
-                            <h3>{t('yamb')}</h3>
+                            <p><a href="https://matej-danic.from.hr"><img src="/svg/favicon.svg" width="50"></img></a></p>
+                            <p><strong>{t('yamb')}</strong></p>
                             <ul>    
                                 <li>API Documentation:&nbsp;<a href="https://api.jamb.com.hr">yamb</a></li>
                                 <li>Org:&nbsp;<a href="https://github.com/yamb-hr">yamb-hr</a></li>
@@ -186,7 +189,9 @@ function About() {
                     )}
                     {activeTab === 'contact' && (
                         <section>
-                            <h2>{t('submit-a-ticket')}</h2>
+                            <p><a href="https://matej-danic.from.hr"><img src="/img/matej.webp" width="50"></img></a></p>
+                            <p><a href="https://matej-danic.from.hr"><strong>Matej Đanić</strong></a></p>
+                            <p><a href="mailto:matej@jamb.com.hr">matej@jamb.com.hr</a></p>
                             <form onSubmit={handleTicketSubmit}>
                                 <div>
                                     <label htmlFor="title">{t('title')}</label>
@@ -220,7 +225,6 @@ function About() {
                                         value={ticket.emailAddresses}
                                         onChange={handleTicketChange}
                                         placeholder={t('enter-email-addresses-comma-separated')}
-                                        required
                                     />
                                 </div>
                                 <button type="submit" disabled={loading}>

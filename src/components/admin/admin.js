@@ -23,6 +23,7 @@ function Admin() {
                     <li><Link to="/players">Players</Link></li>
                     <li><Link to="/scores">Scores</Link></li>
                     <li><Link to="/clashes">Clashes</Link></li>
+                    <li><Link to="/tickets">Tickets</Link></li>
                 </ul>
             </div>
         </div>

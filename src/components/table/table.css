@@ -118,6 +118,10 @@
     color: var(--color-yellow);
 }
 
+.page {
+    margin: auto 0 auto 0;
+}
+
 @media (max-width: 480px) {
     .table-container th, td {
         padding: 10px 12px;

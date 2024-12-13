@@ -179,7 +179,7 @@ const Table = ({ columns, data, service }) => {
                 <button disabled={page === 0} onClick={() => setPage(page - 1)}>
                     Previous
                 </button>
-                <span>
+                <span className="page">
                     Page {page + 1} of {totalPages}
                 </span>
                 <button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>

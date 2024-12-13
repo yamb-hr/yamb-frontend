@@ -111,7 +111,6 @@
     "subject": "Naslov",
     "enter-subject": "Unesi naslov...",
     "description": "Opis",
-    "describe-the-bug": "Opišite grešku...",
     "reset-password": "Resetiraj lozinku",
     "new-password": "Nova lozinka",
     "enter-new-password": "Unesi novu lozinku...",
@@ -133,9 +132,10 @@
     "cancel": "Odustani",
     "refresh": "Osvježi",
     "submit-a-ticket": "Podnesite zahtjev",
+    "ticket-submitted-successfully": "Zathjev uspješno poslan",
     "title": "Naslov",
     "enter-title": "Unesite naslov...",
-    "enter-description": "Opišite problem",
+    "enter-description": "Unesite opis...",
     "email-addresses": "Email adrese (opcionalno)",
     "enter-email-addresses-comma-separated": "Unesite email adrese (odvojene zarezima)"
 }

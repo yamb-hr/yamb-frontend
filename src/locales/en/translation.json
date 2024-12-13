@@ -132,9 +132,10 @@
     "cancel": "Cancel",
     "refresh": "Refresh",
     "submit-a-ticket": "Submit a ticket",
+    "ticket-submitted-successfully": "Ticket submitted successfully",
     "title": "Title",
     "enter-title": "Enter title...",
-    "enter-description": "Describe the issue",
+    "enter-description": "Enter description...",
     "email-addresses": "Email addresses (optional)",
     "enter-email-addresses-comma-separated": "Enter email addresses (comma separated)"
 }

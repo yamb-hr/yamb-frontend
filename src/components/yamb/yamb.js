@@ -20,6 +20,8 @@ import ScoreList from '../scores/scoreList';
 import Score from '../scores/score';
 import LogList from '../log/logList';
 import Log from '../log/log';
+import TicketList from '../ticket/ticketList';
+import Ticket from '../ticket/ticket';
 import Home from '../home/home';
 import EmailVerification from '../auth/email-verification';
 import ForgotPassword from '../auth/forgot-password';
@@ -68,6 +70,8 @@ function Yamb() {
             <Route path="/admin" element={<Admin />} />
             <Route path="/logs" element={<LogList />} />
             <Route path="/logs/:id" element={<Log />} />
+            <Route path="/tickets" element={<TicketList />} />
+            <Route path="/tickets/:id" element={<Ticket />} />
             <Route path="/email-verification" element={<EmailVerification />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>

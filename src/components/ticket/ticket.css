@@ -1,0 +1,25 @@
+.ticket-list-container, .ticket-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+.ticket, .ticket-list {
+    min-width: 200px;
+    width: 70%;
+    max-width: 1000px;
+    min-height: 400px;
+    height: 80vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 480px) {
+
+    .ticket, .ticket-list {
+        width: 100vw;
+        margin-top: 40px;
+        height: 90vh;
+    }
+
+}

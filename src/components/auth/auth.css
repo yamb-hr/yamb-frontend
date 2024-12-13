@@ -122,6 +122,24 @@
     font-size: medium;
 }
 
+.recaptcha-branding {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    line-height: 1.5;
+}
+
+.recaptcha-branding a {
+    color: #007bff;
+    text-decoration: none;
+}
+
+.recaptcha-branding a:hover {
+    text-decoration: underline;
+}
+
+
 @media screen and (max-width: 480px) {
     .auth {
         max-width: 80vw;
