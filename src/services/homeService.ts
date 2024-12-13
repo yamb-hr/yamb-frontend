@@ -20,7 +20,7 @@ class HomeService {
         this.axiosInstance.interceptors.request.use(
             (config: InternalAxiosRequestConfig) => {
                 if (config.headers) {
-                    const language = localStorage.getItem('language');
+                    const language = localStorage.getItem('i18nextLng');
                     if (language) {
                         config.headers['Accept-Language'] = language;
                     }
