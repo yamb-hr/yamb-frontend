@@ -13,60 +13,91 @@ function Profile() {
     const navigate = useNavigate();
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
-    const { showInfoToast } = useContext(ToastContext);
+    const { showInfoToast, showSuccessToast } = useContext(ToastContext);
 
     const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
-    const [profilePicture, setProfilePicture] = useState('');
+    const [avatar, setAvatar] = useState('');
+    const [uploading, setUploading] = useState(false);
     const [errors, setErrors] = useState({});
-    const [isEditingUsername, setIsEditingUsername] = useState(false);
-    const [isEditingEmail, setIsEditingEmail] = useState(false);
+    const [isEditing, setIsEditing] = useState(false);
     const [emailVerified, setEmailVerified] = useState(false);
 
     useEffect(() => {
         if (currentUser) {
             setUsername(currentUser.name);
             setEmail(currentUser.email || '');
-            setProfilePicture(currentUser.profilePicture || '');
+            setAvatar(currentUser.avatar?.url || '/img/avatar.png');
             setEmailVerified(currentUser.emailVerified || false);
         }
     }, [currentUser, navigate]);
 
-    function handleUsernameSubmit(event) {
-        event.preventDefault();
-        const validationErrors = validateUsername();
-        if (Object.keys(validationErrors).length > 0) {
-            setErrors(validationErrors);
-            return;
-        }
-        playerService
-            .changeUsername(currentUser, username)
-            .then((player) => {
-                setCurrentUser(player);
-                setIsEditingUsername(false);
-            })
-            .catch((error) => {
-                handleError(error);
-            });
-    }
+    const handleAvatarUpload = async (event) => {
+        const file = event.target.files[0];
+        if (!file) return;
+        setUploading(true);
+        playerService.updateAvatar(currentUser, file).then(player => {
+            setCurrentUser(player);
+            setAvatar(player.avatar?.url);
+            showInfoToast(t('avatar-updated'));
+        }).catch(error => {
+            handleError(error);
+        }).finally(() => {
+            setUploading(false);
+        });
+    };
 
-    function handleEmailSubmit(event) {
-        event.preventDefault();
-        const validationErrors = validateEmail();
+    const handleSave = async () => {
+        const validationErrors = {
+            ...validateUsername(),
+            ...validateEmail()
+        };
+
         if (Object.keys(validationErrors).length > 0) {
             setErrors(validationErrors);
             return;
         }
-        playerService.updateEmail(currentUser, email)
-            .then((player) => {
+
+        if (username !== currentUser.name) {
+            playerService.updateUsername(currentUser, username).then(player => {
                 setCurrentUser(player);
-                setIsEditingEmail(false);
-                showInfoToast(t("verification-email-sent") + player.email);
-            })
-            .catch((error) => {
+                showSuccessToast(t('username-updated'));
+            }).catch(error => {
                 handleError(error);
             });
-    }
+        }
+        if (email !== currentUser.email) {
+            playerService.updateEmail(currentUser, email).then(player => {
+                setCurrentUser(player);
+                showInfoToast(t('verification-email-sent', { email }));
+            }).catch(error => {
+                handleError(error);
+            });
+        }
+        setIsEditing(false);
+    };
+
+    const validateUsername = () => {
+        const errors = {};
+        if (username.length < 3 || username.length > 15) {
+            errors.username = t('username-length-invalid');
+        }
+        return errors;
+    };
+
+    const validateEmail = () => {
+        const errors = {};
+        const emailRegex = /\S+@\S+\.\S+/;
+        if (email && !emailRegex.test(email)) {
+            errors.email = t('email-invalid');
+        }
+        return errors;
+    };
+
+    const handleChange = (setter) => (event) => {
+        setter(event.target.value);
+        setErrors((prevErrors) => ({ ...prevErrors, [event.target.name]: '' }));
+    };
 
     function handleResendVerificationEmail() {
         if (!currentUser?.email) {
@@ -82,138 +113,78 @@ function Profile() {
             });
     }
 
-    function validateUsername() {
-        const validationErrors = {};
-        if (username.length < 3 || username.length > 15) {
-            validationErrors.username = t('username-length-invalid');
-        }
-        return validationErrors;
-    }
-
-    function validateEmail() {
-        const validationErrors = {};
-        const emailRegex = /\S+@\S+\.\S+/;
-        if (email && !emailRegex.test(email)) {
-            validationErrors.email = t('email-invalid');
-        }
-        return validationErrors;
-    }
-
-    function handleUsernameChange(event) {
-        setUsername(event.target.value);
-        if (errors.username) {
-            setErrors((prevErrors) => ({ ...prevErrors, username: '' }));
-        }
-    }
-
-    function handleEmailChange(event) {
-        setEmail(event.target.value);
-        if (errors.email) {
-            setErrors((prevErrors) => ({ ...prevErrors, email: '' }));
-        }
-    }
-
-    function toggleIsEditingEmail() {   
-        setIsEditingEmail(!isEditingEmail);
-        if (isEditingEmail) {
-            setEmail(currentUser.email);
-        }
-    }
-
-    function toggleIsEditingUsername() {   
-        setIsEditingUsername(!isEditingUsername);
-        if (isEditingUsername) {
-            setUsername(currentUser.name);
-        }
-    }
-
-    const usernameSubmitDisabled = currentUser?.name === username;
-    const emailSubmitDisabled = currentUser?.email === email;
-
     return (
-        <div className="profile-container">
-            <div className="profile">
-                <h3>{t('profile')}</h3>
-
-                {/* Username Section */}
-                <section className="profile-section">
-                    <form onSubmit={handleUsernameSubmit}>
-                        <label>{t('username')}</label>
+        <div className="profile-container"> 
+            <div className="profile id-card">
+                <div className="id-card-header">
+                    <div className="avatar-container">
+                        <img
+                            src={avatar}
+                            alt="Avatar"
+                            className="id-card-avatar"
+                        />
+                        <label htmlFor="avatar-upload" className="upload-label">
+                            {t('upload')}
+                        </label>
+                        <input
+                            id="avatar-upload"
+                            type="file"
+                            accept="image/*"
+                            onChange={handleAvatarUpload}
+                            className="avatar-upload-input"
+                        />
+                    </div>
+                    <div className="username-container">
                         <div className="input-group">
                             <input
                                 type="text"
+                                name="username"
                                 value={username}
-                                onChange={handleUsernameChange}
-                                disabled={!isEditingUsername}
-                                autoFocus={isEditingUsername}
+                                onChange={handleChange(setUsername)}
+                                disabled={!isEditing}
+                                className="id-card-input"
                             />
-                            <button
-                                type="button"
-                                className={isEditingUsername ? 'cancel-button' : 'edit-button'}
-                                onClick={() => toggleIsEditingUsername()}
-                                aria-label={isEditingUsername ? 'Cancel' : 'Edit Username'}
-                            >
-                                {isEditingUsername ? '✖' : '✏️'}
-                            </button>
+                            {errors.username && <span className="error-text">{errors.username}</span>}
                         </div>
-                        {errors.username && <span className="error-text">{errors.username}</span>}
-                        {isEditingUsername && (
-                            <button type="submit" disabled={usernameSubmitDisabled}>
-                                {t('save')}
-                            </button>
-                        )}
-                    </form>
-                </section>
-
-                {/* Email Section */}
-                <section className="profile-section">
-                    <form onSubmit={handleEmailSubmit}>
-                        <label>{t('email')}</label>
-                        <div className="input-group">
-                            <input
-                                type="email"
-                                value={email}
-                                onChange={handleEmailChange}
-                                disabled={!isEditingEmail}
-                                autoFocus={isEditingEmail}
-                            />
-                            <button
-                                type="button"
-                                className={isEditingEmail ? 'cancel-button' : 'edit-button'}
-                                onClick={() => toggleIsEditingEmail()}
-                                aria-label={isEditingEmail ? 'Cancel' : 'Edit Email'}
-                            >
-                                {isEditingEmail ? '✖' : '✏️'}
-                            </button>
-                        </div>
-                        {errors.email && <span className="error-text">{errors.email}</span>}
-                        {isEditingEmail && (
-                            <button type="submit" disabled={emailSubmitDisabled}>
-                                {t('save')}
-                            </button>
-                        )}
-                    </form>
-                    <div className="email-verification">
-                        <p>
-                            {t('verified')}:{' '}
-                            <strong style={{ color: emailVerified ? 'green' : 'red' }}>
+                    </div>
+                </div>
+                <div className="id-card-body">
+                    <div className="input-group">
+                        <input
+                            type="email"
+                            name="email"
+                            value={email}
+                            onChange={handleChange(setEmail)}
+                            disabled={!isEditing}
+                            className="id-card-input"
+                        />
+                        <div className="verified">
+                            {t('verified')}:{' '}<strong style={{ color: emailVerified ? 'green' : 'red' }}>
                                 {emailVerified ? '✔' : '✖'}
                             </strong>
-                        </p>
-                        {!emailVerified && (
+                        </div>
+                        {!emailVerified && !isEditing && (
                             <button onClick={handleResendVerificationEmail} className="button-resend-verification-email">
                                 {t('resend-verification-email')}
                             </button>
                         )}
+                        {errors.email && <span className="error-text">{errors.email}</span>}
                     </div>
-                </section>
-
-                {/* Reset Password */}
-                <section className="link">
-                    <Link to="/password-reset" className="reset-link">
-                        {t('reset-password')}
-                    </Link>
-                </section>
+                    {isEditing && (
+                        <button onClick={handleSave} className="save-button">
+                            {t('save')}
+                        </button>
+                    )}
+                    <button
+                        onClick={() => setIsEditing(!isEditing)}
+                        className={(isEditing ? 'cancel' : 'edit')+'-button'}
+                    >
+                        {isEditing ? t('cancel') : t('edit')}
+                    </button>
+                </div>
+                <Link to="/password-reset" className="reset-link">
+                    {t('reset-password')}
+                </Link>
             </div>
         </div>
     );

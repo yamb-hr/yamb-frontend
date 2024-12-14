@@ -32,7 +32,6 @@ function Yamb() {
 
 	useEffect(() => {
         const script = document.createElement('script');
-        console.log(RECAPTCHA_SITE_KEY);
         script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
         script.async = true;
 

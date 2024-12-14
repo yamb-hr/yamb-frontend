@@ -6,8 +6,8 @@
 }
 
 .settings {
-    background-color: var(--background-settings);
-    color: var(--color-settings);
+    background-color: var(--background-auth);
+    color: var(--color-auth);
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -24,8 +24,8 @@
 }
 
 .settings form select {
-    color: var(--color-table-pagination-button);
-	background-color: var(--background-table-pagination-button);
+    color: var(--color-select-button);
+	background-color: var(--background-select-button);
 	padding: 6px 12px;
     width: 100px;
 	border-radius: 4px;
@@ -37,4 +37,5 @@
 
 .settings form select:hover {
 	cursor: pointer;
+    background: var(--background-select-button-hover);
 }

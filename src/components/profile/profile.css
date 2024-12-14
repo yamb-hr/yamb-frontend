@@ -4,235 +4,157 @@
     justify-content: center;
     height: 100vh;
     padding: 20px;
-    background-color: var(--background-main); /* Optional background color for the page */
-}
-
-.profile {
-    background-color: var(--background-auth);
-    padding: 30px 40px;
-    border-radius: 10px;
-    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
-    width: 100%;
-    max-width: 400px; /* Adjusted for larger forms */
     color: var(--color-auth);
 }
 
-.profile h2 {
-    text-align: center;
-    font-size: 1.5rem;
-    margin-bottom: 20px;
-    color: var(--color-auth-heading);
-}
-
-.profile form {
-    margin-bottom: 20px;
-}
-
-.profile label {
-    text-align: left;
-    font-size: 14px;
-    font-weight: bold;
-    margin-bottom: 5px;
-    display: block;
-}
-
-.profile .input-group {
+.profile.id-card {
+    background-color: var(--background-auth);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
+    width: 100%;
     display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.id-card-header {
+    display: flex;
+    flex-direction: row;
     align-items: center;
-    margin-bottom: 10px;
+    gap: 20px;
+}
+
+.avatar-container {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ddd;
     position: relative;
 }
 
-.profile input[type="text"],
-.profile input[type="email"] {
+.id-card-avatar {
     width: 100%;
-    padding: 12px;
-    margin: 0;
-    font-size: 16px;
-    background-color: var(--background-auth-input);
-    color: var(--color-auth-input);
-    border: 1px solid var(--border-auth-input);
-    border-radius: 4px;
-    outline: none;
-    transition: border-color 0.2s;
+    height: 100%;
+    object-fit: cover;
 }
 
-.profile input[type="text"]:disabled,
-.profile input[type="email"]:disabled {
-    background-color: var(--background-profile);
-    color: var(--color-auth-disabled);
-    cursor: not-allowed;
-}
-
-.profile input[type="text"]:focus,
-.profile input[type="email"]:focus {
-    border-color: var(--border-auth-input-focus);
-}
-
-.profile button[type="submit"] {
-    width: 100%;
-    padding: 12px;
+.upload-label {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
     background-color: var(--background-auth-button);
-    border: none;
     color: var(--color-auth-button);
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.1s;
-    border-radius: 4px;
-    margin-top: 15px;
-}
-
-.profile button[type="submit"]:hover:enabled {
-    cursor: pointer;
-    background-color: var(--background-auth-button-hover);
-    transform: scale(1.02);
-}
-
-.profile button[type="submit"]:disabled {
-    background-color: var(--background-auth-button-disabled);
-    color: var(--color-auth-disabled);
-    cursor: not-allowed;
-}
-
-.profile .link {
-    text-align: center;
-    font-size: 14px;
-    margin-top: 15px;
-}
-
-.profile .link a {
-    color: var(--color-auth-link);
-    text-decoration: none;
-}
-
-.profile .link a:hover {
-    text-decoration: underline;
-}
-
-.profile .edit-button,
-.profile .cancel-button {
-    border: none;
-    background: none;
-    color: var(--color-auth);
-    font-size: 1.2rem;
-    cursor: pointer;
-    margin-left: 10px;
-    transition: color 0.2s, transform 0.1s;
-}
-
-.profile .edit-button:hover,
-.profile .cancel-button:hover {
-    color: var(--color-auth-hover);
-    transform: scale(1.1);
-}
-
-.profile hr {
-    margin: 20px 0;
-    border: none;
-    border-top: 1px solid var(--border-auth-separator);
-}
-
-.profile .error-text {
-    color: var(--color-auth-error);
+    padding: 5px 10px;
     font-size: 12px;
-    margin-top: 5px;
-}
-
-.profile-section {
-    margin-bottom: 20px;
-}
-
-.profile .link {
-    margin-top: 15px;
-    text-align: center;
-    font-size: 14px;
-}
-
-.profile .link a {
-    color: var(--color-auth-link);
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.profile .link a:hover {
+    border-radius: 12px;
     cursor: pointer;
-    text-decoration: underline;
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 
-.profile .email-verification {
-    text-align: right;
-    font-size: 14px;
+.avatar-container:hover .upload-label {
+    opacity: 1;
 }
 
-.profile .button-resend-verification-email {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--background-auth-button);
-    border: none;
-    color: var(--color-auth-button);
-    font-size: 16px;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.1s;
-    border-radius: 4px;
-    margin-top: 15px;
+.avatar-upload-input {
+    display: none;
 }
 
-.profile .button-resend-verification-email:hover:enabled {
-    cursor: pointer;
-    background-color: var(--background-auth-button-hover);
+.username-container {
+    flex: 1;
 }
 
-.profile .button-resend-verification-email:disabled {
-    background-color: var(--background-auth-button-disabled);
-    color: var(--color-auth-disabled);
-    cursor: not-allowed;
-}
-
-/* Profile Picture Section */
-.profile-picture-container {
+.input-group {
     display: flex;
     flex-direction: column;
-    align-items: center;
-    margin-bottom: 20px;
+    gap: 5px;
 }
 
-.profile-picture {
-    width: 100px;
-    height: 100px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 2px solid var(--border-auth-input);
-    margin-bottom: 10px;
-    transition: transform 0.2s ease, box-shadow 0.2s ease;
-}
-
-.profile-picture:hover {
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.upload-button {
-    display: inline-block;
-    padding: 8px 15px;
-    font-size: 14px;
-    color: var(--color-auth-button);
-    background-color: var(--background-auth-button);
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    text-align: center;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.1s;
-}
-
-.upload-button:hover {
-    background-color: var(--background-auth-button-hover);
-    transform: scale(1.05);
-}
-
-.upload-button:focus {
+.id-card-input {
+    padding: 10px;
+    border: 1px solid var(--background-auth);
+    border-radius: 5px;
+    font-size: 1rem;
     outline: none;
+    transition: border-color 0.3s ease;
+    color: var(--color-auth);
+    background-color: var(--background-auth);
 }
 
-#profile-picture-upload {
-    display: none;
+.id-card-input:enabled {
+    border-color: var(--color-auth);
+}
+
+.error-text {
+    font-size: 12px;
+    color: #d9534f;
+}
+
+.id-card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.save-button,
+.edit-button,
+.cancel-button {
+    margin-top: 10px;
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.save-button {
+    background-color: var(--background-save-button);
+    color: var(--color-auth-button);
+}
+
+.save-button:hover {
+    background-color: var(--background-save-button-hover);
+}
+
+.edit-button {
+    background-color: var(--background-edit-button);
+    color: var(--color-edit-button);
+}
+
+.edit-button:hover {
+    background-color: var(--background-edit-button-hover);
+}
+
+.cancel-button {
+    background-color: var(--background-cancel-button);
+    color: var(--color-cancel-button);
+}
+
+.cancel-button:hover {
+    background-color: var(--background-cancel-button-hover);
+}
+
+.button-resend-verification-email {
+    background-color: var(--background-auth-button);
+    color: var(--color-auth-button);
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.button-resend-verification-email:hover:enabled {
+    background-color: var(--background-auth-button-hover);
+}
+
+.verified {
+    font-size: small;
+    text-align: right;
 }

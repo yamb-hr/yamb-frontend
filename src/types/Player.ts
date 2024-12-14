@@ -19,6 +19,7 @@ export interface Player {
         username?: Link;
         email?: Link;
         stats?: Link;
+        avatar?: Link;
     };
 }
 

@@ -130,6 +130,8 @@
     "submit": "Submit",
     "save": "Save",
     "cancel": "Cancel",
+    "edit": "Edit",
+    "upload": "Upload",
     "refresh": "Refresh",
     "submit-a-ticket": "Submit a ticket",
     "ticket-submitted-successfully": "Ticket submitted successfully",

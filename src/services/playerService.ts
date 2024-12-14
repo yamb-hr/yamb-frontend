@@ -170,6 +170,30 @@ class PlayerService {
         console.log("getLogsByPlayerId", data);
         return data;
     }
+
+    async updateAvatar(player: Player, file: File): Promise<Player> {
+        let avatarLink = player._links?.avatar?.href;
+        if (!avatarLink) {
+            throw new Error("Avatar link not available for this player");
+        }
+        // remove the query parameter from the link
+        avatarLink = avatarLink.split('?')[0];
+
+        const formData = new FormData();
+        console.log(file);
+        formData.append('file', file);
+
+        console.log(avatarLink, formData);
+        const { data }: AxiosResponse<Player> = await this.axiosInstance.put(avatarLink, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        });
+        
+        console.log("uploadAvatar", data);
+        return data;
+    }
+    
 }
 
 const playerService = new PlayerService();
