@@ -38,10 +38,6 @@
     border-radius: 8px;
 }
 
-.admin ul li {
-    border-radius: 8px;
-}
-
 .admin ul li:hover a {
     background-color: var(--background-auth-hover);
 }
@@ -49,6 +45,14 @@
 .admin ul li:hover {
     cursor: pointer;
 }
+
+    .admin ul li:hover a {
+        background-color: var(--background-default-hover);
+    }
+
+    .admin ul li:hover {
+        cursor: pointer;
+    }
 
     .admin ul li:hover a {
         background-color: var(--background-default-hover);
