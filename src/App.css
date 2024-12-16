@@ -55,8 +55,8 @@
 }
 
 .error-fallback-button {
-  background-color: var(--background-auth-button);
-  color: var(--color-auth-button);
+  background-color: var(--background-default-button);
+  color: var(--color-default-button);
   border: none;
   padding: 12px 20px;
   font-size: 1rem;
@@ -67,7 +67,7 @@
 }
 
 .error-fallback-button:hover {
-  background-color: var(--background-auth-button-hover);
+  background-color: var(--background-default-button-hover);
   transform: scale(1.05);
 }
 

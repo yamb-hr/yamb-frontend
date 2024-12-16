@@ -2,6 +2,7 @@ import { createContext, useState, useEffect, useContext } from 'react';
 import playerService from '../services/playerService';
 import authService from '../services/authService';
 import { ErrorHandlerContext } from './errorHandlerProvider';
+import Spinner from '../components/spinner/spinner';
 
 export const CurrentUserContext = createContext(null);
 
@@ -26,6 +27,10 @@ export const CurrentUserProvider = ({ children }) => {
                 setLoading(false);
             })
     }, []);
+
+    if (loading) {
+        return <Spinner />
+    }
 
     return (
         <CurrentUserContext.Provider value={{ currentUser, setCurrentUser, loading }}>

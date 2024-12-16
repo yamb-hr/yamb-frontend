@@ -7,26 +7,36 @@ import './column.css';
 function Column(props) {
 
     const { t } = useTranslation();
+    const {
+        type,
+        boxes,
+        rollCount,
+        announcement,
+        isSpectator,
+        topSectionSum,
+        middleSectionSum,
+        bottomSectionSum
+    } = props;
 
     const handleBoxClick = (boxType) => {
-        props.onBoxClick(props.type, boxType);
+        props.onBoxClick(type, boxType);
     };
 
     function isBoxDisabled(box) {
-        if (props.rollCount === 0) {
+        if (rollCount === 0) {
             return true;
         } else if (box.value != null) {
             return true;
-        } else if (props.announcement != null) {
-            return props.type !== "ANNOUNCEMENT" || box.type !== props.announcement;
-        } else if (props.type === "FREE") {
+        } else if (announcement != null) {
+            return type !== "ANNOUNCEMENT" || box.type !== announcement;
+        } else if (type === "FREE") {
             return false;
-        } else if (props.type === "DOWNWARDS") {
-            return box.type !== "ONES" && props.boxes[props.boxes.findIndex(x => x.type === box.type) - 1].value == null;
-        } else if (props.type === "UPWARDS") {
-            return box.type !== "YAMB" && props.boxes[props.boxes.findIndex(x => x.type === box.type) + 1].value == null;
-        } else if (props.type === "ANNOUNCEMENT") {
-            return props.rollCount !== 1 && box.type !== props.announcement;
+        } else if (type === "DOWNWARDS") {
+            return box.type !== "ONES" && props.boxes[boxes.findIndex(x => x.type === box.type) - 1].value == null;
+        } else if (type === "UPWARDS") {
+            return box.type !== "YAMB" && props.boxes[boxes.findIndex(x => x.type === box.type) + 1].value == null;
+        } else if (type === "ANNOUNCEMENT") {
+            return props.rollCount !== 1 && box.type !== announcement;
         }
         return false;
     };
@@ -34,30 +44,30 @@ function Column(props) {
     return (
         <div className="column">    
             <Label 
-                icon={props.type.toLowerCase()} 
-                value={props.type}
-                info={t(props.type.toLowerCase() + '-info')}
+                icon={type.toLowerCase()} 
+                value={type}
+                info={t(type.toLowerCase() + '-info')}
                 variant="column-symbol">
             </Label>
-            {props.boxes.map((box) => (
+            {boxes.map((box) => (
                 <Box 
-                    key={props.type + box.type}
+                    key={type + box.type}
                     type={box.type}
                     value={box.value}
-                    columnType={props.type}
-                    announcement={props.announcement}
-                    disabled={props.everythingDisabled || isBoxDisabled(box)}
+                    columnType={type}
+                    announcement={announcement}
+                    disabled={isSpectator || isBoxDisabled(box)}
                     onClick={handleBoxClick}>
                 </Box>
             ))}
             <div className="sum column-top-section-sum">
-                <Label variant="sum" value={props.topSectionSum}></Label>
+                <Label variant="sum" value={topSectionSum}></Label>
             </div>
             <div className="sum column-middle-section-sum">
-                <Label variant="sum" value={props.middleSectionSum}></Label>
+                <Label variant="sum" value={middleSectionSum}></Label>
             </div>
             <div className="sum column-bottom-section-sum">
-                <Label variant="sum" value={props.bottomSectionSum}></Label>
+                <Label variant="sum" value={bottomSectionSum}></Label>
             </div>
         </div>
     );

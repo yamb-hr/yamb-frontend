@@ -70,7 +70,7 @@ class GameService {
     }
 
     async rollById(game: Game, diceToRoll: number[]): Promise<Game> {
-        const rollLink = game._links.roll?.href;
+        const rollLink = game._links?.roll?.href;
         if (!rollLink) {
             throw new Error('No roll link found for this game');
         }
@@ -81,7 +81,7 @@ class GameService {
     }
 
     async fillById(game: Game, columnType: string, boxType: string): Promise<Game> {
-        const fillLink = game._links.fill?.href;
+        const fillLink = game._links?.fill?.href;
         if (!fillLink) {
             throw new Error('No fill link found for this game');
         }
@@ -92,7 +92,7 @@ class GameService {
     }
 
     async announceById(game: Game, boxType: string): Promise<Game> {
-        const announceLink = game._links.announce?.href;
+        const announceLink = game._links?.announce?.href;
         if (!announceLink) {
             throw new Error('No announce link found for this game');
         }
@@ -103,7 +103,7 @@ class GameService {
     }
 
     async restartById(game: Game): Promise<Game> {
-        const restartLink = game._links.restart?.href;
+        const restartLink = game._links?.restart?.href;
         if (!restartLink) {
             throw new Error('No restart link found for this game');
         }
@@ -114,7 +114,7 @@ class GameService {
     }
 
     async archiveById(game: Game): Promise<Game> {
-        const archiveLink = game._links.archive?.href;
+        const archiveLink = game._links?.archive?.href;
         if (!archiveLink) {
             throw new Error('No archive link found for this game');
         }

@@ -6,8 +6,8 @@
 }
 
 .settings {
-    background-color: var(--background-auth);
-    color: var(--color-auth);
+    background-color: var(--background-default);
+    color: var(--color-default);
     padding: 20px 30px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);

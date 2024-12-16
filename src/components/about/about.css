@@ -7,8 +7,8 @@
 
 .about {
     padding: 20px;
-    background-color: var(--background-auth);
-    color: var(--color-auth);
+    background-color: var(--background-default);
+    color: var(--color-default);
     border-radius: 8px;
     min-width: 300px;
     max-width: 600px;
@@ -35,12 +35,12 @@
 .button-refresh {
     width: 100%;
     padding: 12px;
-    background-color: var(--background-auth-button);
+    background-color: var(--background-default-button);
     border: none;
-    color: var(--color-auth-button);
+    color: var(--color-default-button);
     font-size: 16px;
     transition: background-color 0.3s ease-in-out;
-    border: 1px solid var(--border-auth-button);
+    border: 1px solid var(--border-default-button);
     border-radius: 4px;
     margin-top: 20px;
     margin-bottom: 10px;
@@ -51,12 +51,17 @@
     background-color: var(--background-auth-button-hover);
 }
 
+.button-refresh:hover:enabled {
+    cursor: pointer;
+    background-color: var(--background-default-button-hover);
+}
+
 .button-refresh:disabled {
-    background-color: var(--background-auth-button-disabled);
+    background-color: var(--background-default-button-disabled);
 }
 
 .section-buttons button {
-    color: var(--color-auth);
+    color: var(--color-default);
     padding: 10px;
     margin: 4px;
     border: none;
@@ -65,11 +70,11 @@
 }
 
 .section-buttons button:hover {
-    background-color: var(--background-auth-hover);
+    background-color: var(--background-default-hover);
 }
 
 .section-buttons button.active {
-    background-color: var(--background-auth-hover);
+    background-color: var(--background-default-hover);
 }
 
 .about p {
@@ -103,7 +108,7 @@
 }
 
 .about form label {
-    color: var(--color-auth);
+    color: var(--color-default);
     margin-bottom: 4px;
 }
 
@@ -133,9 +138,9 @@
 .about form button[type="submit"] {
     width: 100%;
     padding: 12px;
-    background-color: var(--background-auth-button);
+    background-color: var(--background-default-button);
     border: none;
-    color: var(--color-auth-button);
+    color: var(--color-default-button);
     font-size: 16px;
     font-weight: bold;
     transition: background-color 0.3s ease, transform 0.1s;
@@ -144,7 +149,7 @@
 }
 
 .about form button[type="submit"]:hover {
-    background-color: var(--background-auth-button-hover);
+    background-color: var(--background-default-button-hover);
 }
 
 @media screen and (max-width: 480px) {

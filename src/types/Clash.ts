@@ -9,10 +9,9 @@ export interface Clash {
     updatedAt: Date;
     owner: Player;
     winner: Player;
-    currentPlayer: Player;
+    turn: Number;
     type: ClashType;
     status: ClashStatus;
-    invitations: Invitations;
     players: Player[];
     _links: {
         self: { href: string };

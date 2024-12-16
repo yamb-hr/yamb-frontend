@@ -1,4 +1,4 @@
-import React, { useState, useContext, useCallback, useEffect } from 'react';
+import React, { useState, useContext, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
 import { PreferencesContext } from '../../providers/preferencesProvider';
@@ -11,8 +11,7 @@ const localeStringFormat = {
     hour: 'numeric', minute: 'numeric', second: 'numeric',
 };
 
-const Table = ({ columns, data, service }) => {
-    
+const Table = ({ columns, data, service, selectable = false, selectedRows = [], onRowSelection = () => {}, paginated = true }) => {
     const navigate = useNavigate();
     const { handleError } = useContext(ErrorHandlerContext);
     const { language } = useContext(PreferencesContext);
@@ -136,25 +135,30 @@ const Table = ({ columns, data, service }) => {
 
     const handleRowClick = (row) => {
         if (row.id) {
-            const resourceId = row.id;
-            const link = row._links?.self?.href;
-            if (link) {
-                const segments = link.split('/');
-                const resource = segments[segments.length - 2];
-                navigate(`/${resource}/${resourceId}`);
+            if (selectable) {
+                onRowSelection(row.id);
+            } else {
+                const resourceId = row.id;
+                const link = row._links?.self?.href;
+                if (link) {
+                    const segments = link.split('/');
+                    const resource = segments[segments.length - 2];
+                    navigate(`/${resource}/${resourceId}`);
+                }
             }
         }
     };
 
     const sortedData = sortData(tableData);
-    const displayData = getPaginatedData(sortedData);
+    const displayData = paginated ? getPaginatedData(sortedData) : sortedData;
     const totalPages = Math.ceil(tableData.length / pageSize);
 
-    if (displayData && displayData.length > 0) return (
+    return (
         <div className="table-container">
             <table>
                 <thead>
                     <tr>
+                        {selectable && <th></th>}
                         {columns.map((column) => (
                             <th key={column.key} onClick={() => handleSort(column.key)}>
                                 {column.label} {sortColumn === column.key ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
@@ -165,40 +169,49 @@ const Table = ({ columns, data, service }) => {
                 <tbody>
                     {displayData.map((row) => (
                         <tr key={row.id} onClick={() => handleRowClick(row)}>
-                            {columns.map((column) => (
-                                <td key={column.key}>
-                                    {getFormattedValue(row, column.key)}
+                            {selectable && (
+                                <td>
+                                    <input
+                                        type="checkbox"
+                                        checked={selectedRows.includes(row.id)}
+                                        readOnly
+                                    />
                                 </td>
+                            )}
+                            {columns.map((column) => (
+                                <td key={column.key}>{getFormattedValue(row, column.key)}</td>
                             ))}
                         </tr>
                     ))}
                 </tbody>
             </table>
 
-            <div className="pagination-controls">
-                <button disabled={page === 0} onClick={() => setPage(page - 1)}>
-                    Previous
-                </button>
-                <span className="page">
-                    Page {page + 1} of {totalPages}
-                </span>
-                <button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>
-                    Next
-                </button>
-                <select
-                    value={pageSize}
-                    onChange={(e) => {
-                        setPageSize(Number(e.target.value));
-                        setPage(0);
-                    }}
-                >
-                    <option value={5}>5</option>
-                    <option value={10}>10</option>
-                    <option value={20}>20</option>
-                    <option value={50}>50</option>
-                    <option value={100}>100</option>
-                </select>
-            </div>
+            {paginated && (
+                <div className="pagination-controls">
+                    <button disabled={page === 0} onClick={() => setPage(page - 1)}>
+                        Previous
+                    </button>
+                    <span className="page">
+                        Page {page + 1} of {totalPages}
+                    </span>
+                    <button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>
+                        Next
+                    </button>
+                    <select
+                        value={pageSize}
+                        onChange={(e) => {
+                            setPageSize(Number(e.target.value));
+                            setPage(0);
+                        }}
+                    >
+                        <option value={5}>5</option>
+                        <option value={10}>10</option>
+                        <option value={20}>20</option>
+                        <option value={50}>50</option>
+                        <option value={100}>100</option>
+                    </select>
+                </div>
+            )}
         </div>
     );
 };

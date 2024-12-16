@@ -62,6 +62,12 @@ class PlayerService {
         return data;
     }
 
+    async getAllActive(): Promise<PlayerCollection> {
+        const { data }: AxiosResponse<PlayerCollection> = await this.axiosInstance.get('/active');
+        console.log("PlayerService.getAllActive", data);
+        return data;
+    }
+
     async getStatsById(player: Player): Promise<PlayerStats> {
         const statsLink = player._links?.stats?.href;
         if (!statsLink) {

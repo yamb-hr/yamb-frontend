@@ -1,9 +1,11 @@
 import { createContext, useState } from 'react';
 import { useEffect, useContext } from 'react';
 import { Client } from '@stomp/stompjs';
-import SockJS from 'sockjs-client';
 import { CurrentUserContext } from './currentUserProvider';
+import { ErrorHandlerContext } from './errorHandlerProvider';
+import SockJS from 'sockjs-client';
 import authService from '../services/authService';
+import playerService from '../services/playerService';
 
 export const StompClientContext = createContext(null);
 
@@ -11,9 +13,12 @@ const API_URL = process.env.REACT_APP_API_URL + '/ws';
 
 export const StompClientProvider = ({ children }) => {
 
+	const { currentUser } = useContext(CurrentUserContext);
+	const { handleError } = useContext(ErrorHandlerContext);
+
+	const [ activePlayers, setActivePlayers ] = useState([]);
     const [ stompClient, setStompClient ] = useState(null);
     const [ isConnected, setConnected ] = useState(false);
-	const { currentUser } = useContext(CurrentUserContext);
 
 	useEffect(() => {
 		if (currentUser) {
@@ -29,6 +34,11 @@ export const StompClientProvider = ({ children }) => {
 			client.onConnect = () => {
 				console.log('WebSocket connected');
 				client.subscribe('/topic/players', onPlayerStatusChanged);
+				playerService.getAllActive().then(data => {
+					setActivePlayers(data._embedded.players);
+				}).catch(error => {
+					handleError(error);
+				});
 				setConnected(true);
 			};
 
@@ -51,11 +61,12 @@ export const StompClientProvider = ({ children }) => {
 	}, [ currentUser ]);
 
 	const onPlayerStatusChanged = (message) => {
-		console.log("Player Status", JSON.parse(message.body));
+		let body = JSON.parse(message.body);
+		setActivePlayers(JSON.parse(atob(body.payload)).content);
 	}
 
     return (
-        <StompClientContext.Provider value={{ stompClient, setStompClient, isConnected }}>
+        <StompClientContext.Provider value={{ stompClient, setStompClient, isConnected, activePlayers }}>
             {children}
         </StompClientContext.Provider>
     );
