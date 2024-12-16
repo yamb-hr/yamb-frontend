@@ -39,12 +39,14 @@
 }
 
 .admin ul li:hover a {
-    background-color: var(--background-auth-hover);
+    background-color: var(--background-default-hover);
 }
 
 .admin ul li:hover {
     cursor: pointer;
 }
+
+@media (max-width: 480px) {
 
     .admin ul li:hover a {
         background-color: var(--background-default-hover);

@@ -8,7 +8,6 @@ import clashService from '../../services/clashService';
 import Spinner from '../spinner/spinner';
 import Table from '../table/table';
 import './clash.css';
-import PlayerList from '../player/playerList';
 
 function ClashList() {
     
@@ -36,7 +35,7 @@ function ClashList() {
 
     useEffect(() => {
         if (!data && currentUser) {
-            // fetchData();
+            fetchData();
         }
     }, [currentUser]);
 
