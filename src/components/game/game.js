@@ -14,26 +14,26 @@ import './game.css';
 
 const DEFAULT_DICE = [0, 1, 2, 3, 4];
 
-function Game({ id: propId }) {
+function Game(props) {
 
 	const { id: urlId } = useParams();
-	const id = urlId || propId;
+    const id = props?.id || urlId;
 	const { t } = useTranslation();
 	const { showInfoToast } = useContext(ToastContext);
 	const { currentUser } = useContext(CurrentUserContext);
 	const { stompClient, isConnected } = useContext(StompClientContext);
 	const { handleError } = useContext(ErrorContext);
 
-	const [game, setGame] = useState(null);
+	const [game, setGame] = useState(props.gameData);
 	const [subscribed, setSubscribed] = useState(false);
 	const [fill, setFill] = useState(null);
 	const [restart, setRestart] = useState(false);
 	const [diceToRoll, setDiceToRoll] = useState(DEFAULT_DICE);
 	const [isRolling, setRolling] = useState(false);
 
-	const everythingDisabled = currentUser?.id !== game?.player.id;
+	const isSpectator = currentUser?.id !== game?.player?.id;
 	const rollCount = game?.rollCount || 0;
-	const diceDisabled = everythingDisabled || rollCount === 0 || rollCount === 3 || game?.status !== 'IN_PROGRESS';
+	const diceDisabled = isSpectator || rollCount === 0 || rollCount === 3 || game?.status !== 'IN_PROGRESS';
 
 	useEffect(() => {
 		if (game?.status === 'COMPLETED') handleShareModal();
@@ -56,7 +56,7 @@ function Game({ id: propId }) {
     };
 
 	useEffect(() => {
-        if (id && stompClient && isConnected && subscribed) {
+        if (id && stompClient && isConnected && subscribed && isSpectator) {
             const subscription = stompClient.subscribe(`/topic/games/${id}`, onGameAction);
             return () => subscription.unsubscribe();
         }
@@ -77,12 +77,13 @@ function Game({ id: propId }) {
 	}, [fill]);
 
 	const onGameAction = (message) => {
-        const gameData = JSON.parse(message.body).content;
-        setGame(gameData);
-
-        if (gameData.action === 'ROLL') {
-            initiateRoll();
-        }
+		let body = JSON.parse(message.body);
+		setGame(JSON.parse(atob(body.payload)));
+        if (message.headers.messageType === "ROLL") {
+            initiateRollAnimation();
+        } else if (message.headers.messageType === "FILL") {
+			props.onFill();
+		}
     };
 
 	const initiateRoll = () => {
@@ -114,7 +115,9 @@ function Game({ id: propId }) {
 		gameService.fillById(game, columnType, boxType).then((data) => {
 			setGame(data);
 			if (data.status === 'COMPLETED') handleShareModal();
+			props.onFill();
 		}).catch(handleError);
+
 	};
 
 	const handleAnnounce = (type) => {
@@ -155,19 +158,25 @@ function Game({ id: propId }) {
 	};
 
 	const handleShareModal = () => {
-		showInfoToast(
-			<div>
-				<img src="/logo.png" alt="Yamb" className="share-logo" />
-				<h2>{t("congrats")}</h2>
-				<p>{t("congrats-score")}</p>
-				{game && <h2>{game.totalSum}</h2>}
-				<button className="share-button" onClick={handleShare}>{t("share-score")}</button>
-				<hr />
-				<p>{t("want-to-try-again")}</p>
-				<button className="new-game-button" onClick={handleArchive}>{t("new-game")}</button>
-				<button className="close-button" onClick={() => toast.dismiss()}>X</button>
-			</div>
-		);
+		if (!modalShowing && !isSpectator) {
+			setModalShowing(true);
+			let autoClose = 99999;
+			showInfoToast(
+				<div>
+					<img src="/logo.png" alt="Yamb" className="share-logo" />
+					<h2>{t("congrats")}</h2>
+					<p>{t("congrats-score")}</p>
+					{game && <h2>{game.totalSum}</h2>}
+					<button className="share-button" onClick={handleShare}>{t("share-score")}</button>
+					<hr />
+					<p>{t("want-to-try-again")}</p>
+					<button className="new-game-button" onClick={handleArchive}>{t("new-game")}</button>
+				</div>, autoClose
+			);
+			setTimeout(() => {
+				setModalShowing(false)
+			}, 99999);
+		}
 	};
 
 	const handleShare = () => {
@@ -175,7 +184,7 @@ function Game({ id: propId }) {
 			navigator.share({
 				title: t('yamb'),
 				text: t('share-score-text', { score: game.totalSum }),
-				url: `/games/${game.id}`,
+				url: `/games/${id}`,
 			}).catch(console.error);
 		} else {
 			alert("Your browser doesn't support the Web Share API.");
@@ -210,6 +219,7 @@ function Game({ id: propId }) {
 							diceToRoll={diceToRoll}
 							subscribed={subscribed}
 							isRolling={isRolling}
+							isSpectator={isSpectator}
 							onRoll={handleRoll}
 							onRestart={showRestartPrompt}
 							onBoxClick={handleBoxClick}

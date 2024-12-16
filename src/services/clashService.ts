@@ -71,6 +71,12 @@ class ClashService {
         console.log("ClashService.deleteAll", data);
         return data;
     }
+
+    async create(ownerId: String, playerIds: String[], type: String): Promise<Clash> {
+        const { data }: AxiosResponse<Clash> = await this.axiosInstance.post('/', { ownerId: ownerId, playerIds: playerIds, type: type});
+        console.log("ClashService.create", data);
+        return data;
+    }
 }
 
 const clashService = new ClashService();

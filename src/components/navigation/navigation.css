@@ -140,7 +140,7 @@
 }
 
 .burger .icon {
-    color: var(--color-auth-input);
+    color: var(--color-default-input);
     filter: grayscale(100%);
 }
 
@@ -176,9 +176,9 @@
 
 .search {
     padding: 8px;
-    background-color: var(--background-auth-input);
-    color: var(--color-auth-input);
-    caret-color: var(--color-auth-input);
+    background-color: var(--background-default-input);
+    color: var(--color-default-input);
+    caret-color: var(--color-default-input);
     box-shadow: 0px 12px 24px rgba(70, 70, 70, 0.15);
     transition: box-shadow 0.3s ease;
 }

@@ -24,13 +24,13 @@ function Sheet(props) {
         player,
         diceToRoll,
         subscribed,
-        isRolling
+        isRolling,
+        isSpectator
     } = props;
 
-    const everythingDisabled = currentUser?.id !== player.id;
-    const restartButtonDisabled = everythingDisabled || status !== "IN_PROGRESS";
-    const rollDisabled = everythingDisabled || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
-
+    const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS";
+    const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
+    
     function handleRoll() {
         props.onRoll();
     }
@@ -162,7 +162,7 @@ function Sheet(props) {
                         boxes={column.boxes} 
                         rollCount={rollCount}
                         announcement={announcement}
-                        everythingDisabled={everythingDisabled}
+                        isSpectator={isSpectator}
                         topSectionSum={getTopSectionSumByIndex(index)}
                         middleSectionSum={getMiddleSectionSumByIndex(index)}
                         bottomSectionSum={getBottomSectionSumByIndex(index)}
@@ -191,7 +191,7 @@ function Sheet(props) {
                 <button className="username-button" onClick={() => { navigate("/players/" + player.id) }}>
                     {player.name}
                 </button>
-                {location?.pathname !== '/' && (<div className="switch-container">
+                {isSpectator && location?.pathname !== '/' && (<div className="switch-container">
                     <label className="switch">
                         <input 
                             type="checkbox" 

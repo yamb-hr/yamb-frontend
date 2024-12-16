@@ -1,7 +1,7 @@
 .about {
     padding: 20px;
-    background-color: var(--background-window);
-    color: var(--color-text);
+    background-color: var(--background-default);
+    color: var(--color-default);
     border-radius: 8px;
     min-width: 300px;
     max-width: 600px;
@@ -28,7 +28,14 @@
 }
 
 .button-refresh {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background-default-button);
     border: none;
+    color: var(--color-default-button);
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid var(--border-default-button);
     border-radius: 4px;
     padding: 8px;
     background-color: var(--background-info-button);
@@ -38,12 +45,17 @@
     font-size: large;
 }
 
-.button-refresh:hover {
-    background-color: var(--background-info-button-hover);
+.button-refresh:hover:enabled {
+    cursor: pointer;
+    background-color: var(--background-default-button-hover);
+}
+
+.button-refresh:disabled {
+    background-color: var(--background-default-button-disabled);
 }
 
 .section-buttons button {
-    color: var(--color-nav);
+    color: var(--color-default);
     padding: 10px;
     margin: 4px;
     border: none;
@@ -52,11 +64,11 @@
 }
 
 .section-buttons button:hover {
-    background-color: var(--background-nav-hover);
+    background-color: var(--background-default-hover);
 }
 
 .section-buttons button.active {
-    background-color: var(--background-nav-hover);
+    background-color: var(--background-default-hover);
 }
 
 .about p {
@@ -94,7 +106,7 @@
 }
 
 .about form label {
-    color: var(--color-text);
+    color: var(--color-default);
     margin-bottom: 4px;
 }
 
@@ -124,11 +136,14 @@
 }
 
 .about form button[type="submit"] {
-    width: 150px;
-    padding: 8px;
-    color: var(--color-form-submit);
-    background-color: var(--background-form-submit);
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background-default-button);
     border: none;
+    color: var(--color-default-button);
+    font-size: 16px;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.1s;
     border-radius: 4px;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -138,7 +153,7 @@
 }
 
 .about form button[type="submit"]:hover {
-    background-color: var(--background-form-submit-hover);
+    background-color: var(--background-default-button-hover);
 }
 
 @media screen and (max-width: 480px) {

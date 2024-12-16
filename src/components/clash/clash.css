@@ -7,6 +7,28 @@
     overflow-y: auto;
 }
 
+.create-clash-button {
+    width: 100%;
+    padding: 12px;
+    background-color: var(--background-default-button);
+    border: none;
+    color: var(--color-default-button);
+    font-size: 16px;
+    transition: background-color 0.3s ease-in-out;
+    border: 1px solid var(--border-default-button);
+    border-radius: 4px;
+    margin-bottom: 10px;
+}
+
+.create-clash-button:disabled {
+    background-color: var(--background-default-button-disabled);
+    color: var(--color-default-button-disabled);
+}
+
+.create-clash-button:hover:not(:disabled) {
+    background-color: var(--background-default-button-hover);
+}
+
 .button-play {
     padding: 10px;
     background-color: var(--color-blue);
@@ -17,11 +39,14 @@
 }
 
 @media (max-width: 480px) {
-
     .clash, .clash-list {
         width: 100vw;
         margin-top: 40px;
         height: 90vh;
     }
-    
+
+    .create-clash-button {
+        width: 100%;
+        font-size: 14px;
+    }
 }

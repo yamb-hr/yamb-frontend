@@ -159,12 +159,12 @@ function Navigation() {
                         </Link>
                     </li>
                     <hr style={{ width: '90%' }} />
-                    <li>
+                    {currentUser?.admin && (<li>
                         <Link to="/admin" className={activePage === 'admin' ? 'active' : ''} onClick={() => setMenuOpen(false)}>
                         &nbsp;<span className="icon">&#128736;</span>
                             {isMenuOpen ? <span>&nbsp;&nbsp;&nbsp;{t('admin')}</span> : <span className="menu-label">&nbsp;&nbsp;&nbsp;{t('admin')}</span>}
                         </Link>
-                    </li>
+                    </li>)}
                     <li>
                     <Link onClick={handleShare}>
                         <span className="icon">
@@ -199,7 +199,7 @@ function Navigation() {
                     </div>}
                 </ul>
                 {isMobile && isMenuOpen && <div className="navbar-shadow" onClick={() => setMenuOpen(false)}></div>}
-                {isMobile && !isMenuOpen && (location?.pathname !== '/' && !location?.pathname?.startsWith('/games/')) && (
+                {isMobile && !isMenuOpen && (location?.pathname !== '/' && !location?.pathname?.startsWith('/games/') && !location?.pathname?.startsWith('/clashes/')) && (
                     <button className="burger" onClick={() => setMenuOpen(!isMenuOpen)}>
                         <span className="icon">&#9776;</span>
                     </button>

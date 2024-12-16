@@ -1,10 +1,9 @@
 .admin {
-    min-width: 200px;
-    width: 70%;
-    max-width: 1000px;
-    min-height: 400px;
-    height: 80vh;
-    overflow-y: auto;
+    background-color: var(--background-default);
+    color: var(--color-default);
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .admin ul {
@@ -14,16 +13,36 @@
     margin: 0;
 }
 
+.admin ul li a:hover {
+    text-decoration: none;
+}
+
+.admin ul li:hover {
+    background-color: var(--background-default-hover);
+}
+
 .admin ul li a {
-    color: var(--color-yellow);
+    display: flex;
+    color: var(--color-default);
+    padding: 16px;
+    margin: 4px;
+    box-sizing: border-box;
+    transition: background-color 0.3s;
+    border-radius: 8px;
 }
 
 @media (max-width: 480px) {
 
-    .admin {
-        width: 100vw;
-        margin-top: 40px;
-        height: 90vh;
+    .admin ul li:hover a {
+        background-color: var(--background-default-hover);
     }
-    
+
+    .admin ul li:hover {
+        cursor: pointer;
+    }
+
+    .admin ul li:hover .icon {
+        filter: none;
+    }
+
 }

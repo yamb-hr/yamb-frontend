@@ -1,8 +1,18 @@
-.profile {
-    background-color: var(--background-auth);
-    padding: 20px 30px;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+.profile-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    padding: 20px;
+    color: var(--color-default);
+}
+
+.profile.id-card {
+    background-color: var(--background-default);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    max-width: 400px;
     width: 100%;
     max-width: 200px;
     height: 200px;
@@ -38,20 +48,120 @@
 
 .profile input[type="submit"] {
     width: 100%;
-    padding: 12px;
-    background-color: var(--background-auth-button);
-    border: none;
-    color: var(--color-auth-button);
-    font-size: 16px;
-    transition: background-color 0.3s ease-in-out;
-    border: 1px solid var(--border-auth-button);
-    border-radius: 4px;
+    height: 100%;
+    object-fit: cover;
+}
+
+.upload-label {
+    position: absolute;
+    bottom: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: var(--background-default-button);
+    color: var(--color-default-button);
+    padding: 5px 10px;
+    font-size: 12px;
+    border-radius: 12px;
+    cursor: pointer;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.avatar-container:hover .upload-label {
+    opacity: 1;
+}
+
+.avatar-upload-input {
+    display: none;
+}
+
+.username-container {
+    flex: 1;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.id-card-input {
+    padding: 10px;
+    border: 1px solid var(--background-default);
+    border-radius: 5px;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s ease;
+    color: var(--color-default);
+    background-color: var(--background-default);
+}
+
+.id-card-input:enabled {
+    border-color: var(--color-default);
+}
+
+.error-text {
+    font-size: 12px;
+    color: #d9534f;
+}
+
+.id-card-body {
+    display: flex;
+    flex-direction: column;
+}
+
+.save-button,
+.edit-button,
+.cancel-button {
     margin-top: 10px;
 }
 
 .profile input[type="submit"]:hover:enabled {
     cursor: pointer;
-    background-color: var(--background-auth-button-hover);
+    transition: background-color 0.3s ease;
+}
+
+.save-button {
+    background-color: var(--background-save-button);
+    color: var(--color-default-button);
+}
+
+.save-button:hover {
+    background-color: var(--background-save-button-hover);
+}
+
+.edit-button {
+    background-color: var(--background-edit-button);
+    color: var(--color-edit-button);
+}
+
+.edit-button:hover {
+    background-color: var(--background-edit-button-hover);
+}
+
+.cancel-button {
+    background-color: var(--background-cancel-button);
+    color: var(--color-cancel-button);
+}
+
+.cancel-button:hover {
+    background-color: var(--background-cancel-button-hover);
+}
+
+.button-resend-verification-email {
+    background-color: var(--background-default-button);
+    color: var(--color-default-button);
+    margin-top: 5px;
+    padding: 10px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+    width: 100%;
+}
+
+.button-resend-verification-email:hover:enabled {
+    background-color: var(--background-default-button-hover);
 }
 
 .profile input[type="submit"]:hover:enabled {

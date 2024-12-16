@@ -5,7 +5,7 @@
     align-items: center;
     height: 100vh;
     font-family: 'Arial', sans-serif;
-    color: var(--color-auth-input);
+    color: var(--color-default-input);
     animation: spin 2s linear infinite;
 }
 

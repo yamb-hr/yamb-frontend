@@ -10,15 +10,15 @@
 }
 
 .box:disabled {
-    border-color: var(--color-border-box-alt);
-    border-style: var(--style-border-box-alt);
-    border-width: var(--width-border-box-alt);
+    border-color: var(--color-border-box-disabled);
+    border-style: var(--style-border-box-disabled);
+    border-width: var(--width-border-box-disabled);
 }
 
 .announcement {
-    border-color: var(--color-border-box);
-    border-style: var(--style-border-box);
-    border-width: var(--width-border-box);
+    border-color: var(--color-border-box-alt) !important;
+    border-style: var(--style-border-box-alt) !important;
+    border-width: var(--width-border-box-alt) !important;
 }
 
 .box:enabled {
