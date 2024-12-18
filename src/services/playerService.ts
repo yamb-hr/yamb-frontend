@@ -5,6 +5,7 @@ import authService from './authService';
 import {  ClashCollection } from '../types/Clash';
 import { LogCollection } from '../types/Log';
 import { GameCollection } from '../types/Game';
+import { NotificationCollection } from '../types/Notification';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;
 
@@ -197,6 +198,28 @@ class PlayerService {
         });
         
         console.log("uploadAvatar", data);
+        return data;
+    }
+
+    async getNotificationsByPlayerId(player: Player): Promise<NotificationCollection> {
+        const notificationsLink = player._links?.notifications?.href;
+        if (!notificationsLink) {
+            throw new Error("Notifications link not available for this player");
+        }
+
+        const { data }: AxiosResponse<NotificationCollection> = await this.axiosInstance.get(notificationsLink);
+        console.log("getNotificationsByPlayerId", data);
+        return data;
+    }
+
+    async deleteNotificationsByPlayerId(player: Player): Promise<void> {
+        const notificationsLink = player._links?.notifications?.href;
+        if (!notificationsLink) {
+            throw new Error("Notifications link not available for this player");
+        }
+
+        const { data }: AxiosResponse<void> = await this.axiosInstance.delete(notificationsLink);
+        console.log("deleteNotificationsByPlayerId", data);
         return data;
     }
     

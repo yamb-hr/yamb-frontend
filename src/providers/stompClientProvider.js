@@ -16,7 +16,6 @@ export const StompClientProvider = ({ children }) => {
 	const { currentUser } = useContext(CurrentUserContext);
 	const { handleError } = useContext(ErrorHandlerContext);
 
-	const [ activePlayers, setActivePlayers ] = useState([]);
     const [ stompClient, setStompClient ] = useState(null);
     const [ isConnected, setConnected ] = useState(false);
 
@@ -33,12 +32,6 @@ export const StompClientProvider = ({ children }) => {
 
 			client.onConnect = () => {
 				console.log('WebSocket connected');
-				client.subscribe('/topic/players', onPlayerStatusChanged);
-				playerService.getAllActive().then(data => {
-					setActivePlayers(data._embedded.players);
-				}).catch(error => {
-					handleError(error);
-				});
 				setConnected(true);
 			};
 
@@ -60,13 +53,8 @@ export const StompClientProvider = ({ children }) => {
 		}
 	}, [ currentUser ]);
 
-	const onPlayerStatusChanged = (message) => {
-		let body = JSON.parse(message.body);
-		setActivePlayers(JSON.parse(atob(body.payload)).content);
-	}
-
     return (
-        <StompClientContext.Provider value={{ stompClient, setStompClient, isConnected, activePlayers }}>
+        <StompClientContext.Provider value={{ stompClient, setStompClient, isConnected }}>
             {children}
         </StompClientContext.Provider>
     );

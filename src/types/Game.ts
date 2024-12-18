@@ -23,6 +23,7 @@ export interface Game {
         restart?: { href: string };
         archive?: { href: string };
         complete?: { href: string };
+        undo?: { href: string };
     };
 }
 

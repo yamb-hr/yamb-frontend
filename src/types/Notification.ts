@@ -1,22 +1,20 @@
 import { Player } from './Player';
-import { LogLevel } from '../enums/LogLevel';
+import { NotificationType } from '../enums/NotificationType';
 import { Link } from './Link';
 
-export interface Log {
+export interface Notification {
     id: string;
     createdAt: Date;
-    data: string;
-    message: string;
-    player: Player;
-    level: LogLevel;
+    content: string;
+    type: NotificationType;
     _links: {
         self: Link;
     };
 }
 
-export interface LogCollection {
+export interface NotificationCollection {
     _embedded: {
-        logs: Log[];
+        notifications: Notification[];
     };
     _links: {
         self: Link;

@@ -3,7 +3,7 @@ import { Role } from "./Role";
 import { Score } from "./Score";
 
 export interface Player {
-    string: number;
+    id: string;
     createdAt: Date;
     updatedAt: Date;
     name: string;
@@ -20,6 +20,7 @@ export interface Player {
         email?: Link;
         stats?: Link;
         avatar?: Link;
+        notifications?: Link;
     };
 }
 

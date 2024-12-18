@@ -78,7 +78,9 @@ function Game(props) {
 	const onGameAction = (message) => {
 		let body = JSON.parse(message.body);
 		setGame(JSON.parse(atob(body.payload)));
+		console.log(JSON.parse(atob(body.payload)));
         if (message.headers.messageType === "ROLL") {
+			setDiceToRoll(JSON.parse(atob(body.payload)).latestDiceRolled);
             initiateRollAnimation();
         } else if (message.headers.messageType === "FILL") {
 			props.onFill();
@@ -107,10 +109,15 @@ function Game(props) {
 		gameService.fillById(game, columnType, boxType).then((data) => {
 			setGame(data);
 			if (data.status === 'COMPLETED') handleShareModal();
-			props.onFill();
+			if (game.type === 'CLASH') props.onFill();
 		}).catch(handleError);
-
 	};
+
+	const handleUndoFill = () => {
+		gameService.undoFillById(game).then((data) => {
+			setGame(data);
+		}).catch(handleError);
+	}
 
 	const handleAnnounce = (type) => {
 		gameService.announceById(game, type).then(setGame).catch(handleError);
@@ -217,6 +224,7 @@ function Game(props) {
 							onRestart={showRestartPrompt}
 							onBoxClick={handleBoxClick}
 							onSubscribe={handleSubscribe}
+							onUndoFill={handleUndoFill}
 						/>
 					)}
 				</div>

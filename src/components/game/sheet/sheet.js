@@ -35,12 +35,16 @@ function Sheet(props) {
         props.onRoll();
     }
 
-    function handleRestart() {
-        props.onRestart();
-    }
-
     function handleBoxClick(columnType, boxType) {
         props.onBoxClick(columnType, boxType);
+    }
+
+    function handleUndoFill() {
+        props.onUndoFill();
+    }
+    
+    function handleRestart() {
+        props.onRestart();
     }
 
     function handleSubscribeToggle() {
@@ -185,12 +189,13 @@ function Sheet(props) {
                 <div className="top-section-sum">
                     <Label variant="sum" value={getTopSectionSum()}></Label>
                 </div>
-                <button className="restart-button" onClick={handleRestart} disabled={restartButtonDisabled}>
-                    <img src={"../svg/buttons/restart.svg"} alt="Restart"></img>
-                </button>
+                <button className="undo-button" onClick={handleUndoFill}>&#9100;</button>
                 <div className="middle-section-sum">
                     <Label variant="sum" value={getMiddleSectionSum()}></Label>
                 </div>
+                <button className="restart-button" onClick={handleRestart} disabled={restartButtonDisabled}>
+                    <img src={"../svg/buttons/restart.svg"} alt="Restart"></img>
+                </button>
                 <div className="bottom-section-sum">
                     <Label variant="sum" value={getBottomSectionSum()}></Label>
                 </div>

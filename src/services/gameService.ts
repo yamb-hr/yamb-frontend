@@ -79,6 +79,17 @@ class GameService {
         console.log("rollById", data);
         return data;
     }
+    
+    async announceById(game: Game, boxType: string): Promise<Game> {
+        const announceLink = game._links?.announce?.href;
+        if (!announceLink) {
+            throw new Error('No announce link found for this game');
+        }
+
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(announceLink, { boxType });
+        console.log("announceById", data);
+        return data;
+    }
 
     async fillById(game: Game, columnType: string, boxType: string): Promise<Game> {
         const fillLink = game._links?.fill?.href;
@@ -91,14 +102,14 @@ class GameService {
         return data;
     }
 
-    async announceById(game: Game, boxType: string): Promise<Game> {
-        const announceLink = game._links?.announce?.href;
-        if (!announceLink) {
-            throw new Error('No announce link found for this game');
+    async undoFillById(game: Game): Promise<Game> {
+        const undoFillLink = game._links?.undo?.href;
+        if (!undoFillLink) {
+            throw new Error('No undo fill link found for this game');
         }
 
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(announceLink, { boxType });
-        console.log("announceById", data);
+        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(undoFillLink);
+        console.log("undoFillById", data);
         return data;
     }
 

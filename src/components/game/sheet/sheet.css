@@ -63,6 +63,21 @@ button {
 	grid-row-end: 17;
 }
 
+.undo-button {
+	width: var(--width-box);
+	background: var(--background-undo-button);
+	border: var(--border-undo-button);
+	border-radius: var(--border-radius-box);
+	grid-row-start: 9;
+	grid-row-end: 11;
+	font-size: xx-large;
+}
+
+.undo-button:hover:enabled {	
+	background-color: var(--background-restart-button-hover);
+
+}
+
 .restart-button:hover:enabled {
 	background-color: var(--background-restart-button-hover);
 }
