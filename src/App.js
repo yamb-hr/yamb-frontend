@@ -6,6 +6,7 @@ import { MenuProvider } from './providers/menuProvider';
 import { CurrentUserProvider } from './providers/currentUserProvider';
 import { StompClientProvider } from './providers/stompClientProvider';
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { NotificationsProvider } from './providers/notificationsProvider';
 import ErrorBoundary from './components/errorBoundary';
 import Yamb from './components/yamb/yamb';
 import './App.css';
@@ -26,7 +27,9 @@ function App() {
 										<DeviceProvider>
 											<MenuProvider>
 												<StompClientProvider>
-													<Yamb></Yamb>
+													<NotificationsProvider>
+														<Yamb></Yamb>
+													</NotificationsProvider>
 												</StompClientProvider>
 											</MenuProvider>
 										</DeviceProvider>

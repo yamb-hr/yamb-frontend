@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect, useRef, useContext } from 'react';
 import { CurrentUserContext } from './currentUserProvider';
 import { ErrorHandlerContext } from './errorHandlerProvider';
-import playerService from '../services/playerService';
-import notificationService from '../services/playerService';
 import { StompClientContext } from './stompClientProvider';
+import notificationService from '../services/notificationService';
+import playerService from '../services/playerService';
 
 export const NotificationsContext = createContext(null);
 
@@ -14,47 +14,35 @@ export const NotificationsProvider = ({ children }) => {
     const { stompClient, isConnected } = useContext(StompClientContext);
 
     const [notifications, setNotifications] = useState([]);
-	const [activePlayers, setActivePlayers] = useState([]);
 
-    useEffect(() => {
-        if (currentUser && stompClient && isConnected) {
-            stompClient.subscribe('/topic/players', onPlayerStatusChanged);
-            playerService.getAllActive().then(data => {
-                setActivePlayers(data._embedded.players);
-            }).catch(error => {
-                handleError(error);
-            });
-            stompClient.subscribe(`/topic/players/${currentUser.id}`, onNewNotification);
-            playerService.getNotificationsByPlayerId.then(data => {
-                setNotifications(data);
-            }).catch(error => {
-                handleError(error);
-            });
-            return () => subscription.unsubscribe();
-        }
-    }, [id, stompClient, isConnected, subscribed]);
-
-	const onPlayerStatusChanged = (message) => {
-		let body = JSON.parse(message.body);
-		setActivePlayers(JSON.parse(atob(body.payload)).content);
-	}
+    // useEffect(() => {
+    //     if (currentUser && stompClient && isConnected) {
+    //         const subscription = stompClient.subscribe(`/topic/players/${currentUser.id}`, onNewNotification);
+    //         playerService.getNotificationsByPlayerId(currentUser).then(data => {
+    //             setNotifications(data);
+    //         }).catch(error => {
+    //             handleError(error);
+    //         });
+    //         return () => {
+    //             subscription.unsubscribe();
+    //         };
+    //     }
+    // }, [currentUser, stompClient, isConnected]);
 
     const onNewNotification = (message) => {
 		let body = JSON.parse(message.body);
         setNotifications([...notifications, body.content]);
-		setActivePlayers(JSON.parse(atob(body.payload)).content);
 	}
 
     const deleteNotification = (notificationId) => {
         notificationService.deleteById(notificationId).then(() => {
-            
         }).catch(error => {
             handleError(error);
         });
     }
 
     const deleteAllNotifications = () => {
-        playerService.deleteNotificationsByPlayerId(notificationId).then(() => {
+        playerService.deleteNotificationsByPlayerId().then(() => {
             
         }).catch(error => {
             handleError(error);
@@ -62,8 +50,8 @@ export const NotificationsProvider = ({ children }) => {
     }
 
     return (
-        <PreferencesContext.Provider value={{ notifications, deleteNotification, deleteAllNotifications, activePlayers }}>
+        <NotificationsContext.Provider value={{ notifications, deleteNotification, deleteAllNotifications }}>
             {children}
-        </PreferencesContext.Provider>
+        </NotificationsContext.Provider>
     );
 };

@@ -1,8 +1,8 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
-import { StompClientContext } from '../../providers/stompClientProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
+import { StompClientContext } from '../../providers/stompClientProvider';
 import playerService from '../../services/playerService';
 import clashService from '../../services/clashService';
 import Spinner from '../spinner/spinner';
@@ -15,11 +15,12 @@ function ClashList() {
 
     const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
-    const { activePlayers } = useContext(StompClientContext);
+    const { stompClient, isConnected } = useContext(StompClientContext);
 
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [selectedRows, setSelectedRows] = useState([]);
+	const [activePlayers, setActivePlayers] = useState([]);
 
     const fetchData = async () => {
         setLoading(true);
@@ -38,6 +39,25 @@ function ClashList() {
             fetchData();
         }
     }, [currentUser]);
+
+    useEffect(() => {
+        if (currentUser && stompClient && isConnected) {
+            const subscription = stompClient.subscribe('/topic/players', onPlayerStatusChanged);
+            playerService.getAllActive().then(data => {
+                setActivePlayers(data._embedded.players);
+            }).catch(error => {
+                handleError(error);
+            });
+            return () => {
+                subscription.unsubscribe();
+            };
+        }
+    }, [currentUser, stompClient, isConnected]);
+
+	const onPlayerStatusChanged = (message) => {
+		let body = JSON.parse(message.body);
+		setActivePlayers(JSON.parse(atob(body.payload)).content);
+	}
 
     const createClash = async () => {
         if (selectedRows.length === 0) return;
