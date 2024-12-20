@@ -63,6 +63,40 @@ button {
 	grid-row-end: 17;
 }
 
+.notification-button {
+	position: relative;
+	width: var(--width-box);
+	background: var(--background-undo-button);
+	border: var(--border-undo-button);
+	border-radius: var(--border-radius-box);
+	font-size: x-large;
+	filter: grayscale(100%);
+	transition: filter 0.3s ease, background-color 0.3s ease;
+}
+  
+.notification-button:hover:enabled {
+	background-color: var(--background-restart-button-hover);
+	filter: grayscale(0%);
+}
+  
+.notification-badge {
+	position: absolute;
+	top: 4px;
+	right: 8px;
+	background-color: red;
+	color: white;
+	border-radius: 50%;
+	padding: 0px;
+	font-size: 0.55rem;
+	font-weight: bold;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 20px;
+	height: 20px;
+}
+
 .undo-button {
 	width: var(--width-box);
 	background: var(--background-undo-button);
@@ -71,11 +105,13 @@ button {
 	grid-row-start: 9;
 	grid-row-end: 11;
 	font-size: xx-large;
+	filter: grayscale(100%);
+	transition: filter 0.3s ease, background-color 0.3s ease;
 }
 
 .undo-button:hover:enabled {	
 	background-color: var(--background-restart-button-hover);
-
+	filter: grayscale(0%);
 }
 
 .restart-button:hover:enabled {

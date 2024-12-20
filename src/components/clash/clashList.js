@@ -55,6 +55,7 @@ function ClashList() {
     }, [currentUser, stompClient, isConnected]);
 
 	const onPlayerStatusChanged = (message) => {
+        console.log(message);
 		let body = JSON.parse(message.body);
 		setActivePlayers(JSON.parse(atob(body.payload)).content);
 	}

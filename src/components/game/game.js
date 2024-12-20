@@ -76,9 +76,9 @@ function Game(props) {
 	}, [fill]);
 
 	const onGameAction = (message) => {
+		console.log(message);
 		let body = JSON.parse(message.body);
 		setGame(JSON.parse(atob(body.payload)));
-		console.log(JSON.parse(atob(body.payload)));
         if (message.headers.messageType === "ROLL") {
 			setDiceToRoll(JSON.parse(atob(body.payload)).latestDiceRolled);
             initiateRollAnimation();

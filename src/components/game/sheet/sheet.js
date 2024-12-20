@@ -7,6 +7,7 @@ import { DeviceContext } from '../../../providers/deviceProvider';
 import Label from '../label/label';
 import Column from '../column/column';
 import './sheet.css';
+import { NotificationsContext } from '../../../providers/notificationsProvider';
 
 function Sheet(props) {
 
@@ -15,6 +16,7 @@ function Sheet(props) {
     const { t } = useTranslation();
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
     const { currentUser } = useContext(CurrentUserContext);
+    const { notifications, toggleModal } = useContext(NotificationsContext);
     const { isMobile } = useContext(DeviceContext);
     const {
         columns,
@@ -183,6 +185,14 @@ function Sheet(props) {
                 </div>
             ))}
             <div className="column">
+                <button className="notification-button" onClick={toggleModal}>
+                    &#128276;
+                    {notifications?.length > 0 && (
+                        <span className="notification-badge">
+                        {notifications.length > 99 ? "99+" : notifications.length}
+                        </span>
+                    )}
+                </button>                
                 <button className="roll-button" onClick={handleRoll} disabled={rollDisabled}>
                     <img src={"../svg/buttons/roll-" + (3-rollCount) + ".svg"} alt="Roll"></img>
                 </button>                    

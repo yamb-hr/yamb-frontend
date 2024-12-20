@@ -10,6 +10,7 @@ export const StompClientContext = createContext(null);
 const API_URL = process.env.REACT_APP_API_URL + '/ws';
 
 export const StompClientProvider = ({ children }) => {
+
     const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
 
@@ -29,12 +30,6 @@ export const StompClientProvider = ({ children }) => {
 
             client.onConnect = () => {
 				setConnected(true);
-			
-				const subscription = client.subscribe(`/player/${currentUser.id}/private`, (message) => {
-					console.log('Received message:', message.body);
-				});
-			
-				return () => subscription.unsubscribe();
 			};
 
             client.onStompError = (frame) => {
