@@ -9,7 +9,7 @@ const NotificationModal = ({ notifications, onClose }) => {
 					&times;
 				</button>
 				<h4>Notifications</h4>
-				{notifications.length === 0 ? (
+				{notifications?.length === 0 ? (
 				<p>No notifications available.</p>
 				) : (
 					<ul className="notification-list">

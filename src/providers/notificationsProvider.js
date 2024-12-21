@@ -31,8 +31,11 @@ export const NotificationsProvider = ({ children }) => {
             const subscription = stompClient.subscribe(`/player/${currentUser.id}/private`, onNewNotification);
 
             playerService.getNotificationsByPlayerId(currentUser)
-                .then(data => setNotifications(data._embedded.notifications))
-                .catch(error => handleError(error));
+                .then(data => {
+                    if (data?._embedded?.notifications) {
+                        setNotifications(data?._embedded?.notifications);
+                    }
+                }).catch(error => handleError(error));
     
             return () => subscription.unsubscribe();
         }
