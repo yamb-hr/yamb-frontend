@@ -217,6 +217,9 @@ function Game(props) {
 							dices={game.dices}
 							player={game.player}
 							diceToRoll={diceToRoll}
+							latestColumnFilled={game.latestColumnFilled}
+							latestBoxFilled={game.latestBoxFilled}
+							type={game.type}
 							subscribed={subscribed}
 							isRolling={isRolling}
 							isSpectator={isSpectator}

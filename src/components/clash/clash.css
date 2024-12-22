@@ -14,6 +14,71 @@
     overflow-y: auto;
 }
 
+.clash-header {
+    margin-bottom: 20px;
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 10px;
+    text-align: center;
+}
+
+.clash-header h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.clash-header p {
+    margin: 5px 0;
+    color: #666;
+}
+
+.clash-players h2 {
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.clash-players table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+
+.clash-players th,
+.clash-players td {
+    padding: 10px;
+    border: 1px solid #ccc;
+    text-align: center;
+}
+
+.accept-btn {
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.reject-btn {
+    background-color: #f44336;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.2s ease-in-out;
+}
+
+.accept-btn:hover {
+    background-color: #45a049;
+}
+
+.reject-btn:hover {
+    background-color: #e53935;
+}
+
 .create-clash-button {
     width: 100%;
     padding: 12px;
@@ -36,15 +101,6 @@
     background-color: var(--background-default-button-hover);
 }
 
-.button-play {
-    padding: 14px;
-    background-color: var(--background-button-play);
-    color: var(--color-button-play);
-    border: none;
-    border-radius: 4px;
-    margin: 10px;
-}
-
 @media (max-width: 480px) {
     .clash, .clash-list {
         width: 100vw;
@@ -54,6 +110,12 @@
 
     .create-clash-button {
         width: 100%;
+        font-size: 14px;
+    }
+
+    .clash-players th,
+    .clash-players td {
+        padding: 8px;
         font-size: 14px;
     }
 }

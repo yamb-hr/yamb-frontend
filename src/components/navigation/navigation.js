@@ -11,6 +11,7 @@ import authService from '../../services/authService';
 import './navigation.css';
 
 function Navigation() {
+    
     const navigate = useNavigate();    
     const location = useLocation();
     const { t } = useTranslation();

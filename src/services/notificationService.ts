@@ -45,7 +45,7 @@ class NotificationService {
     }
 
     async deleteById(notification: Notification): Promise<void> {
-        const deleteLink = notification._links?.self?.href;
+        const deleteLink = notification._links?.self?.href || `/${notification.id}` // no hateoas links from ws
         if (!deleteLink) {
             throw new Error('Delete link not available for this notification');
         }

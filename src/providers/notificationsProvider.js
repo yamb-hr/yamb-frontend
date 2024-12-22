@@ -1,29 +1,22 @@
-import { createContext, useState, useEffect, useRef, useContext } from 'react';
-import { CurrentUserContext } from './currentUserProvider';
+import { createContext, useState, useEffect, useContext } from 'react';
 import { ErrorHandlerContext } from './errorHandlerProvider';
+import { CurrentUserContext } from './currentUserProvider';
 import { StompClientContext } from './stompClientProvider';
+import { ToastContext } from './toastProvider';
 import notificationService from '../services/notificationService';
 import playerService from '../services/playerService';
-import NotificationModal from '../components/notifications/notifications-modal';
 
 export const NotificationsContext = createContext(null);
 
 export const NotificationsProvider = ({ children }) => {
 
-    const { currentUser } = useContext(CurrentUserContext);
-    const { handleError } = useContext(ErrorHandlerContext);
     const { stompClient, isConnected } = useContext(StompClientContext);
+    const { handleError } = useContext(ErrorHandlerContext);
+    const { currentUser } = useContext(CurrentUserContext);
+    const { showInfoToast } = useContext(ToastContext);
 
     const [notifications, setNotifications] = useState([]);
-    const [isModalOpen, setModalOpen] = useState(false);
-
-    const toggleModal = () => {
-        setModalOpen(!isModalOpen);
-    };
-
-    const closeModal = () => {
-        setModalOpen(false);
-    }
+    const [isNotificationsModalOpen, setNotificationsModalOpen] = useState(false);
 
     useEffect(() => {
         if (currentUser && stompClient && isConnected) {
@@ -44,33 +37,50 @@ export const NotificationsProvider = ({ children }) => {
     const onNewNotification = (message) => {
         console.log(message);
 		let body = JSON.parse(message.body);
-        setNotifications([...notifications, body]);
+        const newNotification = JSON.parse(atob(body.payload));
+
+        setNotifications(prevNotifications => [
+            ...prevNotifications,
+            newNotification
+        ]);
+
+        showInfoToast(
+            <div
+                style={{ cursor: 'pointer' }}
+                onClick={() => window.location.href = newNotification.link}
+            >
+                {newNotification.content}
+            </div>
+        );
+	}
+    
+	const onMarkAsRead = (notification) => {
+		deleteNotification(notification);
+        setNotifications(prevNotifications => prevNotifications.filter(n => n.id !== notification.id));
 	}
 
-    const deleteNotification = (notificationId) => {
-        notificationService.deleteById(notificationId).then(() => {
+	const onMarkAllAsRead = () => {
+		deleteAllNotifications();
+        setNotifications([]);
+	}
+
+	const deleteNotification = (notification) => {
+        notificationService.deleteById(notification).then(() => {
         }).catch(error => {
             handleError(error);
         });
     }
 
     const deleteAllNotifications = () => {
-        playerService.deleteNotificationsByPlayerId().then(() => {
-            
+        playerService.deleteNotificationsByPlayerId(currentUser).then(() => {
         }).catch(error => {
             handleError(error);
         });
     }
 
     return (
-        <NotificationsContext.Provider value={{ notifications, deleteNotification, deleteAllNotifications, toggleModal }}>
+        <NotificationsContext.Provider value={{ notifications, isNotificationsModalOpen, setNotificationsModalOpen, onMarkAsRead, onMarkAllAsRead }}>
             {children}
-            {isModalOpen && (
-                <NotificationModal
-                notifications={notifications}
-                onClose={closeModal}
-                />
-            )}
         </NotificationsContext.Provider>
     );
 };

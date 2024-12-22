@@ -34,19 +34,20 @@ function Clash() {
         });
     }
 
+    const handleAccept = () => {
+    };
+
+    const handleReject = () => {
+    };
+
     const columns = [
-        { label: 'Id', key: 'id' },
         { label: 'Owner', key: 'owner' },
-        { label: 'Status', key: 'status' },
-        { label: 'Type', key: 'type' },
-        { label: 'Turn', key: 'turn' },
-        { label: 'Winner', key: 'winner' },
-        { label: 'Started', key: 'createdAt' },
-        { label: 'Last Played', key: 'updatedAt' }
+        { label: 'Created At', key: 'createdAt' }
     ];
 
     const playerColumns = [
-        { label: 'Player', key: 'name' }
+        { label: 'Player', key: 'name' },
+        { label: 'Status', key: 'status' }
     ];
 
     if (loading) {
@@ -72,10 +73,9 @@ function Clash() {
     return (
         <div className="clash-container">
             <div className="clash">
-                <button className="button-play">Play</button>
                 {data && <Element data={data} columns={columns}></Element>}
                 <br/>
-                {data && data.players && <Table data={data.players} columns={playerColumns}></Table>}
+                {data && data.players && <Table data={data.players} columns={playerColumns} paginated={false}></Table>}
             </div>
         </div>
     );

@@ -409,6 +409,10 @@
   --color-edit-button: var(--color-gray);
 	--background-edit-button: var(--color-yellow);
 	--background-edit-button-hover: var(--color-yellow-hover);
+
+  --color-delete-button: var(--color-gray);
+	--background-delete-button: var(--color-red);
+	--background-delete-button-hover: var(--color-red-hover);
   
   --color-save-button: var(--color-gray);
 	--background-save-button: var(--color-turq);

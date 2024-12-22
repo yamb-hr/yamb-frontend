@@ -27,6 +27,7 @@ import EmailVerification from '../auth/email-verification';
 import ForgotPassword from '../auth/forgot-password';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import RequireAuth from '../auth/require-auth';
+import NotificationsModal from '../notifications/notifications-modal';
 
 function Yamb() {
 
@@ -82,6 +83,7 @@ function Yamb() {
                 </Route>
         </Routes>
         <Navigation/>
+        <NotificationsModal />
         <div id="recaptcha-container"></div>
     </Router>)
 }

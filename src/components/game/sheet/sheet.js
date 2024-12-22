@@ -16,7 +16,7 @@ function Sheet(props) {
     const { t } = useTranslation();
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
     const { currentUser } = useContext(CurrentUserContext);
-    const { notifications, toggleModal } = useContext(NotificationsContext);
+    const { notifications, setNotificationsModalOpen } = useContext(NotificationsContext);
     const { isMobile } = useContext(DeviceContext);
     const {
         columns,
@@ -25,6 +25,9 @@ function Sheet(props) {
         status,
         player,
         diceToRoll,
+        latestBoxFilled,
+        latestColumnFilled,
+        type,
         subscribed,
         isRolling,
         isSpectator
@@ -32,7 +35,8 @@ function Sheet(props) {
 
     const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS";
     const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
-    
+    const undoDisabled = !latestColumnFilled || !latestBoxFilled || type === "CLASH";
+
     function handleRoll() {
         props.onRoll();
     }
@@ -185,7 +189,7 @@ function Sheet(props) {
                 </div>
             ))}
             <div className="column">
-                <button className="notification-button" onClick={toggleModal}>
+                <button className="notification-button" onClick={() => setNotificationsModalOpen(true)}>
                     &#128276;
                     {notifications?.length > 0 && (
                         <span className="notification-badge">
@@ -199,7 +203,7 @@ function Sheet(props) {
                 <div className="top-section-sum">
                     <Label variant="sum" value={getTopSectionSum()}></Label>
                 </div>
-                <button className="undo-button" onClick={handleUndoFill}>&#9100;</button>
+                <button className="undo-button" onClick={handleUndoFill} disabled={undoDisabled}>&#9100;</button>
                 <div className="middle-section-sum">
                     <Label variant="sum" value={getMiddleSectionSum()}></Label>
                 </div>
