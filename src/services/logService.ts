@@ -7,7 +7,7 @@ const API_BASE_URL = `${process.env.REACT_APP_API_URL}/logs`;
 class LogService {
 
     private axiosInstance: AxiosInstance;
-    public name: String;
+    public name: string;
 
     constructor() {
         this.name = 'LogService';

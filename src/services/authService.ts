@@ -9,7 +9,7 @@ const LOCAL_STORAGE_KEY_TOKEN = "token";
 class AuthService {
     
     private axiosInstance: AxiosInstance;
-    public name: String;
+    public name: string;
 
     constructor() {
         this.name = 'AuthService';

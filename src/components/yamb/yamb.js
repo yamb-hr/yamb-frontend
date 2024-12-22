@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Clash from '../clash/clash';
 import Profile from '../profile/profile';
@@ -25,15 +25,12 @@ import Ticket from '../ticket/ticket';
 import Home from '../home/home';
 import EmailVerification from '../auth/email-verification';
 import ForgotPassword from '../auth/forgot-password';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
 import RequireAuth from '../auth/require-auth';
 import NotificationsModal from '../notifications/notifications-modal';
 
 function Yamb() {
 
     const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
-
-    const { currentUser } = useContext(CurrentUserContext);
 
 	useEffect(() => {
         const script = document.createElement('script');

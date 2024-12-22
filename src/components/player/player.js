@@ -16,6 +16,7 @@ function Player() {
     const [gameData, setGameData] = useState(null);
     const [logData, setLogData] = useState(null);
     const [loading, setLoading] = useState(true);
+
     const { handleError } = useContext(ErrorHandlerContext);
     const { currentUser } = useContext(CurrentUserContext);
 
@@ -29,11 +30,13 @@ function Player() {
         if (id && data && !scoreData) {
             fetchScoreData();
         }
-        if (id && data && !gameData) {
-            fetchGameData();
-        }
-        if (id && data && !logData) {
-            fetchLogData();
+        if (currentUser.admin) {
+            if (id && data && !gameData) {
+                fetchGameData();
+            }
+            if (id && data && !logData) {
+                fetchLogData();
+            }
         }
     }, [id, data]);
 

@@ -11,7 +11,7 @@ const localeStringFormat = {
     hour: 'numeric', minute: 'numeric', second: 'numeric',
 };
 
-const Table = ({ columns, data, service, selectable = false, selectedRows = [], onRowSelection = () => {}, paginated = true }) => {
+const Table = ({ columns, data, service, selectable = false, selectedRows = [], onRowSelection = () => {}, paginated = true, displayHeader = true }) => {
     const navigate = useNavigate();
     const { handleError } = useContext(ErrorHandlerContext);
     const { language } = useContext(PreferencesContext);
@@ -156,16 +156,18 @@ const Table = ({ columns, data, service, selectable = false, selectedRows = [], 
     return (
         <div className="table-container">
             <table>
-                <thead>
-                    <tr>
-                        {selectable && <th></th>}
-                        {columns.map((column) => (
-                            <th key={column.key} onClick={() => handleSort(column.key)}>
-                                {column.label} {sortColumn === column.key ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
-                            </th>
-                        ))}
-                    </tr>
-                </thead>
+                {displayHeader && (
+                    <thead>
+                        <tr>
+                            {selectable && <th></th>}
+                            {columns.map((column) => (
+                                <th key={column.key} onClick={() => handleSort(column.key)}>
+                                    {column.label} {sortColumn === column.key ? (sortDirection === 'asc' ? '▲' : '▼') : ''}
+                                </th>
+                            ))}
+                        </tr>
+                    </thead>
+                )}
                 <tbody>
                     {displayData.map((row) => (
                         <tr key={row.id} onClick={() => handleRowClick(row)}>
@@ -179,7 +181,11 @@ const Table = ({ columns, data, service, selectable = false, selectedRows = [], 
                                 </td>
                             )}
                             {columns.map((column) => (
-                                <td key={column.key}>{getFormattedValue(row, column.key)}</td>
+                                <td key={column.key}>
+                                {typeof column.render === 'function'
+                                    ? column.render(row)
+                                    : getFormattedValue(row, column.key)}
+                              </td>
                             ))}
                         </tr>
                     ))}

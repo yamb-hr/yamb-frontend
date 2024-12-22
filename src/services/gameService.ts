@@ -7,7 +7,7 @@ const API_BASE_URL = `${process.env.REACT_APP_API_URL}/games`;
 class GameService {
 
     private axiosInstance: AxiosInstance;
-    public name: String;
+    public name: string;
 
     constructor() {
         this.name = 'GameService';
@@ -58,7 +58,7 @@ class GameService {
         return data;
     }
     
-    async getOrCreate(playerId: String): Promise<Game> {
+    async getOrCreate(playerId: string): Promise<Game> {
         
         if (authService.getAccessToken()) {
             const { data }: AxiosResponse<Game> = await this.axiosInstance.put('/', { playerId: playerId });

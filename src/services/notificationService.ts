@@ -1,5 +1,5 @@
 import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import { Notification, NotificationCollection } from '../types/Notification';
+import { Notification } from '../types/Notification';
 import authService from './authService';
 
 const API_BASE_URL = `${process.env.REACT_APP_API_URL}/notifications`;
@@ -7,7 +7,7 @@ const API_BASE_URL = `${process.env.REACT_APP_API_URL}/notifications`;
 class NotificationService {
 
     private axiosInstance: AxiosInstance;
-    public name: String;
+    public name: string;
 
     constructor() {
         this.name = 'NotificationService';

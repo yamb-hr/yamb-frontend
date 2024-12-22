@@ -72,10 +72,49 @@ function ClashList() {
         });
     };
 
-    const columns = [
+    const handleAccept = (clash) => {
+        clashService.acceptById(clash, currentUser.id).then(clash => {
+            navigate(`/clashes/${clash.id}`);
+        }).catch(error => {
+            handleError(error)
+        });
+    }
+
+    const handleDecline = (clash) => {
+        clashService.declineById(clash, currentUser.id).then(() => {
+            window.location.reload();
+        }).catch(error => {
+            handleError(error)
+        });
+    }
+
+    const inProgressColumns = [
+        { key: 'name', label: 'Name' },
+        { key: 'owner', label: 'Created by' },
+        {
+            key: 'actions',
+            label: 'Actions',
+            render: () => (
+                <button className="continue-button">&#x25B6;</button>
+            )
+        },
+    ];
+
+    const waitingColumns = [
         { label: 'Name', key: 'name' },
-        { label: 'Owner', key: 'owner' },
-        { label: 'Last Played', key: 'updatedAt' }
+        { key: 'owner', label: 'Created by' },
+        {
+            key: 'actions',
+            label: 'Actions',
+            render: (clash) => (
+                clash.owner.id !== currentUser.id ? (<>
+                <button className="accept-button" onClick={(e) => {e.stopPropagation(); handleAccept(clash);}}>&#10004;</button>
+                <button className="decline-button" onClick={(e) => {e.stopPropagation(); handleDecline(clash);}}>&#10060;</button>
+                </>) : (
+                    <button className="continue-button">&#x25B6;</button>
+                )
+            ),
+        },
     ];
 
     const playerColumns = [
@@ -92,6 +131,9 @@ function ClashList() {
         });
     };
 
+    const clashes = data?._embedded?.clashes || [];
+    const inProgressClashes = clashes.filter((clash) => clash.status === 'IN_PROGRESS');
+    const waitingClashes = clashes.filter((clash) => clash.status === 'PENDING');
     const filteredPlayers = activePlayers?.filter((player) => player.id !== currentUser.id);
 
     if (loading) {
@@ -101,19 +143,13 @@ function ClashList() {
     return (
         <div className="clash-list-container">
             <div className="clash-list">
-                <h4>Ongoing Clashes</h4>
-                {data && <Table data={data._embedded?.clashes} columns={columns} paginated={false}></Table>}
-                <br />
+            {inProgressClashes?.length > 0 && <Table data={inProgressClashes} columns={inProgressColumns} paginated={false} displayHeader={false}></Table>}
+            <br/>
+            {waitingClashes?.length > 0 && <Table data={waitingClashes} columns={waitingColumns} paginated={false} displayHeader={false}></Table>}
+            <br />
                 {filteredPlayers && filteredPlayers.length > 0 ?
                     <>
-                        <h4>Online Players</h4>
-                        <button
-                            className="create-clash-button"
-                            onClick={createClash}
-                            disabled={selectedRows.length === 0}
-                        >
-                            Create
-                        </button>
+                        <button className="create-button" onClick={createClash} disabled={selectedRows.length === 0}>&#x271A;&nbsp;Create</button>
                         <Table
                             data={filteredPlayers}
                             columns={playerColumns}
@@ -121,6 +157,7 @@ function ClashList() {
                             selectedRows={selectedRows}
                             onRowSelection={toggleRowSelection}
                             paginated={false}
+                            displayHeader={false}
                         />
                     </>:<div>No players online</div>}
             </div>

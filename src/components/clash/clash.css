@@ -61,7 +61,7 @@
     transition: background-color 0.2s ease-in-out;
 }
 
-.reject-btn {
+.decline-btn {
     background-color: #f44336;
     color: white;
     border: none;
@@ -75,30 +75,46 @@
     background-color: #45a049;
 }
 
-.reject-btn:hover {
+.decline-btn:hover {
     background-color: #e53935;
 }
 
-.create-clash-button {
-    width: 100%;
-    padding: 12px;
-    background-color: var(--background-default-button);
+.create-button,
+.accept-button,
+.decline-button,
+.continue-button,
+.add-button,
+.remove-button {
+    padding-left: 12px;
+    padding-right: 12px;
     border: none;
-    color: var(--color-default-button);
-    font-size: 16px;
+    font-weight: bolder;
+    font-size: 1.2rem;
     transition: background-color 0.3s ease-in-out;
-    border: 1px solid var(--border-default-button);
     border-radius: 4px;
+    margin-right: 5px;
+    margin-left: 5px;
+}
+
+.create-button,
+.accept-button,
+.add-button {
+    color: var(--background-save-button);
+}
+
+.create-button,
+.add-button {
+    margin-top: 10px;
     margin-bottom: 10px;
 }
 
-.create-clash-button:disabled {
-    background-color: var(--background-default-button-disabled);
-    color: var(--color-default-button-disabled);
+.decline-button
+.remove-button {
+    color: var(--background-delete-button);
 }
 
-.create-clash-button:hover:not(:disabled) {
-    background-color: var(--background-default-button-hover);
+.continue-button {
+    color: var(--background-default-button);
 }
 
 @media (max-width: 480px) {

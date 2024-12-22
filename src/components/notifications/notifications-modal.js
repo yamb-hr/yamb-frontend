@@ -13,7 +13,7 @@ const NotificationsModal = () => {
 	}
 
 	const handleClick = (notification) => {
-		onMarkAsRead();
+		onMarkAsRead(notification);
 		navigate(notification.link);
 		setNotificationsModalOpen(false);
 	}

@@ -7,7 +7,7 @@ const API_BASE_URL = `${process.env.REACT_APP_API_URL}/clashes`;
 class ClashService {
 
     private axiosInstance: AxiosInstance;
-    public name: String;
+    public name: string;
 
     constructor() {
         this.name = 'ClashService';
@@ -75,11 +75,32 @@ class ClashService {
         return data;
     }
 
-    async create(ownerId: String, playerIds: String[], type: String): Promise<Clash> {
+    async create(ownerId: string, playerIds: string[], type: string): Promise<Clash> {
         const { data }: AxiosResponse<Clash> = await this.axiosInstance.post('/', { ownerId: ownerId, playerIds: playerIds, type: type});
         console.log("ClashService.create", data);
         return data;
     }
+
+    async acceptById(clash: Clash, playerId: string): Promise<Clash> {
+        const acceptLink = clash._links?.accept?.href;
+        if (!acceptLink) {
+            throw new Error("Accept link not available for this clash");
+        }
+        const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(acceptLink, { playerId: playerId });
+        console.log("ClashService.getById", data);
+        return data;
+    }
+
+    async declineById(clash: Clash, playerId: string): Promise<Clash> {
+        const declineLink = clash._links?.accept?.href;
+        if (!declineLink) {
+            throw new Error("Decline link not available for this clash");
+        }
+        const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(declineLink, { playerId: playerId });
+        console.log("ClashService.getById", data);
+        return data;
+    }
+
 }
 
 const clashService = new ClashService();

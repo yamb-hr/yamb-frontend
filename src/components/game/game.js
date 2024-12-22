@@ -11,7 +11,6 @@ import gameService from '../../services/gameService';
 import Sheet from './sheet/sheet';
 import Dice from './dice/dice';
 import './game.css';
-import { init } from 'i18next';
 
 const DEFAULT_DICE = [0, 1, 2, 3, 4];
 

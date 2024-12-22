@@ -200,7 +200,7 @@ function Navigation() {
                     </div>}
                 </ul>
                 {isMobile && isMenuOpen && <div className="navbar-shadow" onClick={() => setMenuOpen(false)}></div>}
-                {isMobile && !isMenuOpen && (location?.pathname !== '/' && !location?.pathname?.startsWith('/games/') && !location?.pathname?.startsWith('/clashes/')) && (
+                {isMobile && !isMenuOpen && (location?.pathname !== '/' && !location?.pathname?.startsWith('/games/')) && (
                     <button className="burger" onClick={() => setMenuOpen(!isMenuOpen)}>
                         <span className="icon">&#9776;</span>
                     </button>

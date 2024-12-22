@@ -12,7 +12,7 @@ const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;
 class PlayerService {
     
     private axiosInstance: AxiosInstance;
-    public name: String;
+    public name: string;
 
     constructor() {
         this.name = 'PlayerService';
@@ -147,7 +147,7 @@ class PlayerService {
         return data;
     }
 
-    async updateUsername(player: Player, username: String): Promise<Player> { 
+    async updateUsername(player: Player, username: string): Promise<Player> { 
         const usernameLink = player._links?.username?.href;
         if (!usernameLink) {
             throw new Error("Username link not available for this player");
@@ -157,7 +157,7 @@ class PlayerService {
         return data;
     }
 
-    async updateEmail(player: Player, email: String): Promise<Player> { 
+    async updateEmail(player: Player, email: string): Promise<Player> { 
         const emailLink = player._links?.email?.href;
         if (!emailLink) {
             throw new Error("Email link not available for this player");

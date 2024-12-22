@@ -32,7 +32,7 @@ export const NotificationsProvider = ({ children }) => {
     
             return () => subscription.unsubscribe();
         }
-    }, [currentUser, stompClient, isConnected]);
+    }, [currentUser, stompClient, isConnected, handleError]);
 
     const onNewNotification = (message) => {
         console.log(message);

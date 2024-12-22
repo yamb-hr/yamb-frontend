@@ -6,7 +6,7 @@ const API_URL = process.env.REACT_APP_API_URL + "/";
 class HomeService {
     
     private axiosInstance: AxiosInstance;
-    public name: String;
+    public name: string;
 
     constructor() {
         this.name = 'HomeService';
