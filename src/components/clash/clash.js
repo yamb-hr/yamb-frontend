@@ -103,13 +103,19 @@ function Clash() {
         );
     };
 
+    const handleFill = () => {
+        setTimeout(() => {
+            fetchData();
+        }, 2000);
+    }
+
     if (loading) {
         return <Spinner />;
     }
 
     if (data?.status === 'IN_PROGRESS') {
         return (
-            <Game id={data.players[data.turn].gameId} onFill={fetchData} />
+            <Game id={data.players[data.turn].gameId} onFill={handleFill} />
         );
     }
 
@@ -134,9 +140,10 @@ function Clash() {
         { label: 'Name', key: 'name' },
     ];
 
-    const filteredPlayers = data.players?.filter((player) => player.id !== currentUser.id);
-    const acceptedPlayers = filteredPlayers.filter((player) => player.status === 'ACCEPTED');
-    const pendingPlayers = filteredPlayers.filter((player) => player.status === 'PENDING');
+    const players = data?.players || [];
+    const filteredPlayers = players?.filter((player) => player.id !== currentUser.id);
+    const acceptedPlayers = filteredPlayers?.filter((player) => player.status === 'ACCEPTED');
+    const pendingPlayers = players?.filter((player) => player.status === 'PENDING');
 
     return (
         <div className="clash-container">
@@ -163,7 +170,7 @@ function Clash() {
                 ) : (
                     <div className="player-actions">
                         <h4>Actions</h4>
-                        {data.players.find((p) => p.id === currentUser.id)?.status === 'PENDING' && (
+                        {players.find((p) => p.id === currentUser.id)?.status === 'PENDING' && (
                             <>
                                 <button className="accept-button" onClick={handleAccept}>
                                     &#10004; Accept

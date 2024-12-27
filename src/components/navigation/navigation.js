@@ -9,18 +9,22 @@ import { ToastContext } from '../../providers/toastProvider';
 import { toast } from 'react-toastify';
 import authService from '../../services/authService';
 import './navigation.css';
+import { InGameContext } from '../../providers/inGameProvider';
 
 function Navigation() {
     
     const navigate = useNavigate();    
     const location = useLocation();
     const { t } = useTranslation();
-    const [ activePage, setActivePage ] = useState(location.pathname.substring(1));
+
+    const { inGame } = useContext(InGameContext);
+    const { isMobile } = useContext(DeviceContext);
+    const { showInfoToast } = useContext(ToastContext);
+    const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { language, setLanguage, theme, setTheme } = useContext(PreferencesContext);
-    const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
-    const { showInfoToast } = useContext(ToastContext);
-    const { isMobile } = useContext(DeviceContext);
+
+    const [ activePage, setActivePage ] = useState(location.pathname.substring(1));
 
     useEffect(() => {
         setActivePage(location.pathname.substring(1));
@@ -200,7 +204,7 @@ function Navigation() {
                     </div>}
                 </ul>
                 {isMobile && isMenuOpen && <div className="navbar-shadow" onClick={() => setMenuOpen(false)}></div>}
-                {isMobile && !isMenuOpen && (location?.pathname !== '/' && !location?.pathname?.startsWith('/games/')) && (
+                {isMobile && !isMenuOpen && !inGame && (
                     <button className="burger" onClick={() => setMenuOpen(!isMenuOpen)}>
                         <span className="icon">&#9776;</span>
                     </button>

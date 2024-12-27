@@ -25,7 +25,7 @@ function Dice(props) {
         let intervalId;
         let stopUpdatingTime;
 
-        if (isRolling && !diceDisabled) {
+        if (isRolling) {
             const animationDuration = parseInt(diceStyle.animationDuration, 10) || 1000;
             stopUpdatingTime = animationDuration - 500;
 
@@ -46,7 +46,7 @@ function Dice(props) {
     useEffect(() => {
         let newDiceClass = "dice " + (props.saved ? "saved " : " ");
         let newDiceStyle = {};
-        if (isRolling && !diceDisabled) {
+        if (isRolling) {
             newDiceClass += "rolling ";
             newDiceClass += Math.random() > 0.5 ? "clockwise" : "counter-clockwise";
             const time = Math.round(800 + Math.random() * 1000);

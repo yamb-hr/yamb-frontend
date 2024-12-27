@@ -2,9 +2,10 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
+import { InGameContext } from '../../providers/inGameProvider';
+import { ToastContext } from '../../providers/toastProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { StompClientContext } from '../../providers/stompClientProvider';
-import { ToastContext } from '../../providers/toastProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import scoreCalculator from '../../util/scoreCalculator';
 import gameService from '../../services/gameService';
@@ -19,10 +20,11 @@ function Game(props) {
 	const { id: urlId } = useParams();
     const id = props?.id || urlId;
 	const { t } = useTranslation();
+	const { setInGame } = useContext(InGameContext);
 	const { showInfoToast } = useContext(ToastContext);
 	const { currentUser } = useContext(CurrentUserContext);
-	const { stompClient, isConnected } = useContext(StompClientContext);
 	const { handleError } = useContext(ErrorHandlerContext);
+	const { stompClient, isConnected } = useContext(StompClientContext);
 
 	const [game, setGame] = useState(props.gameData);
 	const [subscribed, setSubscribed] = useState(false);
@@ -39,6 +41,13 @@ function Game(props) {
 	useEffect(() => {
 		if (game?.status === 'COMPLETED') handleShareModal();
 	}, [game]);
+
+	useEffect(() => {
+		setInGame(true);
+		return () => {
+		  setInGame(false);
+		};
+	}, [setInGame]);
 
 	useEffect(() => {
 		if (!game && id) {
@@ -159,7 +168,6 @@ function Game(props) {
 	const handleShareModal = () => {
 		if (!modalShowing && !isSpectator) {
 			setModalShowing(true);
-			let autoClose = 99999;
 			showInfoToast(
 				<div>
 					<img src="/logo.png" alt="Yamb" className="share-logo" />
@@ -170,11 +178,8 @@ function Game(props) {
 					<hr />
 					<p>{t("want-to-try-again")}</p>
 					<button className="new-game-button" onClick={handleArchive}>{t("new-game")}</button>
-				</div>, autoClose
+				</div>, 999999
 			);
-			setTimeout(() => {
-				setModalShowing(false)
-			}, 99999);
 		}
 	};
 
