@@ -11,7 +11,7 @@ const localeStringFormat = {
     hour: 'numeric', minute: 'numeric', second: 'numeric',
 };
 
-const Table = ({ columns, data, service, selectable = false, selectedRows = [], onRowSelection = () => {}, paginated = true, displayHeader = true }) => {
+const Table = ({ columns, data, service, progress, selectable = false, selectedRows = [], onRowSelection = () => {}, paginated = true, displayHeader = true }) => {
     const navigate = useNavigate();
     const { handleError } = useContext(ErrorHandlerContext);
     const { language } = useContext(PreferencesContext);
@@ -152,6 +152,7 @@ const Table = ({ columns, data, service, selectable = false, selectedRows = [], 
     const sortedData = sortData(tableData);
     const displayData = paginated ? getPaginatedData(sortedData) : sortedData;
     const totalPages = Math.ceil(tableData.length / pageSize);
+    const progressKey = progress?.key;
 
     return (
         <div className="table-container">
@@ -169,26 +170,44 @@ const Table = ({ columns, data, service, selectable = false, selectedRows = [], 
                     </thead>
                 )}
                 <tbody>
-                    {displayData.map((row) => (
-                        <tr key={row.id} onClick={() => handleRowClick(row)}>
-                            {selectable && (
-                                <td>
-                                    <input
-                                        type="checkbox"
-                                        checked={selectedRows.includes(row.id)}
-                                        readOnly
-                                    />
-                                </td>
-                            )}
-                            {columns.map((column) => (
-                                <td key={column.key}>
-                                {typeof column.render === 'function'
-                                    ? column.render(row)
-                                    : getFormattedValue(row, column.key)}
-                              </td>
-                            ))}
-                        </tr>
-                    ))}
+                    {displayData.map((row) => {
+                        const progressValue = progressKey
+                            ? Math.max(0, Math.min(100, parseFloat(row[progressKey] * 100) || 0))
+                            : 0;
+
+                        let rowStyle = progressKey
+                            ? {
+                                background: `linear-gradient(to right, #4caf50 ${progressValue}%, #ffffff ${progressValue}%)`
+                              }
+                            : undefined;
+
+                        rowStyle = {...rowStyle, outline: selectedRows.includes(row.id) ? '1px solid red' : ''} ;
+
+                        return (
+                            <tr
+                                key={row.id}
+                                onClick={() => handleRowClick(row)}
+                                style={rowStyle}
+                            >
+                                {/* {selectable && (
+                                    <td>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedRows.includes(row.id)}
+                                            readOnly
+                                        />
+                                    </td>
+                                )} */}
+                                {columns.map((column) => (
+                                    <td key={column.key}>
+                                        {typeof column.render === 'function'
+                                            ? column.render(row)
+                                            : getFormattedValue(row, column.key)}
+                                    </td>
+                                ))}
+                            </tr>
+                        );
+                    })}
                 </tbody>
             </table>
 

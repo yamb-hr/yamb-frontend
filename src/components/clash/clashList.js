@@ -102,14 +102,13 @@ function ClashList() {
 
     const waitingColumns = [
         { label: 'Name', key: 'name' },
-        { key: 'owner', label: 'Created by' },
         {
             key: 'actions',
             label: 'Actions',
             render: (clash) => (
                 clash.owner.id !== currentUser.id ? (<>
-                <button className="accept-button" onClick={(e) => {e.stopPropagation(); handleAccept(clash);}}>&#10004;</button>
-                <button className="decline-button" onClick={(e) => {e.stopPropagation(); handleDecline(clash);}}>&#10060;</button>
+                    <button className="accept-button" onClick={(e) => {e.stopPropagation(); handleAccept(clash);}}>&#10004;</button>
+                    <button className="decline-button" onClick={(e) => {e.stopPropagation(); handleDecline(clash);}}>&#10060;</button>
                 </>) : (
                     <button className="continue-button">&#x25B6;</button>
                 )
@@ -143,23 +142,21 @@ function ClashList() {
     return (
         <div className="clash-list-container">
             <div className="clash-list">
-            {inProgressClashes?.length > 0 && <Table data={inProgressClashes} columns={inProgressColumns} paginated={false} displayHeader={false}></Table>}
-            <br/>
-            {waitingClashes?.length > 0 && <Table data={waitingClashes} columns={waitingColumns} paginated={false} displayHeader={false}></Table>}
-            <br />
-                {filteredPlayers && filteredPlayers.length > 0 ?
-                    <>
-                        <button className="create-button" onClick={createClash} disabled={selectedRows.length === 0}>&#x271A;&nbsp;Create</button>
-                        <Table
-                            data={filteredPlayers}
-                            columns={playerColumns}
-                            selectable={true}
-                            selectedRows={selectedRows}
-                            onRowSelection={toggleRowSelection}
-                            paginated={false}
-                            displayHeader={false}
-                        />
-                    </>:<div>No players online</div>}
+            {inProgressClashes?.length > 0 && (<><h3>In Progress</h3><Table data={inProgressClashes} columns={inProgressColumns} paginated={false} displayHeader={false}/><br/></>)}
+            {waitingClashes?.length > 0 && (<><h3>Waiting</h3><Table data={waitingClashes} columns={waitingColumns} paginated={false} displayHeader={false}/><br/></>)}
+            {filteredPlayers && filteredPlayers.length > 0 ?
+                <>
+                    <button className="create-button" onClick={createClash} disabled={selectedRows.length === 0}>&#x271A;&nbsp;Create</button>
+                    <Table
+                        data={filteredPlayers}
+                        columns={playerColumns}
+                        selectable={true}
+                        selectedRows={selectedRows}
+                        onRowSelection={toggleRowSelection}
+                        paginated={false}
+                        displayHeader={false}
+                    />
+                </>:<div>No players online</div>}
             </div>
         </div>
     );

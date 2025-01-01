@@ -105,13 +105,15 @@
   --background-default-input: var(--color-blue-hover);
   --background-default-button: var(--color-gray);
   --background-default-button-hover: var(--color-gray-hover);
-  --background-default-button-disabled: var(--color-blue-hover);
+  --background-default-button-disabled: var(--color-gray);
   --color-default: var(--color-gray);
   --color-default-button: var(--color-blue);
+  --color-default-button-disabled: var(--color-gray-hover);
   --color-default-input: var(--color-gray);
   --border-default-input: var(--color-blue);
   --border-default-button: var(--color-blue);
   --color-default-link: var(--color-yellow);
+  --padding-default-button: 10px;
     
   --background-auth: var(--color-blue);
   --background-auth-input: var(--color-blue-hover);
@@ -322,13 +324,15 @@
   --background-default-input: var(--color-gray-hover);
   --background-default-button: var(--color-blue);
   --background-default-button-hover: var(--color-blue-hover);
-  --background-default-button-disabled: var(--color-gray-hover);
+  --background-default-button-disabled: var(--color-gray);
   --color-default: var(--color-black);
   --color-default-button: var(--color-gray);
+  --color-default-button-disabled: var(--color-gray-hover);
   --color-default-input: var(--color-black);
   --border-default-input: var(--color-gray);
   --border-default-button: var(--color-gray);
   --color-default-link: var(--color-blue);
+  --padding-default-button: 10px;
 
   --background-auth: var(--color-gray);
   --background-auth-input: var(--color-gray-hover);

@@ -141,24 +141,21 @@ function Clash() {
     ];
 
     const players = data?.players || [];
-    const filteredPlayers = players?.filter((player) => player.id !== currentUser.id);
-    const acceptedPlayers = filteredPlayers?.filter((player) => player.status === 'ACCEPTED');
+    const filteredPlayers = activePlayers?.filter((player) => player.id !== currentUser.id);
+    const acceptedPlayers = players?.filter((player) => player.status === 'ACCEPTED');
     const pendingPlayers = players?.filter((player) => player.status === 'PENDING');
 
     return (
         <div className="clash-container">
             <div className="clash">
-                <Table data={[data]} columns={clashColumns} paginated={false} displayHeader={false} />
-                <br/>
-                <Table data={acceptedPlayers} columns={playerColumns} paginated={false} displayHeader={false} />
-                Waiting on...
-                <Table data={pendingPlayers} columns={playerColumns} paginated={false} displayHeader={false} />
-                <br/>
+                {data && (<><h3>Clash</h3><Table data={[data]} columns={clashColumns} paginated={false} displayHeader={false} /><br/></>)}
+                {acceptedPlayers?.length > 0 && (<><h3>Accepted</h3><Table data={acceptedPlayers} columns={playerColumns} paginated={false} displayHeader={false} /><br/></>)}
+                {pendingPlayers?.length > 0 && (<><h3>Waiting on...</h3><Table data={pendingPlayers} columns={playerColumns} paginated={false} displayHeader={false} /><br/></>)}
                 {data.owner.id === currentUser.id ? (
                     <>
-                        <button className="add-button" onClick={handleAddPlayers} disabled={selectedPlayers.length === 0}>&#x271A;&nbsp;Add</button>
+                        <button className="add-button" onClick={handleAddPlayers} disabled={selectedPlayers?.length === 0}>&#x271A;&nbsp;Add</button>
                         <Table
-                            data={activePlayers}
+                            data={filteredPlayers}
                             columns={onlinePlayerColumns}
                             selectable={true}
                             selectedRows={selectedPlayers}

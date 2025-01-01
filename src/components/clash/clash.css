@@ -50,62 +50,39 @@
     text-align: center;
 }
 
-.accept-btn {
-    background-color: #4caf50;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    margin-right: 5px;
-    border-radius: 4px;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.decline-btn {
-    background-color: #f44336;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.2s ease-in-out;
-}
-
-.accept-btn:hover {
-    background-color: #45a049;
-}
-
-.decline-btn:hover {
-    background-color: #e53935;
-}
-
 .create-button,
 .accept-button,
 .decline-button,
 .continue-button,
 .add-button,
 .remove-button {
-    padding-left: 12px;
-    padding-right: 12px;
     border: none;
     font-weight: bolder;
-    font-size: 1.2rem;
     transition: background-color 0.3s ease-in-out;
     border-radius: 4px;
-    margin-right: 5px;
+}
+
+.accept-button,
+.decline-button,
+.continue-button {
+    padding-left: 32px;
+    padding-right: 32px;
     margin-left: 5px;
+    margin-right: 5px;
+    background: var(--background-default-button);
+    height: 100%;
+}
+
+.create-button, .add-button {
+    padding: var(--padding-default-button);
+    font-size: 1.2rem;
+    margin-bottom: 10px;
 }
 
 .create-button,
 .accept-button,
 .add-button {
     color: var(--background-save-button);
-}
-
-.create-button,
-.add-button {
-    margin-top: 10px;
-    margin-bottom: 10px;
 }
 
 .decline-button
@@ -117,16 +94,16 @@
     color: var(--background-default-button);
 }
 
+.create-button:disabled, .add-button:disabled {
+    color: var(--color-default-button-disabled);
+    background-color: var(--background-default-button-disabled);
+}
+
 @media (max-width: 480px) {
     .clash, .clash-list {
         width: 100vw;
         margin-top: 40px;
         height: 90vh;
-    }
-
-    .create-clash-button {
-        width: 100%;
-        font-size: 14px;
     }
 
     .clash-players th,
