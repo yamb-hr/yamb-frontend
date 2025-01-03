@@ -144,6 +144,43 @@
     filter: grayscale(100%);
 }
 
+.navigation .notification-button {
+    position: fixed;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 16px;
+    font-size: 2rem;
+	background: var(--background-undo-button);
+	border: var(--border-undo-button);
+	border-radius: var(--border-radius-box);
+	filter: grayscale(100%);
+	transition: filter 0.3s ease, background-color 0.3s ease;
+}
+  
+.navigation .notification-button:hover:enabled {
+	background-color: var(--background-restart-button-hover);
+	filter: grayscale(0%);
+}
+  
+.navigation .notification-badge {
+	position: absolute;
+	top: 14px;
+	right: 14px;
+	background-color: red;
+	color: white;
+	border-radius: 50%;
+	padding: 0px;
+	font-size: 0.55rem;
+	font-weight: bold;
+	line-height: 1;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	min-width: 20px;
+	height: 20px;
+}
+
 .navbar ul li .icon {
     color: var(--color-nav);
     filter: grayscale(100%);

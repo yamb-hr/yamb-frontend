@@ -6,10 +6,11 @@ import { DeviceContext } from '../../providers/deviceProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { MenuContext } from '../../providers/menuProvider';
 import { ToastContext } from '../../providers/toastProvider';
+import { NotificationsContext } from '../../providers/notificationsProvider';
+import { InGameContext } from '../../providers/inGameProvider';
 import { toast } from 'react-toastify';
 import authService from '../../services/authService';
 import './navigation.css';
-import { InGameContext } from '../../providers/inGameProvider';
 
 function Navigation() {
     
@@ -23,6 +24,7 @@ function Navigation() {
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { language, setLanguage, theme, setTheme } = useContext(PreferencesContext);
+    const { notifications, setNotificationsModalOpen } = useContext(NotificationsContext);
 
     const [ activePage, setActivePage ] = useState(location.pathname.substring(1));
 
@@ -103,7 +105,7 @@ function Navigation() {
     );
 
     return (
-        <div>
+        <div className="navigation">
             {!isMobile && (
                 <div className="top-bar">
                     <ul>
@@ -208,6 +210,16 @@ function Navigation() {
                     <button className="burger" onClick={() => setMenuOpen(!isMenuOpen)}>
                         <span className="icon">&#9776;</span>
                     </button>
+                )}
+                {isMobile && !inGame && (
+                    <button className="notification-button" onClick={() => setNotificationsModalOpen(true)}>
+                        &#128276;
+                        {notifications?.length > 0 && (
+                            <span className="notification-badge">
+                            {notifications.length > 99 ? "99+" : notifications.length}
+                            </span>
+                        )}
+                    </button>       
                 )}
                 {!isMobile && (
                     <button className="menu-toggle" onClick={() => setMenuOpen(!isMenuOpen)}>

@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     border-radius: 8px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
     font-size: small;
     flex-grow: 1;
     background-color: var(--background-table-container);
@@ -120,6 +120,11 @@
 
 .page {
     margin: auto 0 auto 0;
+}
+
+td.function {
+    background-color: var(--color-background);
+    padding: 0px;
 }
 
 @media (max-width: 480px) {

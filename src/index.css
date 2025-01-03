@@ -219,25 +219,23 @@
   --background-settings: var(--color-blue);
   --color-settings: var(--color-gray);
   
-  --background-button-play: var(--color-gray);
-  --background-button-play-hover: var(--color-gray-hover);
-  --color-button-play: var(--color-blue);
-  
-  --color-select-button: var(--color-blue);
-	--background-select-button: var(--color-gray);
-	--background-select-button-hover: var(--color-gray-hover);
-  
-  --color-edit-button: var(--color-blue);
-	--background-edit-button: var(--color-yellow);
-	--background-edit-button-hover: var(--color-yellow-hover);
-  
   --color-save-button: var(--color-gray);
+  --color-save-button-disabled: var(--color-gray-hover);
 	--background-save-button: var(--color-turq);
 	--background-save-button-hover: var(--color-turq-hover);
-  
-  --color-cancel-button: var(--color-gray);
-	--background-cancel-button: var(--color-red);
-	--background-cancel-button-hover: var(--color-red-hover);
+	--background-save-button-disabled: var(--color-gray);
+
+  --color-edit-button: var(--color-blue);
+  --color-edit-button-disabled: var(--color-gray-hover);
+	--background-edit-button: var(--color-yellow);
+	--background-edit-button-hover: var(--color-yellow-hover);
+	--background-edit-button-disabled: var(--color-gray);
+
+  --color-delete-button: var(--color-gray);
+  --color-delete-button-disabled: var(--color-gray-hover);
+	--background-delete-button: var(--color-red);
+	--background-delete-button-hover: var(--color-red-hover);
+	--background-delete-button-disabled: var(--color-gray);
 
 }
 
@@ -402,30 +400,24 @@
   --background-settings: var(--color-blue);
   --color-settings: var(--color-gray);
 
-  --background-button-play: var(--color-blue);
-  --background-button-play-hover: var(--color-blue-hover);
-  --color-button-play: var(--color-gray);
-  
-  --color-select-button: var(--color-gray);
-	--background-select-button: var(--color-blue);
-	--background-select-button-hover: var(--color-blue-hover);
-
-  --color-edit-button: var(--color-gray);
-	--background-edit-button: var(--color-yellow);
-	--background-edit-button-hover: var(--color-yellow-hover);
-
-  --color-delete-button: var(--color-gray);
-	--background-delete-button: var(--color-red);
-	--background-delete-button-hover: var(--color-red-hover);
-  
   --color-save-button: var(--color-gray);
+  --color-save-button-disabled: var(--color-gray-hover);
 	--background-save-button: var(--color-turq);
 	--background-save-button-hover: var(--color-turq-hover);
-  
-  --color-cancel-button: var(--color-gray);
-	--background-cancel-button: var(--color-red);
-	--background-cancel-button-hover: var(--color-red-hover);
+	--background-save-button-disabled: var(--color-gray);
 
+  --color-edit-button: var(--color-gray);
+  --color-edit-button-disabled: var(--color-gray-hover);
+	--background-edit-button: var(--color-yellow);
+	--background-edit-button-hover: var(--color-yellow-hover);
+	--background-edit-button-disabled: var(--color-gray);
+
+  --color-delete-button: var(--color-gray);
+  --color-delete-button-disabled: var(--color-gray-hover);
+	--background-delete-button: var(--color-red);
+	--background-delete-button-hover: var(--color-red-hover);
+	--background-delete-button-disabled: var(--color-gray);
+  
 }
 
 body {
@@ -499,7 +491,6 @@ a:hover {
     --height-dice: var(--width-dice);
     --margin-sheet: 5px;
 
-    --margin-play-button: 20px 0 20px 0;
     --margin-register-button: 20px 0 20px 0;
     --margin-login-button: 20px 0 20px 0;
 

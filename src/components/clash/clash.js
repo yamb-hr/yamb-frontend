@@ -3,119 +3,104 @@ import { useParams } from 'react-router-dom';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { StompClientContext } from '../../providers/stompClientProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
+import { ActivePlayersContext } from '../../providers/activePlayersProvider';
 import clashService from '../../services/clashService';
-import playerService from '../../services/playerService';
-import Spinner from '../spinner/spinner';
+import Element from '../element/element';
 import Table from '../table/table';
 import Game from '../game/game';
 import './clash.css';
 
 function Clash() {
+
     const { id } = useParams();
     const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
-        const { stompClient, isConnected } = useContext(StompClientContext);
+    const { activePlayers } = useContext(ActivePlayersContext);
+    const { stompClient, isConnected } = useContext(StompClientContext);
 
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(true);
-    const [activePlayers, setActivePlayers] = useState([]);
-    const [selectedPlayers, setSelectedPlayers] = useState([]);
-
-    const fetchData = async () => {
-        setLoading(true);
-        try {
-            const clashData = await clashService.getById(id);
-            setData(clashData);
-        } catch (error) {
-            handleError(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+    const [clash, setClash] = useState(null);
+    const [subscribed, setSubscribed] = useState(false);
+    const [playersToAdd, setPlayersToAdd] = useState([]);
+    const [playersToRemove, setPlayersToRemove] = useState([]);
 
     useEffect(() => {
-        if (id && !data) {
-            fetchData();
-        }
-    }, [id]);
-
-    useEffect(() => {
-        if (currentUser && stompClient && isConnected) {
-            const subscription = stompClient.subscribe('/topic/players', onPlayerStatusChanged);
-            playerService.getAllActive().then(data => {
-                setActivePlayers(data._embedded.players);
+		if (!clash && id) {
+			clashService.getById(id).then(data => {
+                setClash(data);
+                setSubscribed(true);
             }).catch(error => {
                 handleError(error);
             });
-            return () => {
-                subscription.unsubscribe();
-            };
-        }
-    }, [currentUser, stompClient, isConnected]);
+		}
+	}, [currentUser, id]);
 
-    const onPlayerStatusChanged = (message) => {
-        console.log(message);
-		let body = JSON.parse(message.body);
-		setActivePlayers(JSON.parse(atob(body.payload)).content);
-	}
+    useEffect(() => {
+        if (id && stompClient && isConnected && subscribed) {
+            const subscription = stompClient.subscribe(`/topic/clashes/${id}`, onClashUpdate);
+            return () => subscription.unsubscribe();
+        }
+    }, [id, stompClient, isConnected, subscribed]);
+
+    const onClashUpdate = (message) => {
+		const body = JSON.parse(message.body);
+        const updatedClash = JSON.parse(atob(body.payload));
+        setTimeout(() => {
+            console.log("updatedClash", updatedClash);
+            setClash(updatedClash);
+        }, 1500);
+    };
 
     const handleAccept = async () => {
-        try {
-            await clashService.acceptById(id, currentUser.id);
-            fetchData();
-        } catch (error) {
+        clashService.acceptById(clash, currentUser.id).then(data => {
+            setClash(data);
+        }).catch(error => {
             handleError(error);
-        }
+        });
     };
 
     const handleDecline = async () => {
-        try {
-            await clashService.declineById(id, currentUser.id);
-            fetchData();
-        } catch (error) {
+        clashService.declineById(clash, currentUser.id).then(data => {
+            setClash(data);
+        }).catch(error => {
             handleError(error);
-        }
+        });
     };
 
-    const handleAddPlayers = async () => {
-        try {
-            await clashService.addPlayers(id, selectedPlayers);
-            fetchData();
-        } catch (error) {
+    const handleAddPlayers = () => {
+        clashService.addPlayersById(clash, playersToAdd).then(data => {
+            setClash(data);
+        }).catch(error => {
             handleError(error);
-        }
+        });
     };
 
-    const handleRemovePlayer = async (playerId) => {
-        try {
-            await clashService.removePlayer(id, playerId);
-            fetchData();
-        } catch (error) {
+    const handleRemovePlayers = () => {
+        clashService.removePlayersById(clash, playersToRemove).then(data => {
+            setClash(data);
+        }).catch(error => {
             handleError(error);
-        }
+        });
     };
 
-    const togglePlayerSelection = (playerId) => {
-        setSelectedPlayers((prevSelected) =>
+    const togglePlayerToAdd = (playerId) => {
+        setPlayersToAdd((prevSelected) =>
             prevSelected.includes(playerId)
                 ? prevSelected.filter((id) => id !== playerId)
                 : [...prevSelected, playerId]
         );
     };
 
-    const handleFill = () => {
-        setTimeout(() => {
-            fetchData();
-        }, 2000);
-    }
+    const togglePlayerToRemove = (playerId) => {
+        setPlayersToRemove((prevSelected) =>
+            prevSelected.includes(playerId)
+                ? prevSelected.filter((id) => id !== playerId)
+                : [...prevSelected, playerId]
+        );
+    };
 
-    if (loading) {
-        return <Spinner />;
-    }
-
-    if (data?.status === 'IN_PROGRESS') {
+    if (clash?.status === 'IN_PROGRESS') {
         return (
-            <Game id={data.players[data.turn].gameId} onFill={handleFill} />
+            <Game id={clash?.players[clash?.turn]?.gameId}/>
         );
     }
 
@@ -125,22 +110,22 @@ function Clash() {
     ];
 
     const playerColumns = [
-        { label: 'Player', key: 'name' },
-        {
-            key: 'actions',
-            label: 'Actions',
-            render: (player) =>
-                data.owner.id === currentUser.id ? (
-                    <button className="remove-button" onClick={(e) => {e.stopPropagation(); handleRemovePlayer(player.id);}}>&#10060;</button>
-                ) : null,
-        },
+        { label: 'Player', key: 'name' }
+        // {
+        //     key: 'actions',
+        //     label: 'Actions',
+        //     render: (player) =>
+        //         data.owner.id === currentUser.id ? (
+        //             <button className="remove-button" onClick={(e) => {e.stopPropagation(); handleRemovePlayer(player.id);}}>&#10060;</button>
+        //         ) : null,
+        // },
     ];
 
     const onlinePlayerColumns = [
         { label: 'Name', key: 'name' },
     ];
 
-    const players = data?.players || [];
+    const players = clash?.players || [];
     const filteredPlayers = activePlayers?.filter((player) => player.id !== currentUser.id);
     const acceptedPlayers = players?.filter((player) => player.status === 'ACCEPTED');
     const pendingPlayers = players?.filter((player) => player.status === 'PENDING');
@@ -148,37 +133,65 @@ function Clash() {
     return (
         <div className="clash-container">
             <div className="clash">
-                {data && (<><h3>Clash</h3><Table data={[data]} columns={clashColumns} paginated={false} displayHeader={false} /><br/></>)}
-                {acceptedPlayers?.length > 0 && (<><h3>Accepted</h3><Table data={acceptedPlayers} columns={playerColumns} paginated={false} displayHeader={false} /><br/></>)}
-                {pendingPlayers?.length > 0 && (<><h3>Waiting on...</h3><Table data={pendingPlayers} columns={playerColumns} paginated={false} displayHeader={false} /><br/></>)}
-                {data.owner.id === currentUser.id ? (
+                {clash && (<><br/><Element data={clash} columns={clashColumns} /><br/></>)}
+                {/* {clash?.owner?.id !== currentUser?.id && clash?.players?.find(p => p.id === currentUser?.id)?.status === 'PENDING' && (
                     <>
-                        <button className="add-button" onClick={handleAddPlayers} disabled={selectedPlayers?.length === 0}>&#x271A;&nbsp;Add</button>
+                        <div className="player-actions">
+                            {players.find((p) => p.id === currentUser.id)?.status === 'PENDING' && (
+                                <>
+                                    <button className="accept-button" onClick={handleAccept}>
+                                        <span className="icon">&#10004;</span>&nbsp;Accept
+                                    </button>
+                                    <button className="decline-button" onClick={handleDecline}>
+                                        <span className="icon">&#10060;</span>&nbsp;Decline
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                    </>
+                )}
+                {acceptedPlayers?.length > 0 && (
+                    <>
+                        <h3>Accepted</h3>
+                        <Table 
+                            data={acceptedPlayers} 
+                            columns={playerColumns}
+                            paginated={false} 
+                            displayHeader={false}
+                        />
+                        <br/>
+                    </>
+                )}
+                {pendingPlayers?.length > 0 && (
+                    <>
+                        <h3>Waiting on...</h3>
+                        {clash?.owner?.id === currentUser?.id && <button className="remove-button" onClick={handleRemovePlayers} disabled={playersToRemove?.length === 0}><span className="icon">&#10060;</span>&nbsp;Remove</button>}
+                        <Table 
+                            data={pendingPlayers} 
+                            columns={playerColumns} 
+                            paginated={false} 
+                            displayHeader={false} 
+                            selectable={true} 
+                            selectedRows={playersToRemove}
+                            onRowSelection={togglePlayerToRemove}
+                        />
+                        <br/>
+                    </>
+                )}
+                {clash?.owner?.id === currentUser.id && (
+                    <>
+                        <button className="add-button" onClick={handleAddPlayers} disabled={playersToAdd?.length === 0}><span className="icon">&#x271A;</span>&nbsp;Add</button>
                         <Table
                             data={filteredPlayers}
                             columns={onlinePlayerColumns}
                             selectable={true}
-                            selectedRows={selectedPlayers}
-                            onRowSelection={togglePlayerSelection}
+                            selectedRows={playersToAdd}
+                            onRowSelection={togglePlayerToAdd}
                             paginated={false}
                             displayHeader={false}
                         />
                     </>
-                ) : (
-                    <div className="player-actions">
-                        <h4>Actions</h4>
-                        {players.find((p) => p.id === currentUser.id)?.status === 'PENDING' && (
-                            <>
-                                <button className="accept-button" onClick={handleAccept}>
-                                    &#10004; Accept
-                                </button>
-                                <button className="decline-button" onClick={handleDecline}>
-                                    &#10060; Decline
-                                </button>
-                            </>
-                        )}
-                    </div>
-                )}
+                )} */}
             </div>
         </div>
     );

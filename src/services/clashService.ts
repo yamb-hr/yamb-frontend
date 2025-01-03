@@ -75,8 +75,8 @@ class ClashService {
         return data;
     }
 
-    async create(ownerId: string, playerIds: string[], type: string): Promise<Clash> {
-        const { data }: AxiosResponse<Clash> = await this.axiosInstance.post('/', { ownerId: ownerId, playerIds: playerIds, type: type});
+    async create(ownerId: string, playerIds: string[], type: string, name: string): Promise<Clash> {
+        const { data }: AxiosResponse<Clash> = await this.axiosInstance.post('/', { ownerId: ownerId, playerIds: playerIds, type: type, name: name});
         console.log("ClashService.create", data);
         return data;
     }
@@ -87,7 +87,7 @@ class ClashService {
             throw new Error("Accept link not available for this clash");
         }
         const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(acceptLink, { playerId: playerId });
-        console.log("ClashService.getById", data);
+        console.log("ClashService.acceptById", data);
         return data;
     }
 
@@ -97,7 +97,27 @@ class ClashService {
             throw new Error("Decline link not available for this clash");
         }
         const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(declineLink, { playerId: playerId });
-        console.log("ClashService.getById", data);
+        console.log("ClashService.declineById", data);
+        return data;
+    }
+
+    async addPlayersById(clash: Clash, playerIds: string[]): Promise<Clash> {
+        const addPlayersLink = clash._links?.add?.href;
+        if (!addPlayersLink) {
+            throw new Error("Add players link not available for this clash");
+        }
+        const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(addPlayersLink, { playerIds: playerIds });
+        console.log("ClashService.addPlayersById", data);
+        return data;
+    }
+
+    async removePlayersById(clash: Clash, playerIds: string[]): Promise<Clash> {
+        const removePlayersLink = clash._links?.remove?.href;
+        if (!removePlayersLink) {
+            throw new Error("Remove players link not available for this clash");
+        }
+        const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(removePlayersLink, { playerIds: playerIds });
+        console.log("ClashService.removePlayersById", data);
         return data;
     }
 

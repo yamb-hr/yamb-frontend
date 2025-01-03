@@ -60,33 +60,28 @@
     font-weight: bolder;
     transition: background-color 0.3s ease-in-out;
     border-radius: 4px;
+    color: var(--color-default-button);
 }
 
 .accept-button,
 .decline-button,
-.continue-button {
-    padding-left: 32px;
-    padding-right: 32px;
-    margin-left: 5px;
-    margin-right: 5px;
-    background: var(--background-default-button);
-    height: 100%;
-}
-
-.create-button, .add-button {
+.continue-button,
+.create-button, 
+.add-button, 
+.remove-button  {
     padding: var(--padding-default-button);
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+    background: var(--background-default-button);
+    margin: 10px;
 }
 
-.create-button,
-.accept-button,
-.add-button {
+.create-button .icon,
+.accept-button .icon,
+.add-button .icon {
     color: var(--background-save-button);
 }
 
-.decline-button
-.remove-button {
+.decline-button .icon,
+.remove-button .icon {
     color: var(--background-delete-button);
 }
 
@@ -94,9 +89,56 @@
     color: var(--background-default-button);
 }
 
-.create-button:disabled, .add-button:disabled {
+.create-button:disabled, .add-button:disabled, .remove-button:disabled {
     color: var(--color-default-button-disabled);
     background-color: var(--background-default-button-disabled);
+}
+
+.clash h3,
+.clash-list h3 {
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin: 10px;
+    color: var(--color-default);
+}
+
+.active-players-container {
+    padding: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.create-clash-container {
+    align-items: center;
+}
+
+.clash-name-input {
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    flex-grow: 1;
+}
+
+.create-clash-button {
+    border: none;
+    font-weight: bold;
+    border-radius: 4px;
+    background-color: var(--background-save-button);
+    color: var(--color-save-button);
+    padding: var(--padding-default-button);
+    transition: background-color 0.3s ease-in-out;
+    margin: 0 20px;
+}
+
+.create-clash-button:hover:enabled {
+    background-color: var(--background-save-button-hover);
+}
+
+.create-clash-button:disabled {
+    color: var(--color-save-button-disabled);
+    background-color: var(--background-save-button-disabled);
 }
 
 @media (max-width: 480px) {
@@ -110,5 +152,14 @@
     .clash-players td {
         padding: 8px;
         font-size: 14px;
+    }
+
+    .create-clash-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .clash-name-input {
+        margin-bottom: 10px;
     }
 }

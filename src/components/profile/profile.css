@@ -150,17 +150,17 @@
 }
 
 .cancel-button {
-    background-color: var(--background-cancel-button);
-    color: var(--color-cancel-button);
+    background-color: var(--background-delete-button);
+    color: var(--color-delete-button);
 }
 
 .cancel-button:hover {
-    background-color: var(--background-cancel-button-hover);
+    background-color: var(--background-delete-button-hover);
 }
 
 .button-resend-verification-email {
-    background-color: var(--background-default-button);
-    color: var(--color-default-button);
+    background-color: var(--background-delete-button);
+    color: var(--color-delete-button);
     margin-top: 5px;
     padding: 10px;
     font-size: 1rem;
@@ -171,7 +171,7 @@
 }
 
 .button-resend-verification-email:hover:enabled {
-    background-color: var(--background-default-button-hover);
+    background-color: var(--background-delete-button-hover);
 }
 
 .avatar-container:hover .upload-label {
@@ -256,12 +256,12 @@
 }
 
 .cancel-button {
-    background-color: var(--background-cancel-button);
-    color: var(--color-cancel-button);
+    background-color: var(--background-delete-button);
+    color: var(--color-delete-button);
 }
 
 .cancel-button:hover {
-    background-color: var(--background-cancel-button-hover);
+    background-color: var(--background-delete-button-hover);
 }
 
 .button-resend-verification-email {
@@ -354,12 +354,12 @@
 }
 
 .cancel-button {
-    background-color: var(--background-cancel-button);
-    color: var(--color-cancel-button);
+    background-color: var(--background-delete-button);
+    color: var(--color-delete-button);
 }
 
 .cancel-button:hover {
-    background-color: var(--background-cancel-button-hover);
+    background-color: var(--background-delete-button-hover);
 }
 
 .button-resend-verification-email {

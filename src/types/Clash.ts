@@ -17,6 +17,8 @@ export interface Clash {
         self: { href: string };
         accept?: { href: string };
         decline?: { href: string };
+        add?: { href: string };
+        remove?: { href: string };
     };
 }
 

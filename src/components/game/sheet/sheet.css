@@ -63,7 +63,7 @@ button {
 	grid-row-end: 17;
 }
 
-.notification-button {
+.sheet .notification-button {
 	position: relative;
 	width: var(--width-box);
 	background: var(--background-undo-button);
@@ -74,12 +74,12 @@ button {
 	transition: filter 0.3s ease, background-color 0.3s ease;
 }
   
-.notification-button:hover:enabled {
+.sheet .notification-button:hover:enabled {
 	background-color: var(--background-restart-button-hover);
 	filter: grayscale(0%);
 }
   
-.notification-badge {
+.sheet .notification-badge {
 	position: absolute;
 	top: 4px;
 	right: 8px;

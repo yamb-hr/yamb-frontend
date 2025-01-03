@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
+import { CurrentUserContext } from '../../providers/currentUserProvider';
 import playerService from '../../services/playerService';
 import Element from '../element/element';
 import Collapsible from '../collapsible/collapsible';
 import Spinner from '../spinner/spinner';
 import Table from '../table/table';
 import './player.css';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
 
 function Player() {
     const { id } = useParams();

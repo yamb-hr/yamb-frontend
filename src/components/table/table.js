@@ -181,7 +181,7 @@ const Table = ({ columns, data, service, progress, selectable = false, selectedR
                               }
                             : undefined;
 
-                        rowStyle = {...rowStyle, outline: selectedRows.includes(row.id) ? '1px solid red' : ''} ;
+                        rowStyle = {...rowStyle, outline: selectedRows.includes(row.id) ? '1px solid red' : ''};
 
                         return (
                             <tr
@@ -199,7 +199,7 @@ const Table = ({ columns, data, service, progress, selectable = false, selectedR
                                     </td>
                                 )} */}
                                 {columns.map((column) => (
-                                    <td key={column.key}>
+                                    <td key={column.key} className={typeof column.render === 'function' ? 'function' : ''}>
                                         {typeof column.render === 'function'
                                             ? column.render(row)
                                             : getFormattedValue(row, column.key)}

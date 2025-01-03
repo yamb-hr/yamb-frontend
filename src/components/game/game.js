@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
-import { InGameContext } from '../../providers/inGameProvider';
 import { ToastContext } from '../../providers/toastProvider';
+import { InGameContext } from '../../providers/inGameProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { StompClientContext } from '../../providers/stompClientProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
@@ -45,12 +45,12 @@ function Game(props) {
 	useEffect(() => {
 		setInGame(true);
 		return () => {
-		  setInGame(false);
+		  	setInGame(false);
 		};
 	}, [setInGame]);
 
 	useEffect(() => {
-		if (!game && id) {
+		if (!game && id || (game?.id !== id)) {
 			gameService.getById(id).then(setGame).catch(handleError);
 			setSubscribed(true);
 		} else if (!game && currentUser) {
@@ -64,10 +64,10 @@ function Game(props) {
 
 	useEffect(() => {
         if (id && stompClient && isConnected && subscribed && isSpectator) {
-            const subscription = stompClient.subscribe(`/topic/games/${id}`, onGameAction);
+            const subscription = stompClient.subscribe(`/topic/games/${id}`, onGameUpdate);
             return () => subscription.unsubscribe();
         }
-    }, [id, stompClient, isConnected, subscribed]);
+    }, [id, stompClient, isConnected, subscribed, isSpectator]);
 
 	useEffect(() => {
 		if (restart) {
@@ -83,15 +83,14 @@ function Game(props) {
 		}
 	}, [fill]);
 
-	const onGameAction = (message) => {
-		console.log(message);
-		let body = JSON.parse(message.body);
-		setGame(JSON.parse(atob(body.payload)));
-        if (message.headers.messageType === "ROLL") {
-			setDiceToRoll(JSON.parse(atob(body.payload)).latestDiceRolled);
+	const onGameUpdate = (message) => {
+		const body = JSON.parse(message.body);
+		const updatedGame = JSON.parse(atob(body.payload));
+		console.log("updatedGame", updatedGame);
+		setGame(updatedGame);
+		if (updatedGame.lastAction === 'ROLL') {
+			setDiceToRoll(updatedGame.latestDiceRolled);
             initiateRollAnimation();
-        } else if (message.headers.messageType === "FILL") {
-			props.onFill();
 		}
     };
 
@@ -114,10 +113,11 @@ function Game(props) {
 		const value = scoreCalculator.calculateScore(diceValues, boxType);
 		game.sheet.columns[columnIndex].boxes[boxIndex].value = value;
 
-		gameService.fillById(game, columnType, boxType).then((data) => {
+		gameService.fillById(game, columnType, boxType).then(data => {
 			setGame(data);
-			if (data.status === 'COMPLETED') handleShareModal();
-			if (game.type === 'CLASH') props.onFill();
+			if (data.status === 'COMPLETED') {
+				handleShareModal();
+			}
 		}).catch(handleError);
 	};
 
@@ -205,7 +205,7 @@ function Game(props) {
 								key={index}
 								value={dice.value}
 								index={dice.index}
-								saved={!diceToRoll.includes(dice.index)}
+								saved={!diceToRoll.includes(dice.index) || (isSpectator && rollCount > 0 && !game.latestDiceRolled.includes(dice.index))}
 								rollCount={rollCount}
 								diceDisabled={diceDisabled}
 								onDiceClick={handleDiceClick}

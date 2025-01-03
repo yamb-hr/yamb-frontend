@@ -11,6 +11,7 @@ import ErrorBoundary from './components/errorBoundary';
 import Yamb from './components/yamb/yamb';
 import './App.css';
 import { InGameProvider } from './providers/inGameProvider';
+import { ActivePlayersProvider } from './providers/activePlayersProvider';
 
 export const queryClient = new QueryClient();
 
@@ -29,9 +30,11 @@ function App() {
 											<MenuProvider>
 												<StompClientProvider>
 													<NotificationsProvider>
-														<InGameProvider>
-															<Yamb></Yamb>
-														</InGameProvider>
+														<ActivePlayersProvider>
+															<InGameProvider>
+																<Yamb></Yamb>
+															</InGameProvider>
+														</ActivePlayersProvider>
 													</NotificationsProvider>
 												</StompClientProvider>
 											</MenuProvider>

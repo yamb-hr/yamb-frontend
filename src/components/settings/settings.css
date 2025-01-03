@@ -24,8 +24,8 @@
 }
 
 .settings form select {
-    color: var(--color-select-button);
-	background-color: var(--background-select-button);
+    color: var(--color-default-button);
+	background-color: var(--background-default-button);
 	padding: 6px 12px;
     width: 100px;
 	border-radius: 4px;
@@ -37,5 +37,4 @@
 
 .settings form select:hover {
 	cursor: pointer;
-    background: var(--background-select-button-hover);
 }

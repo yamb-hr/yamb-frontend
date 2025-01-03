@@ -2,73 +2,53 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
-import { StompClientContext } from '../../providers/stompClientProvider';
+import { ActivePlayersContext } from '../../providers/activePlayersProvider';
 import playerService from '../../services/playerService';
 import clashService from '../../services/clashService';
+import PlayerIcon from '../player/playerIcon';
 import Spinner from '../spinner/spinner';
 import Table from '../table/table';
 import './clash.css';
 
 function ClashList() {
-    
     const navigate = useNavigate();
 
     const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
-    const { stompClient, isConnected } = useContext(StompClientContext);
+    const { activePlayers } = useContext(ActivePlayersContext);
 
-    const [data, setData] = useState(null);
+    const [clashes, setClashes] = useState(null);
     const [loading, setLoading] = useState(true);
-    const [selectedRows, setSelectedRows] = useState([]);
-	const [activePlayers, setActivePlayers] = useState([]);
+    const [selectedPlayers, setSelectedPlayers] = useState([]);
+    const [clashName, setClashName] = useState('My Clash');
 
     const fetchData = async () => {
         setLoading(true);
-        try {
-            const fetchedData = await playerService.getClashesByPlayerId(currentUser);
-            setData(fetchedData);
-        } catch (error) {
+        playerService.getClashesByPlayerId(currentUser).then(data => {
+            setClashes(data._embedded.clashes);
+        }).catch(error => {
             handleError(error);
-        } finally {
+        }).finally(() => {
             setLoading(false);
-        }
+        });
     };
 
     useEffect(() => {
-        if (!data && currentUser) {
+        if (!clashes && currentUser) {
             fetchData();
         }
     }, [currentUser]);
 
-    useEffect(() => {
-        if (currentUser && stompClient && isConnected) {
-            const subscription = stompClient.subscribe('/topic/players', onPlayerStatusChanged);
-            playerService.getAllActive().then(data => {
-                setActivePlayers(data._embedded.players);
-            }).catch(error => {
-                handleError(error);
-            });
-            return () => {
-                subscription.unsubscribe();
-            };
-        }
-    }, [currentUser, stompClient, isConnected]);
-
-	const onPlayerStatusChanged = (message) => {
-        console.log(message);
-		let body = JSON.parse(message.body);
-		setActivePlayers(JSON.parse(atob(body.payload)).content);
-	}
-
-    const createClash = async () => {
-        if (selectedRows.length === 0) return;
-        const players = [...selectedRows, currentUser.id];
-        clashService.create(currentUser.id, players, "LIVE").then(data => {
+    const createClash = () => {
+        if (selectedPlayers.length === 0 || !clashName.trim()) return;
+        const players = [...selectedPlayers, currentUser.id];
+        clashService.create(currentUser.id, players, clashName.trim(), "LIVE").then(data => {
             navigate('/clashes/' + data.id);
         }).catch(error => {
             handleError(error);
         }).finally(() => {
-            setSelectedRows([]);
+            setSelectedPlayers([]);
+            setClashName('');
         });
     };
 
@@ -76,63 +56,59 @@ function ClashList() {
         clashService.acceptById(clash, currentUser.id).then(clash => {
             navigate(`/clashes/${clash.id}`);
         }).catch(error => {
-            handleError(error)
+            handleError(error);
         });
-    }
+    };
 
     const handleDecline = (clash) => {
         clashService.declineById(clash, currentUser.id).then(() => {
             window.location.reload();
         }).catch(error => {
-            handleError(error)
+            handleError(error);
         });
-    }
+    };
 
-    const inProgressColumns = [
-        { key: 'name', label: 'Name' },
-        { key: 'owner', label: 'Created by' },
-        {
-            key: 'actions',
-            label: 'Actions',
-            render: () => (
-                <button className="continue-button">&#x25B6;</button>
-            )
-        },
-    ];
-
-    const waitingColumns = [
-        { label: 'Name', key: 'name' },
-        {
-            key: 'actions',
-            label: 'Actions',
-            render: (clash) => (
-                clash.owner.id !== currentUser.id ? (<>
-                    <button className="accept-button" onClick={(e) => {e.stopPropagation(); handleAccept(clash);}}>&#10004;</button>
-                    <button className="decline-button" onClick={(e) => {e.stopPropagation(); handleDecline(clash);}}>&#10060;</button>
-                </>) : (
-                    <button className="continue-button">&#x25B6;</button>
-                )
-            ),
-        },
-    ];
-
-    const playerColumns = [
-        { label: 'Name', key: 'name' }
-    ];
-
-    const toggleRowSelection = (rowId) => {
-        setSelectedRows((prevSelected) => {
-            if (prevSelected.includes(rowId)) {
-                return prevSelected.filter((id) => id !== rowId);
+    const handleToggleSelect = (playerId) => {
+        setSelectedPlayers((prevSelected) => {
+            if (prevSelected.includes(playerId)) {
+                return prevSelected.filter((id) => id !== playerId);
             } else {
-                return [...prevSelected, rowId];
+                return [...prevSelected, playerId];
             }
         });
     };
 
-    const clashes = data?._embedded?.clashes || [];
-    const inProgressClashes = clashes.filter((clash) => clash.status === 'IN_PROGRESS');
-    const waitingClashes = clashes.filter((clash) => clash.status === 'PENDING');
+    const inProgressColumns = [
+        { key: 'name', label: 'Name' },
+        { label: 'Owner', key: 'owner' },
+        // {
+        //     key: 'actions',
+        //     label: 'Actions',
+        //     render: () => (
+        //         <button className="continue-button">&#x25B6;</button>
+        //     )
+        // },
+    ];
+
+    const waitingColumns = [
+        { label: 'Name', key: 'name' },
+        { label: 'Owner', key: 'owner' },
+        // {
+        //     key: 'actions',
+        //     label: 'Actions',
+        //     render: (clash) => (
+        //         clash.owner.id !== currentUser.id ? (<>
+        //             <button className="accept-button" onClick={(e) => {e.stopPropagation(); handleAccept(clash);}}>&#10004;</button>
+        //             <button className="decline-button" onClick={(e) => {e.stopPropagation(); handleDecline(clash);}}>&#10060;</button>
+        //         </>) : (
+        //             <button className="continue-button">&#x25B6;</button>
+        //         )
+        //     ),
+        // },
+    ];
+
+    const inProgressClashes = clashes?.filter((clash) => clash.status === 'IN_PROGRESS');
+    const waitingClashes = clashes?.filter((clash) => clash.status === 'PENDING');
     const filteredPlayers = activePlayers?.filter((player) => player.id !== currentUser.id);
 
     if (loading) {
@@ -142,21 +118,38 @@ function ClashList() {
     return (
         <div className="clash-list-container">
             <div className="clash-list">
-            {inProgressClashes?.length > 0 && (<><h3>In Progress</h3><Table data={inProgressClashes} columns={inProgressColumns} paginated={false} displayHeader={false}/><br/></>)}
-            {waitingClashes?.length > 0 && (<><h3>Waiting</h3><Table data={waitingClashes} columns={waitingColumns} paginated={false} displayHeader={false}/><br/></>)}
-            {filteredPlayers && filteredPlayers.length > 0 ?
-                <>
-                    <button className="create-button" onClick={createClash} disabled={selectedRows.length === 0}>&#x271A;&nbsp;Create</button>
-                    <Table
-                        data={filteredPlayers}
-                        columns={playerColumns}
-                        selectable={true}
-                        selectedRows={selectedRows}
-                        onRowSelection={toggleRowSelection}
-                        paginated={false}
-                        displayHeader={false}
+                {inProgressClashes?.length > 0 && (
+                    <>
+                        <h3>In Progress</h3>
+                        <Table data={inProgressClashes} columns={inProgressColumns} paginated={false} displayHeader={false} />
+                        <br />
+                    </>
+                )}
+                {waitingClashes?.length > 0 && (
+                    <>
+                        <h3>Pending</h3>
+                        <Table data={waitingClashes} columns={waitingColumns} paginated={false} displayHeader={false} />
+                        <br />
+                    </>
+                )}
+                <div className="create-clash-container">
+                    <input
+                        type="text"
+                        value={clashName}
+                        onChange={(e) => setClashName(e.target.value)}
+                        placeholder="Enter clash name"
+                        className="clash-name-input"
                     />
-                </>:<div>No players online</div>}
+                    <button onClick={createClash} className="create-clash-button" disabled={selectedPlayers.length <= 0 || !clashName}>
+                        Create Clash
+                    </button>
+                    <h3>Selected players: {selectedPlayers.length}</h3>
+                    <div className="active-players-container">
+                        {filteredPlayers.map(player => (
+                            <PlayerIcon key={player.id} player={player} selected={selectedPlayers.includes(player.id)} onToggleSelect={() => handleToggleSelect(player.id)} />
+                        ))}
+                    </div>
+                </div>
             </div>
         </div>
     );

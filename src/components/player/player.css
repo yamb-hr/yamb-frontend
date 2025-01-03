@@ -14,6 +14,36 @@
     overflow-y: auto;
 }
 
+.player-icon {
+    display: block;
+    margin: 10px;
+    width: 60px;
+}
+
+.player-icon:hover {
+    cursor: pointer;
+}
+
+.player-icon .icon {
+    color: var(--background-save-button);
+}
+
+.player-icon .avatar {
+    max-height: 50px;
+    max-width: 50px;
+    border-radius: 25px;
+    transition: outline 0.1s ease-in-out;
+}
+
+.player-icon:hover .avatar {
+    outline: 1px solid red;
+}
+
+.player-name {
+    font-size: 1rem;
+    color: var(--color-default);
+}
+
 @media (max-width: 480px) {
 
     .player, .player-list {
