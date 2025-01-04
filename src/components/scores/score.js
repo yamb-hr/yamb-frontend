@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import scoreService from '../../services/scoreService';
 import Element from '../element/element';
@@ -9,9 +10,12 @@ import './score.css';
 function Score() {
 
     const { id } = useParams();
+    const { t } = useTranslation();
+
+    const { handleError } = useContext(ErrorHandlerContext);
+
     const [ data, setData ] = useState(null);
     const [ loading, setLoading ] = useState(true);
-    const { handleError } = useContext(ErrorHandlerContext);
 
     useEffect(() => {
         if (id && !data) {
@@ -31,9 +35,8 @@ function Score() {
     }
 
     const columns = [
-        { label: 'Id', key: 'id' },
-        { label: 'Player', key: 'player' },
-        { label: 'Created Date', key: 'createdAt' }
+        { label: t("player"), key: 'player' },
+        { label: t("date"), key: 'createdAt' }
     ];
 
     if (loading) {

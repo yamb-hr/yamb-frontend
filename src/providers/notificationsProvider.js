@@ -35,10 +35,8 @@ export const NotificationsProvider = ({ children }) => {
     }, [currentUser, stompClient, isConnected, handleError]);
 
     const onNewNotification = (message) => {
-        console.log(message);
-		let body = JSON.parse(message.body);
-        const newNotification = JSON.parse(atob(body.payload));
-
+		const body = JSON.parse(message.body);
+        const newNotification = body.payload;
         setNotifications(prevNotifications => [
             ...prevNotifications,
             newNotification

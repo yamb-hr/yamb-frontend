@@ -30,8 +30,7 @@ export const ActivePlayersProvider = ({ children }) => {
 
     const onPlayerStatusChanged = (message) => {
 		const body = JSON.parse(message.body);
-        const updatedActivePlayers = JSON.parse(atob(body.payload)).content;
-        console.log("updatedActivePlayers", updatedActivePlayers);
+        const updatedActivePlayers = body.payload.content;
 		setActivePlayers(updatedActivePlayers);
 	}
 

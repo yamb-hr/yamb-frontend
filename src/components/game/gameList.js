@@ -1,13 +1,16 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import gameService from '../../services/gameService';
 import Table from '../table/table';
 import './game.css';
 
 function GameList() {
 
+    const { t } = useTranslation();
+
     const columns = [
-        { label: 'Player', key: 'player', type: 'string' },
-        { label: 'Last Played', key: 'updatedAt', type: 'date' }
+        { label: t("player"), key: 'player', type: 'string' },
+        { label: t("last-played"), key: 'updatedAt', type: 'date' }
     ];
 
     const progress = { key: 'progress' }

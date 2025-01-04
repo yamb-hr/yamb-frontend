@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import ticketService from '../../services/ticketService';
 import Element from '../element/element';
@@ -9,9 +10,12 @@ import './ticket.css';
 function Ticket() {
 
     const { id } = useParams();
+    const { t } = useTranslation();
+
+    const { handleError } = useContext(ErrorHandlerContext);
+
     const [ data, setData ] = useState(null);
     const [ loading, setLoading ] = useState(true);
-    const { handleError } = useContext(ErrorHandlerContext);
 
     useEffect(() => {
         if (id && !data) {
@@ -31,12 +35,12 @@ function Ticket() {
     }
 
     const columns = [
-        { label: 'Player', key: 'player' },
-        { label: 'Title', key: 'title' },
-        { label: 'Status', key: 'status' },
-        { label: 'Created Date', key: 'createdAt' },
-        { label: 'Updated Date', key: 'updatedAt' },
-        { label: 'Description', key: 'description' }
+        { label: t("player"), key: 'player' },
+        { label: t("title"), key: 'title' },
+        { label: t("status"), key: 'status' },
+        { label: t("created-at"), key: 'createdAt' },
+        { label: t("updated-at"), key: 'updatedAt' },
+        { label: t("description"), key: 'description' }
     ];
 
     if (loading) {

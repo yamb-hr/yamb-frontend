@@ -20,13 +20,14 @@ function Game(props) {
 	const { id: urlId } = useParams();
     const id = props?.id || urlId;
 	const { t } = useTranslation();
+
 	const { setInGame } = useContext(InGameContext);
 	const { showInfoToast } = useContext(ToastContext);
 	const { currentUser } = useContext(CurrentUserContext);
 	const { handleError } = useContext(ErrorHandlerContext);
 	const { stompClient, isConnected } = useContext(StompClientContext);
 
-	const [game, setGame] = useState(props.gameData);
+	const [game, setGame] = useState(null);
 	const [subscribed, setSubscribed] = useState(false);
 	const [fill, setFill] = useState(null);
 	const [restart, setRestart] = useState(false);
@@ -39,7 +40,7 @@ function Game(props) {
 	const diceDisabled = isSpectator || rollCount === 0 || rollCount === 3 || game?.status !== 'IN_PROGRESS';
 
 	useEffect(() => {
-		if (game?.status === 'COMPLETED') handleShareModal();
+		if (game?.status === 'COMPLETED' && game?.type !== "CLASH") handleShareModal();
 	}, [game]);
 
 	useEffect(() => {
@@ -85,8 +86,7 @@ function Game(props) {
 
 	const onGameUpdate = (message) => {
 		const body = JSON.parse(message.body);
-		const updatedGame = JSON.parse(atob(body.payload));
-		console.log("updatedGame", updatedGame);
+		let updatedGame = body.payload;
 		setGame(updatedGame);
 		if (updatedGame.lastAction === 'ROLL') {
 			setDiceToRoll(updatedGame.latestDiceRolled);
@@ -115,7 +115,7 @@ function Game(props) {
 
 		gameService.fillById(game, columnType, boxType).then(data => {
 			setGame(data);
-			if (data.status === 'COMPLETED') {
+			if (data.status === 'COMPLETED' && data.type !== "CLASH") {
 				handleShareModal();
 			}
 		}).catch(handleError);

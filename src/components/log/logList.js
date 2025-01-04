@@ -1,14 +1,17 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import logService from '../../services/logService';
 import Table from '../table/table';
 import './log.css';
 
 function LogList() {
 
+    const { t } = useTranslation();
+
     const columns = [
-        { label: 'Player', key: 'player' },
-        { label: 'Level', key: 'level' },
-        { label: 'Created Date', key: 'createdAt' }
+        { label: t("player"), key: 'player' },
+        { label: t("level"), key: 'level' },
+        { label: t("created-at"), key: 'createdAt' }
     ];
 
     return (

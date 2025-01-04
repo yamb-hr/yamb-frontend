@@ -1,17 +1,21 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { StompClientContext } from '../../providers/stompClientProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { ActivePlayersContext } from '../../providers/activePlayersProvider';
 import clashService from '../../services/clashService';
+import PlayerIcon from '../player/playerIcon';
 import Element from '../element/element';
 import Table from '../table/table';
 import Game from '../game/game';
 import './clash.css';
-import PlayerIcon from '../player/playerIcon';
 
 function Clash() {
+
+    const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const { id } = useParams();
     const { currentUser } = useContext(CurrentUserContext);
@@ -22,7 +26,6 @@ function Clash() {
     const [clash, setClash] = useState(null);
     const [subscribed, setSubscribed] = useState(false);
     const [playersToAdd, setPlayersToAdd] = useState([]);
-    const [playersToRemove, setPlayersToRemove] = useState([]);
 
     useEffect(() => {
 		if (!clash && id) {
@@ -44,11 +47,20 @@ function Clash() {
 
     const onClashUpdate = (message) => {
 		const body = JSON.parse(message.body);
-        const updatedClash = JSON.parse(atob(body.payload));
+        let updatedClash = body.payload;
+        updatedClash._links = clash._links;
         setTimeout(() => {
             console.log("updatedClash", updatedClash);
             setClash(updatedClash);
         }, 1500);
+    };
+
+    const handleDelete = async () => {
+        clashService.deleteById(clash).then(data => {
+            navigate("/clashes");
+        }).catch(error => {
+            handleError(error);
+        });
     };
 
     const handleAccept = async () => {
@@ -115,10 +127,16 @@ function Clash() {
     }
 
     const clashColumns = [
-        { label: 'Name', key: 'name' },
-        { label: 'Owner', key: 'owner.name' },
-        { label: 'Created At', key: 'createdAt' },
+        { label: t("name"), key: 'name' },
+        { label: t("owner"), key: 'owner.name' },
+        { label: t("created-at"), key: 'createdAt' }
     ];
+
+    const playerColumns = [
+        { label: t("place"), key: 'place' },
+        { label: t("name"), key: 'name' },
+        { label: t("score"), key: 'score' }
+    ]
 
     const filteredActivePlayers = activePlayers?.filter(player => !clash?.players?.some(clashPlayer => clashPlayer.id === player.id));
 
@@ -127,52 +145,73 @@ function Clash() {
             <div className="clash">
                 {clash && (
                     <>
-                    <br/>
-                    <Element data={clash} columns={clashColumns} />
-                    <br/>
-                    <div className="player-actions">
-                        {clash.owner.id === currentUser.id && (
-                            <>
-                                <button className="delete-button" onClick={handleAccept}>
-                                    <span className="icon">&#10060;</span>&nbsp;Delete
-                                </button>
-                            </>
-                        )}
-                        {clash.players.find(player => player.id === currentUser.id)?.status === "PENDING" && (
-                            <>
-                                <button className="accept-button" onClick={handleAccept}>
-                                    <span className="icon">&#10004;</span>&nbsp;Accept
-                                </button>
-                                <button className="decline-button" onClick={handleDecline}>
-                                    <span className="icon">&#10060;</span>&nbsp;Decline
-                                </button>
-                            </>
-                        )}
-                    </div>
-                    <div className="active-players-container">
-                        {clash.players.map(player => (
-                            <div key={player.id}>
-                                <div className="player-icon-wrapper">
-                                    {player.id !== currentUser.id && player.status !== "ACCEPTED" && clash.players.length > 2 && <button className="remove-button-single" onClick={() => handleRemovePlayer(player.id)}>
-                                        <span className="icon">&#10060;</span>
-                                    </button>}
-                                    {player.status === "ACCEPTED" && <div className="accepted-badge" >
-                                        <span className="icon">&#10004;</span>
-                                    </div>}
-                                    <PlayerIcon key={player.id} player={player} selectable={false} />
+                        <br/>
+                        <Element data={clash} columns={clashColumns} />
+                        <br/>
+                        <div className="player-actions">
+                            {clash.owner.id === currentUser.id && clash.status === "PENDING" && (
+                                <>
+                                    <button className="delete-button" onClick={handleDelete}>
+                                        <span className="icon">&#10060;</span>&nbsp;Delete
+                                    </button>
+                                </>
+                            )}
+                            {clash.players.find(player => player.id === currentUser.id)?.status === "PENDING" && (
+                                <>
+                                    <button className="accept-button" onClick={handleAccept}>
+                                        <span className="icon">&#10004;</span>&nbsp;Accept
+                                    </button>
+                                    <button className="decline-button" onClick={handleDecline}>
+                                        <span className="icon">&#10060;</span>&nbsp;Decline
+                                    </button>
+                                </>
+                            )}
+                        </div>
+                        <div className="active-players-container">
+                            {clash.players.map(player => (
+                                <div key={player.id}>
+                                    <div className="player-icon-wrapper">
+                                        {clash.status === "PENDING" && player.id !== currentUser.id && player.status !== "ACCEPTED" && clash.players.length > 2 && clash.owner.id === currentUser.id && <button className="remove-button-single" onClick={() => handleRemovePlayer(player.id)}>
+                                            <span className="icon">&#10060;</span>
+                                        </button>}
+                                        {clash.status === "PENDING" && player.status === "ACCEPTED" && <div className="accepted-badge" >
+                                            <span className="icon">&#10004;</span>
+                                        </div>}
+                                        {clash.status === "COMPLETED" && clash.winner?.id === player.id && <div className="crown-badge" >
+                                            <span className="icon">&#128081;</span>
+                                        </div>}
+                                        <PlayerIcon key={player.id} player={player} selectable={false} offline={!activePlayers.find((activePlayer) => activePlayer.id === player.id)} />
+                                    </div>
                                 </div>
-                            </div>
-                        ))}
-                    </div>
-                    {clash.owner.id === currentUser.id && <button onClick={handleAddPlayers} className="add-button" disabled={playersToAdd.length <= 0}>
-                        Add to Clash
-                    </button>}
-                    <h3>Selected players: {playersToAdd.length}</h3>
-                    <div className="active-players-container">
-                        {filteredActivePlayers.map(player => (
-                            <PlayerIcon key={player.id} player={player} selectable={true} selected={playersToAdd.includes(player.id)} onToggleSelect={() => togglePlayerToAdd(player.id)} />
-                        ))}
-                    </div>
+                            ))}
+                        </div>
+                        {clash.status === "PENDING" && clash.owner.id == currentUser.id && (
+                            <>
+                                {clash.owner.id === currentUser.id && <button onClick={handleAddPlayers} className="add-button" disabled={playersToAdd.length <= 0}>
+                                    Add to Clash
+                                </button>}
+                                <h3>Selected players: {playersToAdd.length}</h3>
+                                <div className="active-players-container">
+                                    {filteredActivePlayers.map(player => (
+                                        <PlayerIcon key={player.id} player={player} selectable={true} selected={playersToAdd.includes(player.id)} onToggleSelect={() => togglePlayerToAdd(player.id)} />
+                                    ))}
+                                </div>
+                            </>
+                        )}
+                        {clash.status === "COMPLETED" && (
+                            <>
+                                {(() => {
+                                    const sortedPlayers = [...clash.players].sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
+
+                                    const completedPlayers = sortedPlayers.map((player, index) => ({
+                                        ...player,
+                                        place: index + 1
+                                    }));
+
+                                    return <Table data={completedPlayers} columns={playerColumns} displayHeader={false} paginated={false} />;
+                                })()}
+                            </>
+                        )}
                     </>
                 )}
             </div>

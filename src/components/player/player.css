@@ -32,8 +32,8 @@
 }
 
 .player-icon .avatar {
-    max-height: 50px;
-    max-width: 50px;
+    height: 50px;
+    width: 50px;
     border-radius: 25px;
     transition: outline 0.1s ease-in-out;
 }
@@ -44,6 +44,10 @@
 
 .player-icon .avatar.selected {
     outline: 2px solid var(--background-edit-button);
+}
+
+.player-icon .avatar.offline {
+    opacity: 50%;
 }
 
 .player-name {

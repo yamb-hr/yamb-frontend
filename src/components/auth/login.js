@@ -7,8 +7,10 @@ import authService from '../../services/authService';
 import './auth.css';
 
 function Login() {
+
     const navigate = useNavigate();
     const { t } = useTranslation();
+    
     const { setCurrentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
 

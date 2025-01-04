@@ -1,14 +1,17 @@
 import React from 'react';
+import { useTranslation } from 'react-i18next';
 import scoreService from '../../services/scoreService';
 import Table from '../table/table';
 import './score.css';
 
 function ScoreList() {
 
+    const { t } = useTranslation();
+
     const columns = [
-        { label: 'Player', key: 'player', type: 'string' },
-        { label: 'Score', key: 'value', type: 'number' },
-        { label: 'Created Date', key: 'createdAt', type: 'date' }
+        { label: t("player"), key: 'player', type: 'string' },
+        { label: t("score"), key: 'value', type: 'number' },
+        { label: t("date"), key: 'createdAt', type: 'date' }
     ];
 
     return (

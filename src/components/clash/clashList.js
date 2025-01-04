@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
-import { ActivePlayersContext } from '../../providers/activePlayersProvider';
+import { ActivePlayersContext } from '../../providers/activePlayersProvider'
 import playerService from '../../services/playerService';
 import clashService from '../../services/clashService';
 import PlayerIcon from '../player/playerIcon';
@@ -11,7 +12,9 @@ import Table from '../table/table';
 import './clash.css';
 
 function ClashList() {
+
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
@@ -19,8 +22,8 @@ function ClashList() {
 
     const [clashes, setClashes] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [clashName, setClashName] = useState(t("my-clash"));
     const [selectedPlayers, setSelectedPlayers] = useState([]);
-    const [clashName, setClashName] = useState('My Clash');
 
     const fetchData = async () => {
         setLoading(true);
@@ -52,22 +55,6 @@ function ClashList() {
         });
     };
 
-    const handleAccept = (clash) => {
-        clashService.acceptById(clash, currentUser.id).then(clash => {
-            navigate(`/clashes/${clash.id}`);
-        }).catch(error => {
-            handleError(error);
-        });
-    };
-
-    const handleDecline = (clash) => {
-        clashService.declineById(clash, currentUser.id).then(() => {
-            window.location.reload();
-        }).catch(error => {
-            handleError(error);
-        });
-    };
-
     const handleToggleSelect = (playerId) => {
         setSelectedPlayers((prevSelected) => {
             if (prevSelected.includes(playerId)) {
@@ -79,8 +66,8 @@ function ClashList() {
     };
 
     const inProgressColumns = [
-        { key: 'name', label: 'Name' },
-        { label: 'Owner', key: 'owner' },
+        { key: t("name"), label: 'Name' },
+        { label: t("owner"), key: 'owner' },
         // {
         //     key: 'actions',
         //     label: 'Actions',
@@ -91,8 +78,8 @@ function ClashList() {
     ];
 
     const waitingColumns = [
-        { label: 'Name', key: 'name' },
-        { label: 'Owner', key: 'owner' },
+        { label: t("name"), key: 'name' },
+        { label: t("owner"), key: 'owner' },
         // {
         //     key: 'actions',
         //     label: 'Actions',
@@ -120,14 +107,14 @@ function ClashList() {
             <div className="clash-list">
                 {inProgressClashes?.length > 0 && (
                     <>
-                        <h3>In Progress</h3>
+                        <h3>{t("in-progress")}</h3>
                         <Table data={inProgressClashes} columns={inProgressColumns} paginated={false} displayHeader={false} />
                         <br />
                     </>
                 )}
                 {waitingClashes?.length > 0 && (
                     <>
-                        <h3>Pending</h3>
+                        <h3>{t("pending")}</h3>
                         <Table data={waitingClashes} columns={waitingColumns} paginated={false} displayHeader={false} />
                         <br />
                     </>
@@ -141,12 +128,12 @@ function ClashList() {
                         className="clash-name-input"
                     />
                     <button onClick={createClash} className="create-clash-button" disabled={selectedPlayers.length <= 0 || !clashName}>
-                        Create Clash
+                        {t("create-clash")}
                     </button>
-                    <h3>Selected players: {selectedPlayers.length}</h3>
+                    <h3>{t("selected-players")}:&nbsp;{selectedPlayers.length}</h3>
                     <div className="active-players-container">
                         {filteredPlayers.map(player => (
-                            <PlayerIcon key={player.id} player={player} selected={selectedPlayers.includes(player.id)} onToggleSelect={() => handleToggleSelect(player.id)} />
+                            <PlayerIcon key={player.id} player={player} selectable={true} selected={selectedPlayers.includes(player.id)} onToggleSelect={() => handleToggleSelect(player.id)} />
                         ))}
                     </div>
                 </div>

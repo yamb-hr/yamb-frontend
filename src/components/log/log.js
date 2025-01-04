@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import logService from '../../services/logService';
 import Element from '../element/element';
@@ -9,9 +10,12 @@ import './log.css';
 function Log() {
 
     const { id } = useParams();
+    const { t } = useTranslation();
+    
+    const { handleError } = useContext(ErrorHandlerContext);
+    
     const [ data, setData ] = useState(null);
     const [ loading, setLoading ] = useState(true);
-    const { handleError } = useContext(ErrorHandlerContext);
 
     useEffect(() => {
         if (id && !data) {
@@ -31,10 +35,10 @@ function Log() {
     }
 
     const columns = [
-        { label: 'Player', key: 'player' },
-        { label: 'Level', key: 'level' },
-        { label: 'Date', key: 'createdAt' },
-        { label: 'Message', key: 'message' },
+        { label: t("player"), key: 'player' },
+        { label: t("level"), key: 'level' },
+        { label: t("date"), key: 'createdAt' },
+        { label: t("message"), key: 'message' },
 
     ];
 

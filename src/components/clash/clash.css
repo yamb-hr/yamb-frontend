@@ -105,7 +105,6 @@
     border: none;
     font-size: 14px;
     transition: font-size 0.1s ease-in-out;
-    color: var(--background-delete-button);
 }
 
 .remove-button-single:hover:enabled {
@@ -121,6 +120,16 @@
     border: none;
     font-size: 20px;
     color: var(--background-save-button);
+}
+
+.crown-badge {
+    position: absolute;
+    top: -35px;
+    left: 13px;
+    background: none;
+    border: none;
+    font-size: 40px;
+    z-index: 1;
 }
 
 .create-button:disabled, .add-button:disabled, .remove-button:disabled {

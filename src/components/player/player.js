@@ -1,24 +1,28 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import playerService from '../../services/playerService';
-import Element from '../element/element';
 import Collapsible from '../collapsible/collapsible';
+import Element from '../element/element';
 import Spinner from '../spinner/spinner';
 import Table from '../table/table';
 import './player.css';
 
 function Player() {
+    
     const { id } = useParams();
+    const { t } = useTranslation();
+    
+    const { handleError } = useContext(ErrorHandlerContext);
+    const { currentUser } = useContext(CurrentUserContext);
+
     const [data, setData] = useState(null);
     const [scoreData, setScoreData] = useState(null);
     const [gameData, setGameData] = useState(null);
     const [logData, setLogData] = useState(null);
     const [loading, setLoading] = useState(true);
-
-    const { handleError } = useContext(ErrorHandlerContext);
-    const { currentUser } = useContext(CurrentUserContext);
 
     useEffect(() => {
         if (id && !data) {
@@ -105,32 +109,32 @@ function Player() {
     };
 
     const columns = [
-        { label: 'Name', key: 'name' },
-        { label: 'Created Date', key: 'createdAt' },
-        { label: 'Updated Date', key: 'updatedAt' },
+        { label: t("name"), key: 'name' },
+        { label: t("created-at"), key: 'createdAt' },
+        { label: t("updated-at"), key: 'updatedAt' },
     ];
 
     const scoreColumns = [
-        { label: 'Value', key: 'value' },
-        { label: 'Date', key: 'createdAt' },
+        { label: t("value"), key: 'value' },
+        { label: t("date"), key: 'createdAt' },
         ...(currentUser?.admin
-            ? [{ label: 'Actions', key: 'actions', render: (row) => <button onClick={() => handleDelete('score', row.id)}>Delete</button> }]
+            ? [{ label: t("actions"), key: 'actions', render: (row) => <button onClick={() => handleDelete('score', row.id)}>Delete</button> }]
             : []),
     ];
 
     const gameColumns = [
-        { label: 'Status', key: 'status', type: 'string' },
-        { label: 'Last Played', key: 'updatedAt', type: 'date' },
+        { label: t("status"), key: 'status', type: 'string' },
+        { label: t("last-played"), key: 'updatedAt', type: 'date' },
         ...(currentUser?.admin
-            ? [{ label: 'Actions', key: 'actions', render: (row) => <button onClick={() => handleDelete('game', row.id)}>Delete</button> }]
+            ? [{ label: t("actions"), key: 'actions', render: (row) => <button onClick={() => handleDelete('game', row.id)}>Delete</button> }]
             : []),
     ];
 
     const logColumns = [
-        { label: 'Level', key: 'level' },
-        { label: 'Date', key: 'createdAt' },
+        { label: t("level"), key: 'level' },
+        { label: t("date"), key: 'createdAt' },
         ...(currentUser?.admin
-            ? [{ label: 'Actions', key: 'actions', render: (row) => <button onClick={() => handleDelete('log', row.id)}>Delete</button> }]
+            ? [{ label: t("actions"), key: 'actions', render: (row) => <button onClick={() => handleDelete('log', row.id)}>Delete</button> }]
             : []),
     ];
 
