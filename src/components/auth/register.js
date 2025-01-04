@@ -19,7 +19,7 @@ function Register() {
 
     const [username, setUsername] = useState(currentUser ? currentUser.username : "");
     const [password, setPassword] = useState('');
-    const [email, setEmail] = useState(''); // Optional email field
+    const [email, setEmail] = useState('');
     const [errors, setErrors] = useState({});
 
     function handleSubmit(event) {
@@ -36,7 +36,7 @@ function Register() {
                 authService.register({
                     username,
                     password,
-                    email: email || null, // Include email if provided
+                    email: email || null,
                 }, token)
                 .then((player) => {
                     toast.success(t('registration-success'), {

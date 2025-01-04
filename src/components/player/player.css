@@ -36,6 +36,7 @@
     width: 50px;
     border-radius: 25px;
     transition: outline 0.1s ease-in-out;
+    opacity: 50%;
 }
 
 .player-icon .avatar.accepted {
@@ -44,6 +45,7 @@
 
 .player-icon .avatar.selected {
     outline: 2px solid var(--background-edit-button);
+    opacity: 100%;
 }
 
 .player-icon .avatar.offline {

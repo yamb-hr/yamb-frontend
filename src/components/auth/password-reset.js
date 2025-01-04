@@ -23,7 +23,6 @@ function PasswordReset() {
     const [isTokenBased, setIsTokenBased] = useState(false);
 
     useEffect(() => {
-        // Check if the URL contains a `token` query parameter
         const token = searchParams.get('token');
         if (token) {
             setIsTokenBased(true);

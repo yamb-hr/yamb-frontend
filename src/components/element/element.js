@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import { useTranslation } from 'react-i18next';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { PreferencesContext } from '../../providers/preferencesProvider';
 import Spinner from '../spinner/spinner';
@@ -12,6 +13,8 @@ const localeStringFormat = {
 };
 
 const Element = ({ columns, data, service, id }) => {
+
+    const { t } = useTranslation();
 
     const { handleError } = useContext(ErrorHandlerContext);
     const { language } = useContext(PreferencesContext);
@@ -85,7 +88,7 @@ const Element = ({ columns, data, service, id }) => {
     };
 
     if (!element) {
-        return <div>No data available</div>;
+        return <div>{t("no-data-available")}</div>;
     }
 
     return (

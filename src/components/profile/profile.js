@@ -9,8 +9,10 @@ import playerService from '../../services/playerService';
 import './profile.css';
 
 function Profile() {
-    const { t } = useTranslation();
+
     const navigate = useNavigate();
+    const { t } = useTranslation();
+    
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
     const { showInfoToast, showSuccessToast } = useContext(ToastContext);

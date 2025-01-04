@@ -152,17 +152,17 @@ function Clash() {
                             {clash.owner.id === currentUser.id && clash.status === "PENDING" && (
                                 <>
                                     <button className="delete-button" onClick={handleDelete}>
-                                        <span className="icon">&#10060;</span>&nbsp;Delete
+                                        <span className="icon">&#10060;</span>&nbsp;{t("delete")}
                                     </button>
                                 </>
                             )}
                             {clash.players.find(player => player.id === currentUser.id)?.status === "PENDING" && (
                                 <>
                                     <button className="accept-button" onClick={handleAccept}>
-                                        <span className="icon">&#10004;</span>&nbsp;Accept
+                                        <span className="icon">&#10004;</span>&nbsp;{t("accept")}
                                     </button>
                                     <button className="decline-button" onClick={handleDecline}>
-                                        <span className="icon">&#10060;</span>&nbsp;Decline
+                                        <span className="icon">&#10060;</span>&nbsp;{t("decline")}
                                     </button>
                                 </>
                             )}
@@ -188,9 +188,9 @@ function Clash() {
                         {clash.status === "PENDING" && clash.owner.id == currentUser.id && (
                             <>
                                 {clash.owner.id === currentUser.id && <button onClick={handleAddPlayers} className="add-button" disabled={playersToAdd.length <= 0}>
-                                    Add to Clash
+                                    {t("add-to-clash")}
                                 </button>}
-                                <h3>Selected players: {playersToAdd.length}</h3>
+                                <h3>{t("selected-players")}:&nbsp;{playersToAdd.length}</h3>
                                 <div className="active-players-container">
                                     {filteredActivePlayers.map(player => (
                                         <PlayerIcon key={player.id} player={player} selectable={true} selected={playersToAdd.includes(player.id)} onToggleSelect={() => togglePlayerToAdd(player.id)} />

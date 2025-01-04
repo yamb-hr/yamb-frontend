@@ -36,6 +36,7 @@ export const NotificationsProvider = ({ children }) => {
 
     const onNewNotification = (message) => {
 		const body = JSON.parse(message.body);
+        console.log(body);
         const newNotification = body.payload;
         setNotifications(prevNotifications => [
             ...prevNotifications,

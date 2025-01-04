@@ -124,7 +124,7 @@ function ClashList() {
                         type="text"
                         value={clashName}
                         onChange={(e) => setClashName(e.target.value)}
-                        placeholder="Enter clash name"
+                        placeholder={t("enter-name")}
                         className="clash-name-input"
                     />
                     <button onClick={createClash} className="create-clash-button" disabled={selectedPlayers.length <= 0 || !clashName}>

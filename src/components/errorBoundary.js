@@ -1,6 +1,7 @@
 import React from 'react';
 
 class ErrorBoundary extends React.Component {
+
     constructor(props) {
         super(props);
         this.state = { hasError: false };
@@ -18,14 +19,13 @@ class ErrorBoundary extends React.Component {
         if (this.state.hasError) {
             return (
                 <div className="error-fallback">
-                    <h1>Oops! Something went wrong.</h1>
+                    <h1>
+                        Oops! Something went wrong.
+                    </h1>
                     <p>
                         An unexpected error occurred. Please try refreshing the page or come back later.
                     </p>
-                    <button
-                        className="error-fallback-button"
-                        onClick={() => window.location.reload()}
-                    >
+                    <button className="error-fallback-button" onClick={() => window.location.reload()}>
                         Refresh Page
                     </button>
                 </div>

@@ -28,7 +28,7 @@ function About() {
     const [ ticket, setTicket ] = useState({
         title: '',
         description: '',
-        emailAddresses: '', // Comma-separated emails
+        emailAddresses: '',
     });    
     
     useEffect(() => {   
@@ -82,7 +82,7 @@ function About() {
                 playerId: currentUser?.externalId,
                 title: ticket.title,
                 description: ticket.description,
-                emailAddresses: ticket.emailAddresses.split(',').map((email) => email.trim()), // Convert to array
+                emailAddresses: ticket.emailAddresses.split(',').map((email) => email.trim()),
             };
             ticketService.create(newTicket)
                 .then(() => {
@@ -153,10 +153,10 @@ function About() {
                             <p><a href="https://matej-danic.from.hr"><img src="/svg/favicon.svg" width="50"></img></a></p>
                             <p><strong>{t('yamb')}</strong></p>
                             <ul>    
-                                <li>API Documentation:&nbsp;<a href="https://api.jamb.com.hr">yamb</a></li>
-                                <li>Org:&nbsp;<a href="https://github.com/yamb-hr">yamb-hr</a></li>
-                                <li>Backend:&nbsp;<a href="https://github.com/yamb-hr/yamb">yamb</a></li>
-                                <li>Frontend:&nbsp;<a href="https://github.com/yamb-hr/yamb-frontend">yamb-frontend</a></li>
+                                <li>{t("api-documentation")}:&nbsp;<a href="https://api.jamb.com.hr">yamb</a></li>
+                                <li>{t("org")}:&nbsp;<a href="https://github.com/yamb-hr">yamb-hr</a></li>
+                                <li>{t("backend")}:&nbsp;<a href="https://github.com/yamb-hr/yamb">yamb</a></li>
+                                <li>{t("frontend")}:&nbsp;<a href="https://github.com/yamb-hr/yamb-frontend">yamb-frontend</a></li>
                             </ul>
                         </section>
                     )}

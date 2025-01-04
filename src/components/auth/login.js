@@ -14,7 +14,7 @@ function Login() {
     const { setCurrentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
 
-    const [identifier, setIdentifier] = useState(''); // Unified field for username/email
+    const [identifier, setIdentifier] = useState('');
     const [password, setPassword] = useState('');
     const [errors, setErrors] = useState({});
 
@@ -53,7 +53,7 @@ function Login() {
 
     function isValidUsernameOrEmail(input) {
         const emailRegex = /\S+@\S+\.\S+/;
-        const usernameRegex = /^[a-zA-Z0-9_]{3,15}$/; // Allow alphanumeric with underscores
+        const usernameRegex = /^[a-zA-Z0-9_]{3,15}$/;
         return emailRegex.test(input) || usernameRegex.test(input);
     }
 

@@ -8,11 +8,12 @@ import './auth.css';
 function EmailVerification() {
 
     const { t } = useTranslation();
-    const navigate = useNavigate();
     const [searchParams] = useSearchParams();
+    
+    const { handleError } = useContext(ErrorHandlerContext);
+
     const [message, setMessage] = useState('');
     const [isSuccess, setIsSuccess] = useState(false);
-    const { handleError } = useContext(ErrorHandlerContext);
 
     useEffect(() => {
         const token = searchParams.get('token');

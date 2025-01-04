@@ -58,7 +58,6 @@ function Rankings() {
                     </ul>
                 </div>
             )} */}
-            
             <ScoreList />
         </div>
     );

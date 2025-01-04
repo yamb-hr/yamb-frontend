@@ -1,6 +1,7 @@
 import React, { useState, useContext, useCallback } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useQuery } from 'react-query';
+import { useTranslation } from 'react-i18next';
 import { PreferencesContext } from '../../providers/preferencesProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import Spinner from '../spinner/spinner';
@@ -14,6 +15,7 @@ const localeStringFormat = {
 const Table = ({ columns, data, service, progress, selectable = false, selectedRows = [], onRowSelection = () => {}, paginated = true, displayHeader = true }) => {
     
     const navigate = useNavigate();
+    const { t } = useTranslation();
 
     const { handleError } = useContext(ErrorHandlerContext);
     const { language } = useContext(PreferencesContext);
@@ -218,13 +220,13 @@ const Table = ({ columns, data, service, progress, selectable = false, selectedR
             {paginated && (
                 <div className="pagination-controls">
                     <button disabled={page === 0} onClick={() => setPage(page - 1)}>
-                        Previous
+                        {t("previous")}
                     </button>
                     <span className="page">
-                        Page {page + 1} of {totalPages}
+                        {t("page")}&nbsp;{page + 1}&nbsp;{t("of")}&nbsp;{totalPages}
                     </span>
                     <button disabled={page + 1 >= totalPages} onClick={() => setPage(page + 1)}>
-                        Next
+                        {t("next")}
                     </button>
                     <select
                         value={pageSize}
