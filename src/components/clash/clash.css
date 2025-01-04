@@ -55,7 +55,8 @@
 .decline-button,
 .continue-button,
 .add-button,
-.remove-button {
+.remove-button,
+.delete-button {
     border: none;
     font-weight: bolder;
     transition: background-color 0.3s ease-in-out;
@@ -68,7 +69,8 @@
 .continue-button,
 .create-button, 
 .add-button, 
-.remove-button  {
+.remove-button,
+.delete-button  {
     padding: var(--padding-default-button);
     background: var(--background-default-button);
     margin: 10px;
@@ -81,12 +83,44 @@
 }
 
 .decline-button .icon,
-.remove-button .icon {
+.remove-button .icon,
+.delete-button .icon {
     color: var(--background-delete-button);
 }
 
 .continue-button {
     color: var(--background-default-button);
+}
+
+.player-icon-wrapper {
+    position: relative;
+    display: inline-block;
+}
+
+.remove-button-single {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 14px;
+    transition: font-size 0.1s ease-in-out;
+    color: var(--background-delete-button);
+}
+
+.remove-button-single:hover:enabled {
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.accepted-badge {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: var(--background-save-button);
 }
 
 .create-button:disabled, .add-button:disabled, .remove-button:disabled {
@@ -103,19 +137,19 @@
 }
 
 .active-players-container {
-    padding: 10px;
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    padding: 10px;
 }
 
 .create-clash-container {
     align-items: center;
+    margin-top: 10px;
 }
 
 .clash-name-input {
     padding: 10px;
-    font-size: 16px;
+    font-size: 1rem;
     border: 1px solid #ccc;
     border-radius: 4px;
     flex-grow: 1;
@@ -124,12 +158,13 @@
 .create-clash-button {
     border: none;
     font-weight: bold;
+    font-size: 1rem;
     border-radius: 4px;
     background-color: var(--background-save-button);
     color: var(--color-save-button);
     padding: var(--padding-default-button);
     transition: background-color 0.3s ease-in-out;
-    margin: 0 20px;
+    margin: 0 0 0 20px;
 }
 
 .create-clash-button:hover:enabled {

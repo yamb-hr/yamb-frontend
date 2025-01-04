@@ -2,19 +2,19 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import './player.css';
 
-function PlayerIcon({player, selected = false, onToggleSelect = () => {}}) {
+function PlayerIcon({player, selectable = false, selected = false, onToggleSelect = () => {}}) {
 
     return (
-        <div className="player-icon" onClick={onToggleSelect}>
+        <button className="player-icon" onClick={onToggleSelect} disabled={!selectable}>
             {player && (<>
                 <img
                     src={player.avatar?.url ?? '/img/avatar.png'}
                     alt={player.name}
-                    className="avatar"
+                    className={"avatar " + player.status?.toLowerCase() + (selected ? " selected" : "")}
                 />
-                <figcaption className="player-name">{selected && <><span className="icon">&#10004;</span>&nbsp;</>}{player.name}</figcaption>
+                <figcaption className="player-name">{player.name}</figcaption>
             </>)} 
-        </div>
+        </button>
     );
 }
 

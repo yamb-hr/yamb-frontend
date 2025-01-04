@@ -25,7 +25,7 @@ function ClashList() {
     const fetchData = async () => {
         setLoading(true);
         playerService.getClashesByPlayerId(currentUser).then(data => {
-            setClashes(data._embedded.clashes);
+            setClashes(data?._embedded?.clashes);
         }).catch(error => {
             handleError(error);
         }).finally(() => {
@@ -42,7 +42,7 @@ function ClashList() {
     const createClash = () => {
         if (selectedPlayers.length === 0 || !clashName.trim()) return;
         const players = [...selectedPlayers, currentUser.id];
-        clashService.create(currentUser.id, players, clashName.trim(), "LIVE").then(data => {
+        clashService.create(currentUser.id, players, "LIVE", clashName.trim()).then(data => {
             navigate('/clashes/' + data.id);
         }).catch(error => {
             handleError(error);

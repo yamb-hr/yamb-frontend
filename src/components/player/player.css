@@ -18,10 +18,13 @@
     display: block;
     margin: 10px;
     width: 60px;
+    border: none;
+    background-color: none;
 }
 
-.player-icon:hover {
+.player-icon:hover:enabled {
     cursor: pointer;
+    opacity: 70%;
 }
 
 .player-icon .icon {
@@ -35,8 +38,12 @@
     transition: outline 0.1s ease-in-out;
 }
 
-.player-icon:hover .avatar {
-    outline: 1px solid red;
+.player-icon .avatar.accepted {
+    outline: 2px solid var(--background-save-button);
+}
+
+.player-icon .avatar.selected {
+    outline: 2px solid var(--background-edit-button);
 }
 
 .player-name {

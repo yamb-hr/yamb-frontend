@@ -12,9 +12,12 @@ const localeStringFormat = {
 };
 
 const Table = ({ columns, data, service, progress, selectable = false, selectedRows = [], onRowSelection = () => {}, paginated = true, displayHeader = true }) => {
+    
     const navigate = useNavigate();
+
     const { handleError } = useContext(ErrorHandlerContext);
     const { language } = useContext(PreferencesContext);
+
     const [page, setPage] = useState(0);
     const [pageSize, setPageSize] = useState(50);
     const [sortColumn, setSortColumn] = useState(null);
@@ -23,6 +26,7 @@ const Table = ({ columns, data, service, progress, selectable = false, selectedR
     const fetchTableData = useCallback(async () => {
         if (!service) return [];
         const result = await service.getAll(0, 9999, sortColumn, sortDirection);
+        if (!result._embedded) return [];
         return result._embedded[Object.keys(result._embedded)[0]];
     }, [service?.name, sortColumn, sortDirection]);
 
