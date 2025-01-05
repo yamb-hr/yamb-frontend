@@ -205,7 +205,7 @@ function Game(props) {
 								key={index}
 								value={dice.value}
 								index={dice.index}
-								saved={!diceToRoll.includes(dice.index) || (isSpectator && rollCount > 0 && !game.latestDiceRolled.includes(dice.index))}
+								saved={!diceToRoll.includes(dice.index) || (isSpectator && rollCount > 0 && !game.latestDiceRolled?.includes(dice.index))}
 								rollCount={rollCount}
 								diceDisabled={diceDisabled}
 								onDiceClick={handleDiceClick}
