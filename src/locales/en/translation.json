@@ -202,5 +202,7 @@
     "descending": "Descending",
     "avatar-updated": "Avatar Updated",
     "username-updated": "Username Updated",
-    "email-updated": "Email Updated"
+    "email-updated": "Email Updated",
+	"logs": "Logs",
+	"tickets": "Tickets"
 }

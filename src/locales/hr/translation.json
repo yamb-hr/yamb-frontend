@@ -201,5 +201,7 @@
     "descending": "Opadajuće",
     "avatar-updated": "Slika promijenjena",
     "username-updated": "Korisničko ime promijenjeno",
-    "email-updated": "Email adresa promijenjena"
+    "email-updated": "Email adresa promijenjena",
+    "logs": "Zapisi",
+	"tickets": "Zahtjevi"
 }
