@@ -69,7 +69,7 @@ function ClashList() {
     };
 
     const inProgressColumns = [
-        { key: t("name"), label: 'Name' },
+        { key: t("name"), label: 'name' },
         { label: t("owner"), key: 'owner' },
     ];
 
