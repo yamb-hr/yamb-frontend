@@ -27,6 +27,8 @@ function Clash() {
     const [subscribed, setSubscribed] = useState(false);
     const [playersToAdd, setPlayersToAdd] = useState([]);
 
+    const MAX_PLAYERS = 3;
+
     useEffect(() => {
 		if (!clash && id) {
 			clashService.getById(id).then(data => {
@@ -88,14 +90,6 @@ function Clash() {
         });
     };
 
-    // const handleRemovePlayers = () => {
-    //     clashService.removePlayersById(clash, playersToRemove).then(data => {
-    //         setClash(data);
-    //     }).catch(error => {
-    //         handleError(error);
-    //     });
-    // };
-
     const handleRemovePlayer = (playerId) => {
         clashService.removePlayersById(clash, [playerId]).then(data => {
             setClash(data);
@@ -108,17 +102,11 @@ function Clash() {
         setPlayersToAdd((prevSelected) =>
             prevSelected.includes(playerId)
                 ? prevSelected.filter((id) => id !== playerId)
-                : [...prevSelected, playerId]
+                : prevSelected.length + clash.players.length < MAX_PLAYERS
+                    ? [...prevSelected, playerId]
+                    : prevSelected
         );
     };
-
-    // const togglePlayerToRemove = (playerId) => {
-    //     setPlayersToRemove((prevSelected) =>
-    //         prevSelected.includes(playerId)
-    //             ? prevSelected.filter((id) => id !== playerId)
-    //             : [...prevSelected, playerId]
-    //     );
-    // };
 
     if (clash?.status === 'IN_PROGRESS') {
         return (
@@ -185,15 +173,29 @@ function Clash() {
                                 </div>
                             ))}
                         </div>
-                        {clash.status === "PENDING" && clash.owner.id == currentUser.id && (
+                        {clash.status === "PENDING" && clash.owner.id === currentUser.id && (
                             <>
-                                {clash.owner.id === currentUser.id && <button onClick={handleAddPlayers} className="add-button" disabled={playersToAdd.length <= 0}>
-                                    {t("add-to-clash")}
-                                </button>}
-                                <h3>{t("selected-players")}:&nbsp;{playersToAdd.length}</h3>
+                                {clash.owner.id === currentUser.id && (
+                                    <button
+                                        onClick={handleAddPlayers}
+                                        className="add-button"
+                                        disabled={playersToAdd.length <= 0 || clash.players.length >= MAX_PLAYERS}
+                                    >
+                                        {t("add-to-clash")}
+                                    </button>
+                                )}
+                                <h3>
+                                    {t("selected-players")}:&nbsp;{clash.players.length + playersToAdd.length}/{MAX_PLAYERS}
+                                </h3>
                                 <div className="active-players-container">
-                                    {filteredActivePlayers.map(player => (
-                                        <PlayerIcon key={player.id} player={player} selectable={true} selected={playersToAdd.includes(player.id)} onToggleSelect={() => togglePlayerToAdd(player.id)} />
+                                    {filteredActivePlayers.map((player) => (
+                                        <PlayerIcon
+                                            key={player.id}
+                                            player={player}
+                                            selectable={true}
+                                            selected={playersToAdd.includes(player.id)}
+                                            onToggleSelect={() => togglePlayerToAdd(player.id)}
+                                        />
                                     ))}
                                 </div>
                             </>

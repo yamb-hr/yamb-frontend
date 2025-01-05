@@ -98,6 +98,7 @@ button {
 }
 
 .undo-button {
+	color: var(--color-default);
 	width: var(--width-box);
 	background: var(--background-undo-button);
 	border: var(--border-undo-button);

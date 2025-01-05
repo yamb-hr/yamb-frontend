@@ -16,7 +16,9 @@
     "enter-username-or-email": "Enter username or email...",
     "username-length-invalid": "Username must be 3-15 characters long",
     "password-length-invalid": "Password must be 6-30 characters long",
-    "email-invalid": "Invalid email address",
+    "email-invalid": "Invalid email",
+    "username-invalid": "Invalid username",
+    "indentifier-invalid": "Invalid username or email",
     "verified": "Verified",
     "token-missing": "Email verification token is missing",
     "email-verification": "Email verification",
@@ -204,5 +206,14 @@
     "username-updated": "Username Updated",
     "email-updated": "Email Updated",
 	"logs": "Logs",
-	"tickets": "Tickets"
+	"tickets": "Tickets",
+    "name": "Name",
+    "owner": "Owner",
+    "created-at": "Created at",
+    "updated-at": "Updated at",
+    "date": "Date",
+    "mark-all-as-read": "Mark all as Read",
+    "no-notifications-available": "No new notifications",
+    "crop-image": "Crop Image",
+    "crop": "Crop"
 }

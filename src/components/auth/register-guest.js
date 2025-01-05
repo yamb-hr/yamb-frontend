@@ -48,11 +48,18 @@ function RegisterGuest() {
 
     function validateForm() {
         let validationErrors = {};
-        if (username.length < 3 || username.length > 15) {
-            validationErrors.username = t('username-length-invalid');
+    
+        if (!isValidUsername(username)) {
+            validationErrors.username = t('username-invalid');
         }
+
         return validationErrors;
     }
+    
+    function isValidUsername(input) {
+        const usernameRegex = /^[a-zA-Z][a-zA-Z0-9]{2,14}$/;
+        return usernameRegex.test(input);
+    }  
 
     function handleUsernameChange(event) {
         setUsername(event.target.value);

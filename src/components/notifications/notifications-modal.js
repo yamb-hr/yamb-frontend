@@ -1,11 +1,14 @@
 import React, { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { NotificationsContext } from '../../providers/notificationsProvider';
 import './notifications.css';
 
 const NotificationsModal = () => {
 
-	const navigate = useNavigate();
+	const navigate = useNavigate();	
+	const { t } = useTranslation();
+
 	const { notifications, isNotificationsModalOpen, setNotificationsModalOpen, onMarkAsRead, onMarkAllAsRead } = useContext(NotificationsContext);
 
 	const closeModal = () => {
@@ -25,14 +28,14 @@ const NotificationsModal = () => {
 				&times;
 			</button>
 			{notifications?.length === 0 ? (
-				<p>No notifications available.</p>
+				<p>{t("no-notifications-available")}</p>
 			) : (
 				<>
 					<button
 						className="mark-all-read-button"
 						onClick={onMarkAllAsRead}
 					>
-					Mark All as Read
+					{t("mark-all-as-read")}
 					</button>
 					<ul className="notification-list">
 					{notifications.map((notification, index) => (

@@ -25,6 +25,8 @@ function ClashList() {
     const [clashName, setClashName] = useState(t("my-clash"));
     const [selectedPlayers, setSelectedPlayers] = useState([]);
 
+    const MAX_PLAYERS = 3;
+
     const fetchData = async () => {
         setLoading(true);
         playerService.getClashesByPlayerId(currentUser).then(data => {
@@ -59,39 +61,21 @@ function ClashList() {
         setSelectedPlayers((prevSelected) => {
             if (prevSelected.includes(playerId)) {
                 return prevSelected.filter((id) => id !== playerId);
-            } else {
+            } else if (prevSelected.length < MAX_PLAYERS) {
                 return [...prevSelected, playerId];
             }
+            return prevSelected;
         });
     };
 
     const inProgressColumns = [
         { key: t("name"), label: 'Name' },
         { label: t("owner"), key: 'owner' },
-        // {
-        //     key: 'actions',
-        //     label: 'Actions',
-        //     render: () => (
-        //         <button className="continue-button">&#x25B6;</button>
-        //     )
-        // },
     ];
 
     const waitingColumns = [
         { label: t("name"), key: 'name' },
         { label: t("owner"), key: 'owner' },
-        // {
-        //     key: 'actions',
-        //     label: 'Actions',
-        //     render: (clash) => (
-        //         clash.owner.id !== currentUser.id ? (<>
-        //             <button className="accept-button" onClick={(e) => {e.stopPropagation(); handleAccept(clash);}}>&#10004;</button>
-        //             <button className="decline-button" onClick={(e) => {e.stopPropagation(); handleDecline(clash);}}>&#10060;</button>
-        //         </>) : (
-        //             <button className="continue-button">&#x25B6;</button>
-        //         )
-        //     ),
-        // },
     ];
 
     const inProgressClashes = clashes?.filter((clash) => clash.status === 'IN_PROGRESS');
@@ -130,7 +114,7 @@ function ClashList() {
                     <button onClick={createClash} className="create-clash-button" disabled={selectedPlayers.length <= 0 || !clashName}>
                         {t("create-clash")}
                     </button>
-                    <h3>{t("selected-players")}:&nbsp;{selectedPlayers.length}</h3>
+                    <h3>{t("selected-players")}: {selectedPlayers.length}/{MAX_PLAYERS}</h3>
                     <div className="active-players-container">
                         {filteredPlayers.map(player => (
                             <PlayerIcon key={player.id} player={player} selectable={true} selected={selectedPlayers.includes(player.id)} onToggleSelect={() => handleToggleSelect(player.id)} />

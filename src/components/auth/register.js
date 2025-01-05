@@ -71,8 +71,16 @@ function Register() {
         if (email && !/\S+@\S+\.\S+/.test(email)) {
             validationErrors.email = t('email-invalid');
         }
+        if (username && !isValidUsername(username)) {
+            validationErrors.username = t("username-invalid");
+        }
         return validationErrors;
     }
+    
+    function isValidUsername(input) {
+        const usernameRegex = /^[a-zA-Z][a-zA-Z0-9]{2,14}$/;
+        return usernameRegex.test(input);
+    }  
 
     function handleUsernameChange(event) {
         setUsername(event.target.value);

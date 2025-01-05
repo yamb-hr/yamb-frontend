@@ -18,6 +18,8 @@
     "username-length-invalid": "Korisničko ime mora imati između 3 i 15 znakova",
     "password-length-invalid": "Lozinka mora imati između 6 i 30 znakova",    
     "email-invalid": "Neispravna email adresa",
+    "username-invalid": "Neispravno korisničko ime",
+    "indentifier-invalid": "Neispravno korisničko ime ili email adresa",
     "verified": "Verificirano",
     "token-missing": "Nedostaje verifikacijski token",
     "email-verification": "Email verifikacija",
@@ -203,5 +205,14 @@
     "username-updated": "Korisničko ime promijenjeno",
     "email-updated": "Email adresa promijenjena",
     "logs": "Zapisi",
-	"tickets": "Zahtjevi"
+	"tickets": "Zahtjevi",
+    "name": "Naziv",
+    "owner": "Vlasnik",
+    "created-at": "Datum",
+    "updated-at": "Datum",
+    "date": "Datum",
+    "mark-all-as-read": "Označi sve kao pročitano",
+    "no-notifications-available": "Nema novih obavijesti",
+    "crop-image": "Izreži sliku",
+    "crop": "Izreži"
 }
