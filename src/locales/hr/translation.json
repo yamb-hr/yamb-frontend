@@ -207,6 +207,7 @@
     "logs": "Zapisi",
 	"tickets": "Zahtjevi",
     "name": "Naziv",
+    "enter-name": "Unesi naziv...",
     "owner": "Vlasnik",
     "created-at": "Datum",
     "updated-at": "Datum",

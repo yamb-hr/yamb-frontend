@@ -208,6 +208,7 @@
 	"logs": "Logs",
 	"tickets": "Tickets",
     "name": "Name",
+    "enter-name": "Enter Name...",
     "owner": "Owner",
     "created-at": "Created at",
     "updated-at": "Updated at",
