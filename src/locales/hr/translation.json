@@ -215,5 +215,8 @@
     "mark-all-as-read": "Označi sve kao pročitano",
     "no-notifications-available": "Nema novih obavijesti",
     "crop-image": "Izreži sliku",
-    "crop": "Izreži"
+    "crop": "Izreži",
+    "Level": "Razina",
+    "Message": "Poruka",
+    "Data": "Podatci"
 }

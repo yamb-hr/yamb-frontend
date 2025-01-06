@@ -216,5 +216,8 @@
     "mark-all-as-read": "Mark all as Read",
     "no-notifications-available": "No new notifications",
     "crop-image": "Crop Image",
-    "crop": "Crop"
+    "crop": "Crop",
+    "Level": "Level",
+    "Message": "Message",
+    "Data": "Data"
 }

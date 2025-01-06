@@ -26,3 +26,8 @@
     color: var(--color-table-row);
     word-wrap: break-word;
 }
+
+.value {
+    text-align: left;
+    width: 100%;
+}

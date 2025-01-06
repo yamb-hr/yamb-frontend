@@ -116,7 +116,6 @@ function Clash() {
 
     const clashColumns = [
         { label: t("name"), key: 'name' },
-        { label: t("owner"), key: 'owner.name' },
         { label: t("created-at"), key: 'createdAt' }
     ];
 

@@ -12,7 +12,7 @@ const localeStringFormat = {
     hour: 'numeric', minute: 'numeric', second: 'numeric'
 };
 
-const Element = ({ columns, data, service, id }) => {
+const Element = ({ columns, data, service, id, displayHeaders = false }) => {
 
     const { t } = useTranslation();
 
@@ -95,8 +95,8 @@ const Element = ({ columns, data, service, id }) => {
         <div className="element-container">
             {columns.map((column) => (
                 <div key={column.key} className="field">
-                    <strong>{column.label}:</strong>
-                    <span>{getValue(element, column.key)}</span>
+                    {displayHeaders && <strong>{column.label}:</strong>}
+                    <span className="value">{getValue(element, column.key)}</span>
                 </div>
             ))}
         </div>

@@ -39,6 +39,7 @@ function Log() {
         { label: t("level"), key: 'level' },
         { label: t("date"), key: 'createdAt' },
         { label: t("message"), key: 'message' },
+        { label: t("data"), key: 'data' },
 
     ];
 
