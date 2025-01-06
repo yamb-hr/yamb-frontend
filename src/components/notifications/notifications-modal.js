@@ -23,31 +23,31 @@ const NotificationsModal = () => {
 
 	if (isNotificationsModalOpen) return (
 		<div className="modal-overlay" onClick={closeModal}>
-		<div className="modal-content" onClick={(e) => e.stopPropagation()}>
-			<button className="modal-close-button" onClick={closeModal}>
-				&times;
-			</button>
-			{notifications?.length === 0 ? (
-				<p>{t("no-notifications-available")}</p>
-			) : (
-				<>
-					<button
-						className="mark-all-read-button"
-						onClick={onMarkAllAsRead}
-					>
-					{t("mark-all-as-read")}
-					</button>
-					<ul className="notification-list">
-					{notifications.map((notification, index) => (
-						<li key={index} className="notification-item">
-							<div className="notification-content" >
-								<span onClick={() => handleClick(notification)}>{notification.content}</span>
-								<button className="mark-as-read-button" onClick={(e) => {e.preventDefault();onMarkAsRead(notification)}}>&#9993;</button>
-							</div>
-						</li>
-					))}
-					</ul>
-				</>
+			<div className="modal-content" onClick={(e) => e.stopPropagation()}>
+				<button className="modal-close-button" onClick={closeModal}>
+					&times;
+				</button>
+				{notifications?.length === 0 ? (
+					<p>{t("no-notifications-available")}</p>
+				) : (
+					<>
+						<button
+							className="mark-all-read-button"
+							onClick={onMarkAllAsRead}
+						>
+						{t("mark-all-as-read")}
+						</button>
+						<ul className="notification-list">
+						{notifications.map((notification, index) => (
+							<li key={index} className="notification-item">
+								<div className="notification-content" >
+									<span onClick={() => handleClick(notification)}>{notification.content}</span>
+									<button className="mark-as-read-button" onClick={(e) => {e.preventDefault();onMarkAsRead(notification)}}>&#9993;</button>
+								</div>
+							</li>
+						))}
+						</ul>
+					</>
 				)}
 			</div>
 		</div>

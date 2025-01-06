@@ -181,13 +181,13 @@ const Table = ({ columns, data, service, progress, selectable = false, selectedR
                             ? Math.max(0, Math.min(100, parseFloat(row[progressKey] * 100) || 0))
                             : 0;
 
-                        let rowStyle = progressKey
-                            ? {
-                                background: `linear-gradient(to right, #4caf50 ${progressValue}%, #ffffff ${progressValue}%)`
-                              }
-                            : undefined;
+                        // let rowStyle = progressKey
+                        //     ? {
+                        //         background: `linear-gradient(to right, #4caf50 ${progressValue}%, #ffffff ${progressValue}%)`
+                        //       }
+                        //     : undefined;
 
-                        rowStyle = {...rowStyle, outline: selectedRows.includes(row.id) ? '1px solid red' : ''};
+                        const rowStyle = {outline: selectedRows.includes(row.id) ? '1px solid red' : ''};
 
                         return (
                             <tr

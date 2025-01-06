@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import './collapsible.css';
 
-const Collapsible = ({ title, children }) => {
+const Collapsible = ({ defaultOpen = false, title, children }) => {
     
-    const [isOpen, setIsOpen] = useState(false);
+    const [isOpen, setIsOpen] = useState(defaultOpen);
 
     const toggleOpen = () => {
         setIsOpen(!isOpen);
