@@ -66,16 +66,24 @@ button {
 .sheet .notification-button {
 	position: relative;
 	width: var(--width-box);
-	background: var(--background-restart-button);
+	background-color: var(--background-restart-button);
 	border: var(--border-restart-button);
 	border-radius: var(--border-radius-box);
 	font-size: x-large;
-	filter: grayscale(100%);
-	transition: filter 0.3s ease, background-color 0.3s ease;
+	transition: background-color 0.3s ease;
+}
+
+.sheet .notification-button .icon {
+	font-size: 18px;
+    filter: grayscale(100%);
+    transition: filter 0.3s ease;
 }
   
 .sheet .notification-button:hover:enabled {
 	background-color: var(--background-restart-button-hover);
+}
+
+.sheet .notification-button:hover:enabled .icon {
 	filter: grayscale(0%);
 }
   

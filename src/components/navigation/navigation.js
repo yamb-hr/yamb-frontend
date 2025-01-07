@@ -213,7 +213,7 @@ function Navigation() {
                 )}
                 {isMobile && !inGame && (
                     <button className="notification-button" onClick={() => setNotificationsModalOpen(true)}>
-                        &#128276;
+                        <span className="icon">&#128276;</span>
                         {notifications?.length > 0 && (
                             <span className="notification-badge">
                             {notifications.length > 99 ? "99+" : notifications.length}
