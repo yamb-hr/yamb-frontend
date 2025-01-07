@@ -69,18 +69,13 @@ function ClashList() {
         });
     };
 
-    const inProgressColumns = [
-        { label: t("name"), key: 'name' },
-        { label: t("owner"), key: 'owner' },
-    ];
-
-    const waitingColumns = [
+    const clashColumns = [
         { label: t("name"), key: 'name' },
         { label: t("owner"), key: 'owner' },
     ];
 
     const inProgressClashes = clashes?.filter((clash) => clash.status === 'IN_PROGRESS');
-    const waitingClashes = clashes?.filter((clash) => clash.status === 'PENDING');
+    const pendingClashes = clashes?.filter((clash) => clash.status === 'PENDING');
     const completedClashes = clashes?.filter((clash) => clash.status === 'COMPLETED');
     const filteredPlayers = activePlayers?.filter((player) => player.id !== currentUser.id);
 
@@ -94,23 +89,23 @@ function ClashList() {
                 {inProgressClashes?.length > 0 && (
                     <>
                         <Collapsible title={`${t("in-progress")} (${inProgressClashes.length})`} defaultOpen={true}>
-                            <Table data={inProgressClashes} columns={inProgressColumns} paginated={false} displayHeader={false} />
+                            <Table data={inProgressClashes} columns={clashColumns} paginated={false} displayHeader={false} />
                         </Collapsible>
                         <br />
                     </>
                 )}
-                {waitingClashes?.length > 0 && (
+                {pendingClashes?.length > 0 && (
                     <>
-                        <Collapsible title={`${t("pending")} (${waitingClashes.length})`} defaultOpen={true}>
-                            <Table data={waitingClashes} columns={waitingColumns} paginated={false} displayHeader={false} />
+                        <Collapsible title={`${t("pending")} (${pendingClashes.length})`} defaultOpen={true}>
+                            <Table data={pendingClashes} columns={clashColumns} paginated={false} displayHeader={false} />
                         </Collapsible>
                         <br />
                     </>
                 )}
                 {completedClashes?.length > 0 && (
                     <>
-                        <Collapsible title={`${t("pending")} (${completedClashes.length})`} defaultOpen={false}>
-                            <Table data={completedClashes} columns={waitingColumns} paginated={false} displayHeader={false} />
+                        <Collapsible title={`${t("completed")} (${completedClashes.length})`} defaultOpen={false}>
+                            <Table data={completedClashes} columns={clashColumns} paginated={false} displayHeader={false} />
                         </Collapsible>
                         <br />
                     </>

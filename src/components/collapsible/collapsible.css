@@ -8,7 +8,6 @@
 .collapsible-header {
     display: flex;
     justify-content: space-between;
-    padding: 10px;
     background-color: var(--background-table-header);
     cursor: pointer;
     color: var(--color-table-header);
@@ -17,6 +16,10 @@
 .collapsible-header:hover {
     background-color: var(--background-table-header-hover);
     color: var(--color-table-header-hover);
+}
+
+.collapsible-header span {
+    padding: 14px;
 }
 
 .collapsible-content {

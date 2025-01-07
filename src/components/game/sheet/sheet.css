@@ -66,8 +66,8 @@ button {
 .sheet .notification-button {
 	position: relative;
 	width: var(--width-box);
-	background: var(--background-undo-button);
-	border: var(--border-undo-button);
+	background: var(--background-restart-button);
+	border: var(--border-restart-button);
 	border-radius: var(--border-radius-box);
 	font-size: x-large;
 	filter: grayscale(100%);
@@ -100,13 +100,12 @@ button {
 .undo-button {
 	color: var(--color-default);
 	width: var(--width-box);
-	background: var(--background-undo-button);
-	border: var(--border-undo-button);
+	background: var(--background-restart-button);
+	border: var(--border-restart-button);
 	border-radius: var(--border-radius-box);
 	grid-row-start: 9;
 	grid-row-end: 11;
 	font-size: xx-large;
-	filter: grayscale(100%);
 	transition: filter 0.3s ease, background-color 0.3s ease;
 }
 

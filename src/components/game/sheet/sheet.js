@@ -218,7 +218,7 @@ function Sheet(props) {
                 <button className="username-button" onClick={() => { handleUsernameClick() }}>
                     {player.name}
                 </button>
-                {isSpectator && location?.pathname !== '/' && (<div className="switch-container">
+                {/* {isSpectator && location?.pathname !== '/' && (<div className="switch-container">
                     <label className="switch">
                         <input 
                             type="checkbox" 
@@ -227,7 +227,7 @@ function Sheet(props) {
                         />
                         <span className="slider round"></span>
                     </label>
-                </div>)}
+                </div>)} */}
                 <Label variant="total-sum" value={getTotalSum()}></Label>
             </div>
         </div>
