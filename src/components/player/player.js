@@ -118,7 +118,7 @@ function Player() {
         { label: t("value"), key: 'value' },
         { label: t("date"), key: 'createdAt' },
         ...(currentUser?.admin
-            ? [{ label: t("actions"), key: 'actions', render: (row) => <button onClick={() => handleDelete('score', row.id)}>Delete</button> }]
+            ? [{ label: t("actions"), key: 'actions', render: (row) => <button className="delete-button" onClick={() => handleDelete('score', row.id)}>Delete</button> }]
             : []),
     ];
 
@@ -134,7 +134,7 @@ function Player() {
         { label: t("level"), key: 'level' },
         { label: t("date"), key: 'createdAt' },
         ...(currentUser?.admin
-            ? [{ label: t("actions"), key: 'actions', render: (row) => <button onClick={() => handleDelete('log', row.id)}>Delete</button> }]
+            ? [{ label: t("actions"), key: 'actions', render: (row) => <button className="delete-button" onClick={() => handleDelete('log', row.id)}>Delete</button> }]
             : []),
     ];
 
