@@ -18,7 +18,7 @@ export const ActivePlayersProvider = ({ children }) => {
         if (currentUser && stompClient && isConnected) {
             const subscription = stompClient.subscribe('/topic/players', onPlayerStatusChanged);
             playerService.getAllActive().then(data => {
-                setActivePlayers(data._embedded.players);
+                setActivePlayers(data._embedded?.players || []);
             }).catch(error => {
                 handleError(error);
             });

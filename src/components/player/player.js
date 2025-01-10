@@ -126,7 +126,7 @@ function Player() {
         { label: t("status"), key: 'status', type: 'string' },
         { label: t("last-played"), key: 'updatedAt', type: 'date' },
         ...(currentUser?.admin
-            ? [{ label: t("actions"), key: 'actions', render: (row) => <button onClick={() => handleDelete('game', row.id)}>Delete</button> }]
+            ? [{ label: t("actions"), key: 'actions', render: (row) => <button className="delete-button" onClick={() => handleDelete('game', row.id)}>Delete</button> }]
             : []),
     ];
 
