@@ -21,6 +21,7 @@ function Player() {
     const [data, setData] = useState(null);
     const [scoreData, setScoreData] = useState(null);
     const [gameData, setGameData] = useState(null);
+    const [clashData, setClashData] = useState(null);
     const [logData, setLogData] = useState(null);
     const [loading, setLoading] = useState(true);
 
@@ -37,6 +38,9 @@ function Player() {
         if (currentUser.admin) {
             if (id && data && !gameData) {
                 fetchGameData();
+            }
+            if(id && data && !clashData) {
+                fetchClashData();
             }
             if (id && data && !logData) {
                 fetchLogData();
@@ -71,6 +75,15 @@ function Player() {
             .finally(() => setLoading(false));
     };
 
+    const fetchClashData = () => {
+        setLoading(true);
+        playerService
+            .getClashesByPlayerId(data)
+            .then((data) => setClashData(data))
+            .catch(handleError)
+            .finally(() => setLoading(false));
+    };
+
     const fetchLogData = () => {
         setLoading(true);
         playerService
@@ -83,29 +96,30 @@ function Player() {
     const handleDelete = (type, id) => {
         if (!window.confirm('Are you sure you want to delete this item?')) return;
 
-        let serviceMethod;
+        // let serviceMethod;
 
-        switch (type) {
-            case 'score':
-                serviceMethod = playerService.deleteScore;
-                break;
-            case 'game':
-                serviceMethod = playerService.deleteGame;
-                break;
-            case 'log':
-                serviceMethod = playerService.deleteLog;
-                break;
-            default:
-                return;
-        }
+        // switch (type) {
+        //     case 'score':
+        //         serviceMethod = playerService.deleteById;
+        //         break;
+        //     case 'game':
+        //         serviceMethod = gameService.deleteById;
+        //         break;
+        //     case 'game':
+        //         serviceMethod = clashService.deleteById;
+        //         break;
+        //     case 'log':
+        //         serviceMethod = logService.deleteById;
+        //         break;
+        //     default:
+        //         return;
+        // }
 
-        serviceMethod(id)
-            .then(() => {
-                if (type === 'score') fetchScoreData();
-                if (type === 'game') fetchGameData();
-                if (type === 'log') fetchLogData();
-            })
-            .catch(handleError);
+        // serviceMethod(id).then(() => {
+        //         if (type === 'score') fetchScoreData();
+        //         if (type === 'game') fetchGameData();
+        //         if (type === 'log') fetchLogData();
+        // }).catch(handleError);
     };
 
     const columns = [
@@ -127,6 +141,14 @@ function Player() {
         { label: t("last-played"), key: 'updatedAt', type: 'date' },
         ...(currentUser?.admin
             ? [{ label: t("actions"), key: 'actions', render: (row) => <button className="delete-button" onClick={() => handleDelete('game', row.id)}>Delete</button> }]
+            : []),
+    ];
+
+    const clashColumns = [
+        { label: t("name"), key: 'name', type: 'string' },
+        { label: t("last-played"), key: 'updatedAt', type: 'date' },
+        ...(currentUser?.admin
+            ? [{ label: t("actions"), key: 'actions', render: (row) => <button className="delete-button" onClick={() => handleDelete('clash', row.id)}>Delete</button> }]
             : []),
     ];
 
@@ -153,9 +175,15 @@ function Player() {
                     </Collapsible>
                 )}
                 <br />
-                {gameData && (
+                {currentUser?.admin && gameData && (
                     <Collapsible title={`${t('games')} (${gameData._embedded?.games.length || 0})`}>
                         <Table data={gameData._embedded?.games} columns={gameColumns} />
+                    </Collapsible>
+                )}
+                <br />
+                {currentUser?.admin && clashData && (
+                    <Collapsible title={`${t('clashes')} (${clashData._embedded?.clashes.length || 0})`}>
+                        <Table data={gameData._embedded?.clashes} columns={clashColumns} />
                     </Collapsible>
                 )}
                 <br />
