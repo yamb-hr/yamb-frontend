@@ -88,28 +88,29 @@ function ClashList() {
             <div className="clash-list">
                 {inProgressClashes?.length > 0 && (
                     <>
+                        <br />
                         <Collapsible title={`${t("in-progress")} (${inProgressClashes.length})`} defaultOpen={true}>
                             <Table data={inProgressClashes} columns={clashColumns} paginated={false} displayHeader={false} />
                         </Collapsible>
-                        <br />
                     </>
                 )}
                 {pendingClashes?.length > 0 && (
                     <>
+                        <br />
                         <Collapsible title={`${t("pending")} (${pendingClashes.length})`} defaultOpen={true}>
                             <Table data={pendingClashes} columns={clashColumns} paginated={false} displayHeader={false} />
                         </Collapsible>
-                        <br />
                     </>
                 )}
                 {completedClashes?.length > 0 && (
                     <>
+                        <br />
                         <Collapsible title={`${t("completed")} (${completedClashes.length})`} defaultOpen={false}>
                             <Table data={completedClashes} columns={clashColumns} paginated={false} displayHeader={false} />
                         </Collapsible>
-                        <br />
                     </>
                 )}
+                <br />
                 <div className="create-clash-container">
                     <input
                         type="text"

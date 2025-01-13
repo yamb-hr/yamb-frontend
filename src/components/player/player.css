@@ -57,6 +57,14 @@
     color: var(--color-default);
 }
 
+.player h3,
+.player-list h3 {
+    font-size: 1.2rem;
+    font-weight: normal;
+    margin: 10px;
+    color: var(--color-default);
+}
+
 @media (max-width: 480px) {
 
     .player, .player-list {

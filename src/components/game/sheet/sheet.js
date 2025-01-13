@@ -35,7 +35,7 @@ function Sheet(props) {
 
     const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS";
     const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
-    const undoDisabled = !latestColumnFilled || !latestBoxFilled || type === "CLASH";
+    const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH";
 
     function handleRoll() {
         props.onRoll();
