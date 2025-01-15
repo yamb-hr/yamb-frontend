@@ -170,25 +170,25 @@ function Player() {
                 {data && <Element data={data} columns={columns} />}
                 <br />
                 {scoreData && (
-                    <Collapsible title={`${t('scores')} (${scoreData._embedded?.scores.length || 0})`}>
+                    <Collapsible title={`${t('scores')} (${scoreData._embedded?.scores?.length || 0})`}>
                         <Table data={scoreData._embedded?.scores} columns={scoreColumns} />
                     </Collapsible>
                 )}
                 <br />
                 {currentUser?.admin && gameData && (
-                    <Collapsible title={`${t('games')} (${gameData._embedded?.games.length || 0})`}>
+                    <Collapsible title={`${t('games')} (${gameData._embedded?.games?.length || 0})`}>
                         <Table data={gameData._embedded?.games} columns={gameColumns} />
                     </Collapsible>
                 )}
                 <br />
                 {currentUser?.admin && clashData && (
-                    <Collapsible title={`${t('clashes')} (${clashData._embedded?.clashes.length || 0})`}>
-                        <Table data={gameData._embedded?.clashes} columns={clashColumns} />
+                    <Collapsible title={`${t('clashes')} (${clashData._embedded?.clashes?.length || 0})`}>
+                        <Table data={clashData._embedded?.clashes} columns={clashColumns} />
                     </Collapsible>
                 )}
                 <br />
                 {currentUser?.admin && logData && (
-                    <Collapsible title={`${t('logs')} (${logData._embedded?.logs.length || 0})`}>
+                    <Collapsible title={`${t('logs')} (${logData._embedded?.logs?.length || 0})`}>
                         <Table data={logData._embedded?.logs} columns={logColumns} />
                     </Collapsible>
                 )}
