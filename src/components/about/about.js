@@ -145,7 +145,6 @@ function About() {
                             <p>{t('rules-content-3')}</p>
                             <br/>
                             <p>{t('rules-content-4')}</p>
-                            <br/>
                         </section>
                     )}
                     {activeTab === 'project' && (

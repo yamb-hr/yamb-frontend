@@ -157,8 +157,7 @@
     .about {
         border-radius: 0px;
         width: 100vw;
-        padding: 0;
-        margin: 0;
+        padding: 20px 0;
     }
 
     .about section {

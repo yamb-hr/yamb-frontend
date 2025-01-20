@@ -20,14 +20,12 @@ function Admin() {
     return (
         <div className="admin-container">
             <div className="admin">
-                <ul>
-                    <li><Link to="/logs">{t("logs")}</Link></li>
-                    <li><Link to="/games">{t("games")}</Link></li>
-                    <li><Link to="/players">{t("players")}</Link></li>
-                    <li><Link to="/scores">{t("scores")}</Link></li>
-                    <li><Link to="/clashes">{t("clashes")}</Link></li>
-                    <li><Link to="/tickets">{t("tickets")}</Link></li>
-                </ul>
+                <Link to="/logs">{t("logs")}</Link>
+                <Link to="/games">{t("games")}</Link>
+                <Link to="/players">{t("players")}</Link>
+                <Link to="/scores">{t("scores")}</Link>
+                <Link to="/clashes">{t("clashes")}</Link>
+                <Link to="/tickets">{t("tickets")}</Link>
             </div>
         </div>
     );

@@ -8,8 +8,6 @@
 .settings {
     background-color: var(--background-default);
     color: var(--color-default);
-    padding: 20px 30px;
-    border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
@@ -20,7 +18,6 @@
 
 .settings form div {
     margin: 20px;
-    width: 248px;
 }
 
 .settings form select {
@@ -37,4 +34,16 @@
 
 .settings form select:hover {
 	cursor: pointer;
+}
+
+@media (max-width: 480px) {
+    
+    .settings {
+        width: 100vw;
+    }
+
+    .settings form div {
+        margin: 20px 40px;
+    }
+
 }
