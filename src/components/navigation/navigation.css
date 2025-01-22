@@ -27,9 +27,8 @@
     position: fixed;
     top: 8px;
     left: 144px;
-    font-size: 2rem;
+    font-size: var(--font-size-banner);
     border: none;
-    border-radius: 40px;
     cursor: pointer;
     transition: left 0.3s ease;
     z-index: 1000;
@@ -58,7 +57,7 @@
     text-align: center;
     margin-left: 8px;
     margin-top: 16px;
-    font-size: 1.5rem;
+    font-size: var(--font-size-title);
     color: var(--color-nav);
 }
 
@@ -71,7 +70,7 @@
     color: var(--color-nav);
     padding: 16px;
     margin: 4px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-window);
     box-sizing: border-box;
     transition: background-color 0.3s;
 }
@@ -95,7 +94,7 @@
 .navbar.collapsed ul li a {
     padding: 16px;
     margin: 4px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-window);
 }
 
 .language-button {    
@@ -136,7 +135,7 @@
     margin: 0;
     padding: 16px;
     display: none;
-    font-size: 2rem;
+    font-size: var(--font-size-banner);
 }
 
 .burger .icon {
@@ -149,7 +148,7 @@
     top: 0;
     right: 0;
     padding: 14px;
-    font-size: 2rem;
+    font-size: var(--font-size-banner);
 	background-color: none;
 	border: none;
 }
@@ -189,7 +188,7 @@
 .top-bar .icon {
     color: var(--color-nav);
     filter: grayscale(100%);
-    font-size: 1.5rem;
+    font-size: var(--font-size-title);
     transition: filter 0.3s ease;
 }
 
@@ -229,7 +228,7 @@
     left: 50%;
     transform: translateX(-50%);
     top: 12px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-button);
     width: 200px;
     padding: 12px;
 }
@@ -248,7 +247,7 @@
 }
 
 .navbar .icon-buttons .icon {
-    font-size: 1.5rem;
+    font-size: var(--font-size-title);
     filter: grayscale(100%);
     color: var(--color-nav);
 }
@@ -293,16 +292,15 @@ span.menu-label {
 }
 
 .logout-prompt {
-    font-size: 18px;
-    margin: 10px;
+    margin-top: 10px;
 }
 
 .logout-prompt-button {
-    padding: 5px 10px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius-button);
     cursor: pointer;
-    font-size: 16px;
+    font-size: var(--font-size-text);
 }
 
 .grecaptcha-badge {
@@ -334,16 +332,15 @@ span.menu-label {
         margin-top: 8px;
         width: 200px;
         height: auto;
-        border-radius: 4px;
-        font-size: 1.2rem;
+        border-radius: var(--border-radius-button);
+        font-size: var(--font-size-text);
         margin-bottom: 4px;
     }
 
     .navbar ul li a {  
         padding: 16px;
         margin: 2px;
-        border-radius: 0px;
-        font-size: 1.2rem;
+        font-size: var(--font-size-tab);
     }
 
     .navbar .icon-buttons {
@@ -366,7 +363,7 @@ span.menu-label {
     }
 
     .navbar.active .language-button, .navbar.active .theme-button {
-        font-size: 1.2em;
+        font-size: var(--font-size-title);
     }
 
     .burger {
@@ -374,7 +371,7 @@ span.menu-label {
     }
 
     .app-title .app-name {
-        font-size: 2rem;
+        font-size: var(--font-size-banner);
     }
 
     .language-theme-buttons {

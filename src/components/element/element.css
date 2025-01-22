@@ -4,11 +4,10 @@
     gap: 1rem;
     padding: 1rem;
     border: var(--border-width-table-container) var(--border-style-table-container) var(--border-color-table-container);
-    border-radius: 8px;
     background-color: var(--background-table-container);
     max-width: 600px;
     margin: 0 auto;
-    font-size: 1rem;
+    font-size: var(--font-size-text);
 }
 
 .field {

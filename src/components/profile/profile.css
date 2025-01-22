@@ -8,7 +8,7 @@
 
 .profile.id-card {
     background-color: var(--background-auth);
-    border-radius: 10px;
+    border-radius: var(--border-radius-window);
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     padding: 20px;
     padding-bottom: 10px;
@@ -43,14 +43,14 @@
 .upload-label {
     position: absolute;
     opacity: 0%;
-    bottom: 0px;
+    bottom: 10px;
     left: 50%;
     transform: translateX(-50%);
     background-color: var(--background-default-button);
     color: var(--color-default-button);
     padding: 5px 10px;
-    font-size: 12px;
-    border-radius: 12px;
+    font-size: var(--font-size-text);
+    border-radius: var(--border-radius-window);
     cursor: pointer;
     transition: opacity 0.3s ease;
 }
@@ -74,15 +74,15 @@
 }
 
 .input-group label {
-    font-size: 1rem;
+    font-size: var(--font-size-text);
     text-align: left;
 }
 
 .id-card-input {
     padding: 10px;
     border: 1px solid var(--background-auth);
-    border-radius: 5px;
-    font-size: 1rem;
+    border-radius: var(--border-radius-button);
+    font-size: var(--font-size-text);
     outline: none;
     transition: border-color 0.3s ease;
     color: var(--color-auth);
@@ -94,7 +94,7 @@
 }
 
 .error-text {
-    font-size: 12px;
+    font-size: var(--font-size-text);
     color: #d9534f;
 }
 
@@ -108,9 +108,9 @@
 .cancel-button {
     margin-top: 10px;
     padding: 10px;
-    font-size: 1rem;
+    font-size: var(--font-size-text);
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius-button);
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
@@ -146,9 +146,9 @@
     background-color: var(--background-auth-button);
     color: var(--color-auth-button);
     padding: 10px;
-    font-size: 1rem;
+    font-size: var(--font-size-text);
     border: none;
-    border-radius: 5px;
+    border-radius: var(--border-radius-button);
     transition: background-color 0.3s ease;
     width: 100%;
     margin-top: 10px;
@@ -163,7 +163,7 @@
 }
 
 .verified {
-    font-size: small;
+    font-size: var(--font-size-text);
     text-align: right;
 }
 
@@ -183,7 +183,7 @@
     background: white;
     padding: 20px;
     padding-top: 0;
-    border-radius: 8px;
+    border-radius: var(--border-radius-window);
     width: 400px;
     max-width: 90%;
 }

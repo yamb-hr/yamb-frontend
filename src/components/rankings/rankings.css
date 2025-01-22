@@ -8,7 +8,6 @@
 .rankings {    
     background-color: var(--background-window);
     color: var(--color-text);
-    border-radius: 20px;
     padding: 30px;
     text-align: left;
 }

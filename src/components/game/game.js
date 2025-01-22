@@ -51,7 +51,7 @@ function Game(props) {
 	}, [setInGame]);
 
 	useEffect(() => {
-		if (!game && id || (game?.id !== id)) {
+		if (!game && id || (id && game?.id !== id)) {
 			gameService.getById(id).then(setGame).catch(handleError);
 			setSubscribed(true);
 		} else if (!game && currentUser) {
@@ -174,17 +174,30 @@ function Game(props) {
 					<h2>{t("congrats")}</h2>
 					<p>{t("congrats-score")}</p>
 					{game && <h2>{game.totalSum}</h2>}
-					<button className="share-button" onClick={handleShare}>{t("share-score")}</button>
+					<div className="share-button-container">
+						<button className="share-button" onClick={handleShare}>
+							<span className="icon">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19">
+									<circle cx="18" cy="5" r="3" fill="currentColor"/>
+									<circle cx="18" cy="19" r="3" fill="currentColor"/>
+									<circle cx="6" cy="12" r="3" fill="currentColor"/>
+									<line x1="18" y1="5" x2="6" y2="12" stroke="currentColor" strokeWidth="2"/>
+									<line x1="18" y1="19" x2="6" y2="12" stroke="currentColor" strokeWidth="2"/>
+								</svg>
+							</span>
+							&nbsp;{t("share-score")}
+						</button>
+					</div>
 					<hr />
 					<p>{t("want-to-try-again")}</p>
 					<button className="new-game-button" onClick={handleArchive}>{t("new-game")}</button>
-				</div>, 999999
+				</div>, 999999, 
 			);
 		}
 	};
 
 	const handleShare = () => {
-		if (navigator.share) {
+		if (navigator.share && id) {
 			navigator.share({
 				title: t('yamb'),
 				text: t('share-score-text', { score: game.totalSum }),

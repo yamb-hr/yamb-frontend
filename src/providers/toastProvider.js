@@ -58,7 +58,7 @@ export const ToastProvider = ({ children }) => {
     return (
         <ToastContext.Provider value={{ showSuccessToast, showErrorToast, showInfoToast }}>
             {children}
-            <ToastContainer limit={5} style={{ fontSize: "medium" }}/>
+            <ToastContainer limit={5} style={{ fontSize: "var(--font-size-tab)" }}/>
         </ToastContext.Provider>
     );
     

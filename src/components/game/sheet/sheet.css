@@ -69,12 +69,10 @@ button {
 	background-color: var(--background-restart-button);
 	border: var(--border-restart-button);
 	border-radius: var(--border-radius-box);
-	font-size: x-large;
 	transition: background-color 0.3s ease;
 }
 
 .sheet .notification-button .icon {
-	font-size: 18px;
     filter: grayscale(100%);
     transition: filter 0.3s ease;
 }
@@ -86,24 +84,6 @@ button {
 .sheet .notification-button:hover:enabled .icon {
 	filter: grayscale(0%);
 }
-  
-.sheet .notification-badge {
-	position: absolute;
-	top: 4px;
-	right: 8px;
-	background-color: red;
-	color: white;
-	border-radius: 50%;
-	padding: 0px;
-	font-size: 0.55rem;
-	font-weight: bold;
-	line-height: 1;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	min-width: 20px;
-	height: 20px;
-}
 
 .undo-button {
 	color: var(--color-default);
@@ -113,7 +93,7 @@ button {
 	border-radius: var(--border-radius-box);
 	grid-row-start: 9;
 	grid-row-end: 11;
-	font-size: xx-large;
+	font-size: var(--font-size-banner);
 	transition: filter 0.3s ease, background-color 0.3s ease;
 }
 
@@ -147,14 +127,14 @@ button {
 
 .username-button {
 	font-weight: bold;
-	font-size: medium;
+	font-size: var(--font-size-text);
 	color: var(--color-username-button);
 	border: var(--border-username-button);
 	background: var(--background-username-button);
 }
 
 .sheet .icon {
-	font-size: 1.5rem;
+	font-size: var(--font-size-title);
 	color: var(--color-label);
 }
 

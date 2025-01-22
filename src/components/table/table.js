@@ -47,7 +47,7 @@ const Table = ({ columns, data, service, progress, selectable = false, selectedR
     const tableData = data || fetchedData || [];
 
     if (service && isLoading) {
-        return <Spinner />;
+        return <Spinner />
     }
 
     if (service && isError) {

@@ -1,11 +1,11 @@
+.spinner-container {
+    padding-top: 30vh;
+    overflow: hidden;
+}
+
 .spinner {
-    font-size: 50px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    font-family: 'Arial', sans-serif;
-    color: var(--color-default-input);
+    font-size: 4rem;
+    color: var(--color-default);
     animation: spin 2s linear infinite;
 }
 

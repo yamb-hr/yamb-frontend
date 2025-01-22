@@ -29,11 +29,7 @@ function Rankings() {
     useEffect(() => {
         // fetchData();
     }, []);
-
-    if (loading) {
-        return <Spinner />
-    }
-
+    
     return (
         <div className="rankings-container">
             {/* {globalScoreStats && (

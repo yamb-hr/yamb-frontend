@@ -23,7 +23,7 @@
 
 .clash-header h1 {
     margin: 0;
-    font-size: 24px;
+    font-size: var(--font-size-title);
     font-weight: bold;
 }
 
@@ -60,7 +60,7 @@
     border: none;
     font-weight: bolder;
     transition: background-color 0.3s ease-in-out;
-    border-radius: 4px;
+    border-radius: var(--border-radius-button);
     color: var(--color-default-button);
 }
 
@@ -97,28 +97,13 @@
     display: inline-block;
 }
 
-.remove-button-single {
+.accepted-badge {
     position: absolute;
     top: 0;
     right: 0;
     background: none;
     border: none;
-    font-size: 14px;
-    transition: font-size 0.1s ease-in-out;
-}
-
-.remove-button-single:hover:enabled {
-    cursor: pointer;
-    font-size: 16px;
-}
-
-.accepted-badge {
-    position: absolute;
-    top: 0;
-    left: 0;
-    background: none;
-    border: none;
-    font-size: 20px;
+    font-size: var(--font-size-title);
     color: var(--background-save-button);
 }
 
@@ -139,7 +124,7 @@
 
 .clash h3,
 .clash-list h3 {
-    font-size: 1.2rem;
+    font-size: var(--font-size-text);
     font-weight: normal;
     margin: 10px;
     color: var(--color-default);
@@ -158,17 +143,17 @@
 
 .clash-name-input {
     padding: 10px;
-    font-size: 1rem;
+    font-size: var(--font-size-text);
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: var(--border-radius-button);
     flex-grow: 1;
 }
 
 .create-clash-button {
     border: none;
     font-weight: bold;
-    font-size: 1rem;
-    border-radius: 4px;
+    font-size: var(--font-size-text);
+    border-radius: var(--border-radius-button);
     background-color: var(--background-save-button);
     color: var(--color-save-button);
     padding: var(--padding-default-button);
@@ -185,6 +170,21 @@
     background-color: var(--background-save-button-disabled);
 }
 
+.remove-button-single {
+    position: absolute;
+    top: 0;
+    right: 0;
+    background: none;
+    border: none;
+    font-size: 14px;
+    transition: font-size 0.1s ease-in-out;
+}
+
+.remove-button-single:hover:enabled {
+    cursor: pointer;
+    font-size: 16px;
+}
+
 @media (max-width: 480px) {
     .clash, .clash-list {
         width: 100vw;
@@ -195,7 +195,6 @@
     .clash-players th,
     .clash-players td {
         padding: 8px;
-        font-size: 14px;
     }
 
     .create-clash-container {

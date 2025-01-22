@@ -29,7 +29,7 @@
     width: 300px;
     padding: 20px;
     background-color: var(--background-share-modal);
-    border-radius: 10px;
+    border-radius: var(--border-radius-window);
     z-index: 1000;
     text-align: center;
     transition: top 0.5s ease-in-out;
@@ -48,12 +48,12 @@
 
 .share-modal h2 {
     margin: 10px;
-    font-size: 24px;
+    font-size: var(--font-size-title);
     color: var(--color-share-modal);
 }
 
 .share-modal p {
-    font-size: 16px;
+    font-size: var(--font-size-text);
     color: var(--color-share-modal);
     margin: 0;
 }
@@ -61,12 +61,18 @@
 .share-button, .new-game-button {
     padding: 10px 20px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+    border-radius: var(--border-radius-button);
+    font-size: var(--font-size-text);
+}
+
+.share-button-container {
+    display: flex;
+    justify-content: center;
 }
 
 .share-button {
+    display: flex;
+    align-items: center;
     background-color: var(--background-share-button);
     color: var(--color-share-button);
 }
@@ -93,14 +99,13 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
     transition: all 1s ease;
-        font-size: 18px;
 }
 
 .share-modal.show .close-button {
     position: fixed;
     top: 10px;
     right: 10px;
-    font-size: 24px;
+    font-size: var(--font-size-text);
     cursor: pointer;
     border: none;
     color: var(--color-share-modal);
@@ -128,16 +133,13 @@
 }
 
 .restart-prompt {
-    font-size: 18px;
-    margin: 10px;
+    margin-top: 10px;
 }
 
 .restart-prompt-button {
-    padding: 5px 10px;
+    padding: 6px 20px;
     border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-size: 16px;
+    border-radius: var(--border-radius-button);
 }
 
 .button-yes {
@@ -150,6 +152,10 @@
     background-color: var(--background-new-game-button);
     color: var(--color-new-game-button);
     margin-left: 10px;
+}
+
+.share-button .icon {
+    margin: 2px;
 }
 
 @media (max-width: 480px) {

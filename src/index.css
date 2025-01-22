@@ -1,5 +1,4 @@
 :root {
-
   --color-background: #121212;
   
   --color-black: #000000;
@@ -24,8 +23,11 @@
 
   --filter-settings-button: var(--filter-turq);
 
+  --border-radius-button: 4px;
+  --border-radius-window: 8px;
+
   --background-sheet: var(--color-blue);
-  --border-radius-sheet: 5px;
+  --border-radius-sheet: var(--border-radius-sheet);
   --border-sheet: none;
   --margin-sheet: 40px 0 0 0;
 
@@ -46,7 +48,7 @@
   --border-label: none;
   --width-label: 100%;
   --height-label: 100%;
-  --border-radius-label: 4px;
+  --border-radius-label: var(--border-radius-button);
   --filter-label: var(--filter-gray);
 
   --color-sum: var(--color-yellow);
@@ -83,7 +85,7 @@
   --border-dice-alt: 3px solid var(--color-red);
   --width-dice: 64px;
   --height-dice: var(--width-dice);
-  --border-radius-dice: 8px;  
+  --border-radius-dice: var(--border-radius-window);  
   --margin-dice: 10px;
   --filter-dice: var(--filter-blue);
   --filter-dice-alt: var(--filter-red);
@@ -237,6 +239,11 @@
 	--background-delete-button-hover: var(--color-red-hover);
 	--background-delete-button-disabled: var(--color-gray);
 
+  --font-size-text: 1rem;
+  --font-size-tab: 1.2rem;
+  --font-size-title: 1.4rem;
+  --font-size-banner: 2rem;
+
 }
 
 [theme="light"] {
@@ -331,6 +338,7 @@
   --border-default-button: var(--color-gray);
   --color-default-link: var(--color-blue);
   --padding-default-button: 10px;
+  --outline-default-button: 1px solid var(--color-blue);
 
   --background-auth: var(--color-gray);
   --background-auth-input: var(--color-gray-hover);
@@ -470,7 +478,7 @@ input:focus {
 a {
   text-decoration: none;
   color: var(--color-yellow);
-  font-size: medium;
+  font-size: var(--font-size-text);
 }
 
 a:hover {

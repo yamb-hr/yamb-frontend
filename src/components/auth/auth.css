@@ -8,7 +8,7 @@
 .auth {
     background-color: var(--background-auth);
     padding: 20px 30px;
-    border-radius: 8px;
+    border-radius: var(--border-radius-window);
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
     max-width: 312px;
     color: var(--color-auth);
@@ -16,7 +16,7 @@
 
 .auth h2 {
     margin-bottom: 20px;
-    font-size: 24px;
+    font-size: var(--font-size-title);
     text-align: center;
     font-weight: normal;
 }
@@ -28,11 +28,11 @@
     padding: 12px;
     margin: 8px 0;
     box-sizing: border-box;
-    font-size: 16px;
+    font-size: var(--font-size-text);
     background-color: var(--background-auth-input);
     color: var(--color-auth-input);
     border-bottom: 1px solid var(--border-auth-input);
-    border-radius: 4px;
+    border-radius: var(--border-radius-button);
     caret-color: var(--color-auth-input);
 }
 
@@ -59,10 +59,10 @@
     background-color: var(--background-auth-button);
     border: none;
     color: var(--color-auth-button);
-    font-size: 16px;
+    font-size: var(--font-size-text);
     transition: background-color 0.3s ease-in-out;
     border: 1px solid var(--border-auth-button);
-    border-radius: 4px;
+    border-radius: var(--border-radius-button);
     margin-top: 10px;
 }
 
@@ -76,19 +76,13 @@
 }
 
 .check-email {
-    font-size: medium;
+    font-size: var(--font-size-text);
 }
 
 .auth .link {
     margin-top: 15px;
     text-align: center;
-    font-size: 14px;
-}
-
-.auth .link a {
-    color: var(--color-auth-link);
-    text-decoration: none;
-    font-size: 14px;
+    font-size: var(--font-size-text);
 }
 
 .auth .link a:hover {
@@ -102,7 +96,7 @@
 }
 
 .auth .input-label {
-    font-size: 14px;
+    font-size: var(--font-size-text);
     width: 100%;
     display: flex;
 }
@@ -113,18 +107,18 @@
 
 .error-text {
     color: var(--color-red);
-    font-size: 0.9rem;
+    font-size: var(--font-size-text);
     margin-top: 5px;
     display: block;
 }
 
 .forgot-password {
-    font-size: medium;
+    font-size: var(--font-size-text);
 }
 
 .recaptcha-branding {
     margin-top: 15px;
-    font-size: 0.9rem;
+    font-size: var(--font-size-text);
     color: #666;
     text-align: center;
     line-height: 1.5;

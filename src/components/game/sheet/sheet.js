@@ -1,18 +1,17 @@
 import { useContext } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { MenuContext } from '../../../providers/menuProvider';
-import { CurrentUserContext } from '../../../providers/currentUserProvider';
 import { DeviceContext } from '../../../providers/deviceProvider';
+import { CurrentUserContext } from '../../../providers/currentUserProvider';
+import { NotificationsContext } from '../../../providers/notificationsProvider';
 import Label from '../label/label';
 import Column from '../column/column';
 import './sheet.css';
-import { NotificationsContext } from '../../../providers/notificationsProvider';
 
 function Sheet(props) {
 
     const navigate = useNavigate();
-    const location = useLocation();
     const { t } = useTranslation();
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
     const { currentUser } = useContext(CurrentUserContext);
@@ -28,14 +27,14 @@ function Sheet(props) {
         latestBoxFilled,
         latestColumnFilled,
         type,
-        subscribed,
+        // subscribed,
         isRolling,
         isSpectator
     } = props;
 
     const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS";
     const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
-    const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH";
+    const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH" || status === "COMPLETED" || status === "ARCHIVED";
 
     function handleRoll() {
         props.onRoll();
@@ -53,9 +52,9 @@ function Sheet(props) {
         props.onRestart();
     }
 
-    function handleSubscribeToggle() {
-        props.onSubscribe();
-    }
+    // function handleSubscribeToggle() {
+    //     props.onSubscribe();
+    // }
 
     function getTotalSum() {
         return getTopSectionSum() + getMiddleSectionSum() + getBottomSectionSum();

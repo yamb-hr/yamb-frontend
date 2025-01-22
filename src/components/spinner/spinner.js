@@ -20,8 +20,10 @@ function Spinner() {
     }, [currentFace]);
 
     return (
-        <div className="spinner">
-            {currentFace}
+        <div className="spinner-container">
+            <div className="spinner">
+                {currentFace}
+            </div>
         </div>
     );
 }

@@ -1,9 +1,9 @@
 .table-container {
     display: flex;
     flex-direction: column;
-    border-radius: 8px;
+    border-radius: var(--border-radius-window);
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-size: small;
+    font-size: var(--font-size-text);
     flex-grow: 1;
     background-color: var(--background-table-container);
     border: var(--border-width-table-container) var(--border-style-table-container) var(--border-color-table-container);
@@ -82,7 +82,7 @@
     background-color: var(--background-table-row-alt);
     padding: 10px 0;
     z-index: 2;
-    color: var(--color-table-pagination);
+    color: var(--color-default);
 }
 
 .table-container .pagination-controls button {
@@ -90,28 +90,30 @@
     margin-left: 20px; 
     margin-right: 20px;
     border: none;
-    background-color: var(--background-table-pagination-button);
-    color: var(--color-table-pagination-button);
-    border-radius: 4px;
+    background-color: var(--background-default-button);
+    color: var(--color-default-button);
+    font-size: var(--font-size-text);
+    border-radius: var(--border-radius-button);
     cursor: pointer;
 }
 
 .table-container .pagination-controls button:hover {
-    background-color: var(--background-table-pagination-button-hover);
+    background-color: var(--background-default-button-hover);
 }
 
 .table-container .pagination-controls select {
-    padding: 8px 16px;
-    border-radius: 4px;
+    padding: 8px;
+    border-radius: var(--border-radius-button);
 }
 
 .table-container .pagination-controls button:disabled {
-    background-color: #cccccc;
+    background-color: var(--background-default-button-disabled);
+    color: var(--color-default-button-disabled);
     cursor: not-allowed;
 }
 
 .table-container .pagination-controls span {
-    font-size: 1.5em;
+    font-size: var(--font-size-text);
 }
 
 .table-container a {
@@ -123,7 +125,6 @@
 }
 
 td.function {
-    /* background-color: var(--color-background); */
     padding: 0px;
 }
 
@@ -138,6 +139,6 @@ td.function {
     }
 
     .table-container .pagination-controls span {
-        font-size: 1.2em;
+        font-size: var(--font-size-text);
     }
 }

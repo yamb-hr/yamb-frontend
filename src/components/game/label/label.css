@@ -22,7 +22,7 @@
 }
 
 .total-sum {
-	font-size: large;
+	font-size: var(--font-size-title);
 	color: var(--color-total-sum);
 	background: var(--background-total-sum);
 	border: var(--border-total-sum);
