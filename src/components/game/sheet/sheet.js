@@ -32,7 +32,7 @@ function Sheet(props) {
         isSpectator
     } = props;
 
-    const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS";
+    const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS" || type === "CLASH";
     const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
     const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH" || status === "COMPLETED" || status === "ARCHIVED";
 
