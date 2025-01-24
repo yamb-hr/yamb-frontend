@@ -92,7 +92,7 @@ class ClashService {
     }
 
     async declineById(clash: Clash, playerId: string): Promise<Clash> {
-        const declineLink = clash._links?.accept?.href;
+        const declineLink = clash._links?.decline?.href;
         if (!declineLink) {
             throw new Error("Decline link not available for this clash");
         }
