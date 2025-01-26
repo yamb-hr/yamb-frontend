@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import { ToastProvider } from './providers/toastProvider';
 import { ErrorHandlerProvider } from './providers/errorHandlerProvider';
 import { PreferencesProvider } from './providers/preferencesProvider';
@@ -15,7 +16,26 @@ import { ActivePlayersProvider } from './providers/activePlayersProvider';
 
 export const queryClient = new QueryClient();
 
+const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
+
 function App() {
+	
+	useEffect(() => {
+        const script = document.createElement('script');
+        script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
+        script.async = true;
+
+        script.onerror = () => {
+            console.error('Failed to load reCAPTCHA script');
+        };
+
+        document.body.appendChild(script);
+
+        return () => {
+            document.body.removeChild(script);
+        };
+
+    }, [RECAPTCHA_SITE_KEY]);
 	
 	return (
 		<div className="App">
@@ -46,6 +66,7 @@ function App() {
 					</ErrorBoundary>
 				</QueryClientProvider>
 			</header>
+			<div id="recaptcha-container"></div>
 		</div>
 	);
 }

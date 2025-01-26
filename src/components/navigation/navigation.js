@@ -186,7 +186,7 @@ function Navigation() {
                         {isMenuOpen ? <span>&nbsp;&nbsp;&nbsp;{t('share')}</span> : <span className="menu-label">&nbsp;&nbsp;&nbsp;{t('share')}</span>}
                     </Link>
                     </li>
-                    {currentUser ? (
+                    {currentUser && !currentUser.guest ? (
                         <li>
                             <Link onClick={handleLogout}>
                                 <span>&#128275;</span>

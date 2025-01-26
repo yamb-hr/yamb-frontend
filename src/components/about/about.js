@@ -60,7 +60,7 @@ function About() {
             }
             setIsDataFetched(true);
         } catch (error) {
-            handleError(error);
+            console.error(error);
         } finally {
             setLoading(false);
         }
@@ -149,7 +149,7 @@ function About() {
                     )}
                     {activeTab === 'project' && (
                         <section>
-                            <p><a href="https://matej-danic.from.hr"><img src="/svg/favicon.svg" width="50"></img></a></p>
+                            <p><a href="https://matej-danic.from.hr"><img src="/favicon.svg" width="50"></img></a></p>
                             <p><strong>{t('yamb')}</strong></p>
                             <ul>    
                                 <li>{t("api-documentation")}:&nbsp;<a href="https://api.jamb.com.hr">yamb</a></li>

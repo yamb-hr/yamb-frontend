@@ -1,20 +1,26 @@
-import { useContext } from 'react';
-import { useTranslation } from 'react-i18next';
+import { useContext, useState} from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { MenuContext } from '../../../providers/menuProvider';
+import { ToastContext } from '../../../providers/toastProvider';
 import { DeviceContext } from '../../../providers/deviceProvider';
 import { CurrentUserContext } from '../../../providers/currentUserProvider';
 import { NotificationsContext } from '../../../providers/notificationsProvider';
+import playerService from '../../../services/playerService';
 import Label from '../label/label';
+import Modal from '../../modal/modal';
 import Column from '../column/column';
 import './sheet.css';
+import { ErrorHandlerContext } from '../../../providers/errorHandlerProvider';
 
 function Sheet(props) {
 
     const navigate = useNavigate();
     const { t } = useTranslation();
+    const { showSuccessToast } = useContext(ToastContext);
+    const { handleError } = useContext(ErrorHandlerContext);
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { notifications, setNotificationsModalOpen } = useContext(NotificationsContext);
     const { isMobile } = useContext(DeviceContext);
     const {
@@ -31,6 +37,9 @@ function Sheet(props) {
         isRolling,
         isSpectator
     } = props;
+
+    const [isUsernameModalOpen, setUsernameModalOpen] = useState(false);
+    const [username, setUsername] = useState(player.name);
 
     const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS" || type === "CLASH";
     const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
@@ -102,7 +111,7 @@ function Sheet(props) {
         if (columns[columnIndex].boxes[0].value && columns[columnIndex].boxes[6].value && columns[columnIndex].boxes[7].value) {
             sum = columns[columnIndex].boxes[0].value * (columns[columnIndex].boxes[6].value - columns[columnIndex].boxes[7].value);
         }
-        return sum;
+        return Math.max(0, sum);
     }
 
     function getBottomSectionSumByIndex(columnIndex) {
@@ -139,10 +148,29 @@ function Sheet(props) {
 
     function handleUsernameClick() {
         if (player.id === currentUser.id) {
-            navigate("/profile");
+            setUsernameModalOpen(true);
         } else {
             navigate("/players/" + player.id);
         }
+    }
+
+    const handleUsernameChange = (event) => {
+        setUsername(event.target.value);
+    }
+
+    const handleCloseUsernameModal = () => {
+        if (username !== currentUser.name) submitUsernameChange();
+        setUsernameModalOpen(false);
+    }
+
+    const submitUsernameChange = () => {
+        playerService.updateUsername(currentUser, username).then(data => {
+            setCurrentUser(data);
+            showSuccessToast(t('username-updated'));
+        }).catch(error => {
+            handleError(error);
+            setUsername(currentUser.name);
+        });
     }
 
     return (
@@ -214,8 +242,8 @@ function Sheet(props) {
                 </div>
             </div>
             <div className="last-row">
-                <button className="username-button" onClick={() => { handleUsernameClick() }}>
-                    {player.name}
+                <button className="username-button" onClick={handleUsernameClick}>
+                    {player.id === currentUser.id ? currentUser.name : player.name}
                 </button>
                 {/* {isSpectator && location?.pathname !== '/' && (<div className="switch-container">
                     <label className="switch">
@@ -229,6 +257,16 @@ function Sheet(props) {
                 </div>)} */}
                 <Label variant="total-sum" value={getTotalSum()}></Label>
             </div>
+            <Modal isOpen={isUsernameModalOpen} onClose={handleCloseUsernameModal}>
+                <input
+                    type="text"
+                    id="username"
+                    value={username}
+                    onChange={handleUsernameChange}
+                    className="username-input"
+                    placeholder={t("enter-username")}
+                />
+            </Modal>
         </div>
     );
 }

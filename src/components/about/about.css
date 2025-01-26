@@ -120,6 +120,7 @@
     transition: border-color 0.3s ease, box-shadow 0.3s ease;
     width: 100%;
     box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .about form input[type="text"]:focus,

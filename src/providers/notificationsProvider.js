@@ -5,6 +5,7 @@ import { StompClientContext } from './stompClientProvider';
 import { ToastContext } from './toastProvider';
 import notificationService from '../services/notificationService';
 import playerService from '../services/playerService';
+import Modal from '../components/modal/modal';
 
 export const NotificationsContext = createContext(null);
 
@@ -76,7 +77,7 @@ export const NotificationsProvider = ({ children }) => {
             handleError(error);
         });
     }
-
+    
     return (
         <NotificationsContext.Provider value={{ notifications, isNotificationsModalOpen, setNotificationsModalOpen, onMarkAsRead, onMarkAllAsRead }}>
             {children}

@@ -1,5 +1,6 @@
-import { useEffect } from 'react';
+import { useEffect, useContext} from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { NotificationsContext } from '../../providers/notificationsProvider';
 import Clash from '../clash/clash';
 import Profile from '../profile/profile';
 import Rankings from '../rankings/rankings';
@@ -26,62 +27,46 @@ import Home from '../home/home';
 import EmailVerification from '../auth/email-verification';
 import ForgotPassword from '../auth/forgot-password';
 import RequireAuth from '../auth/require-auth';
-import NotificationsModal from '../notifications/notifications-modal';
+import NotificationList from '../notification/notificationList';
+import Modal from '../modal/modal';
 
 function Yamb() {
 
-    const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
-
-	useEffect(() => {
-        const script = document.createElement('script');
-        script.src = `https://www.google.com/recaptcha/api.js?render=${RECAPTCHA_SITE_KEY}`;
-        script.async = true;
-
-        script.onerror = () => {
-            console.error('Failed to load reCAPTCHA script');
-        };
-
-        document.body.appendChild(script);
-
-        return () => {
-            document.body.removeChild(script);
-        };
-
-    }, [RECAPTCHA_SITE_KEY]);
+    const { isNotificationsModalOpen, setNotificationsModalOpen } = useContext(NotificationsContext);
 
     return (<Router>
         <Routes>
-             <Route path="/" element={<Home />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Register />} />
-                <Route path="/forgot-password" element={<ForgotPassword />} />
-                <Route path="/email-verification" element={<EmailVerification />} />
-                <Route path="/password-reset" element={<PasswordReset />} />
-                <Route path="/about" element={<About />} />
-
-                <Route element={<RequireAuth />}>
-                    <Route path="/games" element={<GameList />} />
-                    <Route path="/games/:id" element={<Game />} />
-                    <Route path="/players" element={<PlayerList />} />
-                    <Route path="/players/:id" element={<Player />} />
-                    <Route path="/scores" element={<ScoreList />} />
-                    <Route path="/scores/:id" element={<Score />} />
-                    <Route path="/clashes" element={<ClashList />} />
-                    <Route path="/clashes/:id" element={<Clash />} />
-                    <Route path="/profile" element={<Profile />} />
-                    <Route path="/rankings" element={<Rankings />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="/logout" element={<Logout />} />
-                    <Route path="/admin" element={<Admin />} />
-                    <Route path="/logs" element={<LogList />} />
-                    <Route path="/logs/:id" element={<Log />} />
-                    <Route path="/tickets" element={<TicketList />} />
-                    <Route path="/tickets/:id" element={<Ticket />} />
-                </Route>
+            <Route path="/" element={<Home />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/email-verification" element={<EmailVerification />} />
+            <Route path="/password-reset" element={<PasswordReset />} />
+            <Route path="/about" element={<About />} />
+            <Route element={<RequireAuth />}>
+                <Route path="/games" element={<GameList />} />
+                <Route path="/games/:id" element={<Game />} />
+                <Route path="/players" element={<PlayerList />} />
+                <Route path="/players/:id" element={<Player />} />
+                <Route path="/scores" element={<ScoreList />} />
+                <Route path="/scores/:id" element={<Score />} />
+                <Route path="/clashes" element={<ClashList />} />
+                <Route path="/clashes/:id" element={<Clash />} />
+                <Route path="/profile" element={<Profile />} />
+                <Route path="/rankings" element={<Rankings />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="/logout" element={<Logout />} />
+                <Route path="/admin" element={<Admin />} />
+                <Route path="/logs" element={<LogList />} />
+                <Route path="/logs/:id" element={<Log />} />
+                <Route path="/tickets" element={<TicketList />} />
+                <Route path="/tickets/:id" element={<Ticket />} />
+            </Route>
         </Routes>
         <Navigation/>
-        <NotificationsModal />
-        <div id="recaptcha-container"></div>
+        <Modal isOpen={isNotificationsModalOpen} onClose={() => setNotificationsModalOpen(false)}>
+            <NotificationList />
+        </Modal>
     </Router>)
 }
 

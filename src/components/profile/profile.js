@@ -88,7 +88,7 @@ function Profile() {
             return;
         }
 
-        if (username !== currentUser.name) {
+        if (username && username !== currentUser.name) {
             playerService.updateUsername(currentUser, username).then(data => {
                 setCurrentUser(data);
                 showSuccessToast(t('username-updated'));
@@ -119,7 +119,7 @@ function Profile() {
     const validateEmail = () => {
         const errors = {};
         const emailRegex = /\S+@\S+\.\S+/;
-        if (!email || !emailRegex.test(email)) {
+        if (email && !emailRegex.test(email)) {
             errors.email = t('email-invalid');
         }
         return errors;
@@ -144,11 +144,15 @@ function Profile() {
             });
     }
 
-    const handleCancel = () => {
+
+    const handleToggleEditing = () => {
+        if (isEditing) {
+            setUsername(currentUser.name);
+            setEmail(currentUser.email || '');
+            setErrors([]);
+        }
         setIsEditing(!isEditing);
-        setUsername(currentUser.name);
-        setEmail(currentUser.email);
-    };
+    }
 
     return (
         <div className="profile-container"> 
@@ -200,10 +204,9 @@ function Profile() {
                                 {emailVerified ? '✔' : '✖'}
                             </strong>
                         </div>
-                        
                         {errors.email && <span className="error-text">{errors.email}</span>}
                     </div>
-                    {!emailVerified && !isEditing && (
+                    {!emailVerified && !isEditing && currentUser.email && (
                         <button onClick={handleResendVerificationEmail} className="button-resend-verification-email">
                             {t('resend-verification-email')}
                         </button>
@@ -213,7 +216,7 @@ function Profile() {
                             {t('save')}
                         </button>
                     )}
-                    <button onClick={() => setIsEditing(!isEditing)} className={(isEditing ? 'cancel' : 'edit')+'-button'}>
+                    <button onClick={handleToggleEditing} className={(isEditing ? 'cancel' : 'edit')+'-button'}>
                         {isEditing ? t('cancel') : t('edit')}
                     </button>   
                 </div>

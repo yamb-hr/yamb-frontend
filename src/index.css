@@ -492,12 +492,12 @@ a:hover {
 
 @media screen and (max-width: 480px) {
   :root {
-    --width-box: 16.3vw;
-    --height-box: 4.9vh;
+    --margin-sheet: 0;
+    --width-box: calc((100vw) / 6);
     --width-dice: 16vw;
     --margin-dice: 1.5vw;
     --height-dice: var(--width-dice);
-    --margin-sheet: 5px;
+    --height-box: calc((100vh - var(--height-dice) - var(--margin-dice) * 2) / 18);
 
     --margin-register-button: 20px 0 20px 0;
     --margin-login-button: 20px 0 20px 0;

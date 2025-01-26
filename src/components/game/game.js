@@ -9,6 +9,8 @@ import { StompClientContext } from '../../providers/stompClientProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import scoreCalculator from '../../util/scoreCalculator';
 import gameService from '../../services/gameService';
+import CompletedGame from './completed/completedGame';
+import Modal from '../modal/modal';
 import Sheet from './sheet/sheet';
 import Dice from './dice/dice';
 import './game.css';
@@ -33,14 +35,16 @@ function Game(props) {
 	const [restart, setRestart] = useState(false);
 	const [diceToRoll, setDiceToRoll] = useState(DEFAULT_DICE);
 	const [isRolling, setRolling] = useState(false);
-	const [modalShowing, setModalShowing] = useState(false);
-
+	const [isModalOpen, setModalOpen] = useState(false);
+	
 	const isSpectator = currentUser?.id !== game?.player?.id;
 	const rollCount = game?.rollCount || 0;
 	const diceDisabled = isSpectator || rollCount === 0 || rollCount === 3 || game?.status !== 'IN_PROGRESS';
 
 	useEffect(() => {
-		if (game?.status === 'COMPLETED' && game?.type !== "CLASH") handleShareModal();
+		if (game?.status === 'COMPLETED' && game?.type !== "CLASH" && !isModalOpen && !isSpectator) {
+			setModalOpen(true);
+		}	
 	}, [game]);
 
 	useEffect(() => {
@@ -116,7 +120,7 @@ function Game(props) {
 		gameService.fillById(game, columnType, boxType).then(data => {
 			setGame(data);
 			if (data.status === 'COMPLETED' && data.type !== "CLASH") {
-				handleShareModal();
+				setModalOpen(true);
 			}
 		}).catch(handleError);
 	};
@@ -148,9 +152,6 @@ function Game(props) {
 		setDiceToRoll(DEFAULT_DICE);
 	};
 
-	const handleArchive = () => {
-		gameService.archiveById(game).then(() => window.location.reload()).catch(handleError);
-	};
 
 	const handleDiceClick = (index) => {
 		setDiceToRoll((prev) => prev.includes(index) ? prev.filter(dice => dice !== index) : [...prev, index]);
@@ -164,36 +165,9 @@ function Game(props) {
 			setDiceToRoll(DEFAULT_DICE);
 		}
 	};
-
-	const handleShareModal = () => {
-		if (!modalShowing && !isSpectator) {
-			setModalShowing(true);
-			showInfoToast(
-				<div>
-					<img src="/logo.png" alt="Yamb" className="share-logo" />
-					<h2>{t("congrats")}</h2>
-					<p>{t("congrats-score")}</p>
-					{game && <h2>{game.totalSum}</h2>}
-					<div className="share-button-container">
-						<button className="share-button" onClick={handleShare}>
-							<span className="icon">
-								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="19">
-									<circle cx="18" cy="5" r="3" fill="currentColor"/>
-									<circle cx="18" cy="19" r="3" fill="currentColor"/>
-									<circle cx="6" cy="12" r="3" fill="currentColor"/>
-									<line x1="18" y1="5" x2="6" y2="12" stroke="currentColor" strokeWidth="2"/>
-									<line x1="18" y1="19" x2="6" y2="12" stroke="currentColor" strokeWidth="2"/>
-								</svg>
-							</span>
-							&nbsp;{t("share-score")}
-						</button>
-					</div>
-					<hr />
-					<p>{t("want-to-try-again")}</p>
-					<button className="new-game-button" onClick={handleArchive}>{t("new-game")}</button>
-				</div>, 999999, 
-			);
-		}
+	
+	const handleArchive = () => {
+		gameService.archiveById(game).then(() => window.location.reload()).catch(handleError);
 	};
 
 	const handleShare = () => {
@@ -206,7 +180,7 @@ function Game(props) {
 		} else {
 			alert("Your browser doesn't support the Web Share API.");
 		}
-	};
+	}
 
 	return (
 		<div className="game-container">
@@ -247,6 +221,9 @@ function Game(props) {
 							onUndoFill={handleUndoFill}
 						/>
 					)}
+					<Modal isOpen={isModalOpen} onClose={() => {setModalOpen(false)}}>
+						<CompletedGame value={game.totalSum} onArchive={handleArchive} onShare={handleShare}></CompletedGame>
+					</Modal>
 				</div>
 			)}
 		</div>

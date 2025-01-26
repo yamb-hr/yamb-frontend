@@ -201,3 +201,10 @@ input:checked+.slider:before {
 .slider.round:before {
 	border-radius: 50%;
 }
+
+.username-input {
+	padding: 10px;
+	background-color: var(--background-default-input);
+	color: var(--color-default-input);
+	font-size: var(--font-size-tab);
+}

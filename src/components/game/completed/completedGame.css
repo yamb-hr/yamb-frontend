@@ -1,0 +1,65 @@
+.completed-game {
+    background-color: var(--background-default);
+    padding: 40px;
+    border-radius: var(--border-radius-window);
+}
+
+.completed-game h2 {
+    font-size: var(--font-size-title);
+}
+
+.completed-game p {
+    font-size: var(--font-size-tab);
+    margin-bottom: 10px;
+}
+
+.share-logo {
+    width: 80px;
+    height: 80px;
+}
+
+.share-button, .new-game-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius-button);
+    font-size: var(--font-size-text);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+}
+
+.share-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border: none;
+    border-radius: var(--border-radius-button);
+    font-size: var(--font-size-text);
+    background-color: var(--background-share-button);
+    color: var(--color-share-button);
+    cursor: pointer;
+    width: 100%;
+}
+
+.share-button svg {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.share-button:hover {
+    background-color: var(--background-share-button-hover);
+}
+
+.new-game-button {
+    background-color: var(--background-new-game-button);
+    color: var(--color-new-game-button);
+    width: 100%;
+}
+
+.new-game-button:hover {
+    background-color: var(--background-new-game-button-hover);
+}
