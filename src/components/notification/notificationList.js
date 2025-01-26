@@ -18,14 +18,16 @@ const NotificationsModal = () => {
     }
 
     return (
-        <div>
+        <div className="notification-list-container">
             {notifications?.length === 0 ? (
                 <p>{t("no-notifications-available")}</p>
             ) : (
                 <>
-                    <button className="mark-all-read-button" onClick={onMarkAllAsRead}>
-                    {t("mark-all-as-read")}
-                    </button>
+                    <div className="button-container">
+                        <button className="mark-all-as-read-button" onClick={onMarkAllAsRead}>
+                            {t("mark-all-as-read")}
+                        </button>
+                    </div>
                     <ul className="notification-list">
                         {notifications.map((notification, index) => (
                             <li key={index} className="notification-item">
