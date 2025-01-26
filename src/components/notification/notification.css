@@ -1,6 +1,7 @@
 .notification-list-container {
     background-color: var(--background-default);
     padding: 20px;
+    border-radius: var(--border-radius-window);
 }
 
 .notification-list {
