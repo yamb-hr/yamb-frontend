@@ -30,12 +30,13 @@ function Game(props) {
 	const { stompClient, isConnected } = useContext(StompClientContext);
 
 	const [game, setGame] = useState(null);
-	const [subscribed, setSubscribed] = useState(false);
 	const [fill, setFill] = useState(null);
+	const [glow, setGlow] = useState(false);
 	const [restart, setRestart] = useState(false);
-	const [diceToRoll, setDiceToRoll] = useState(DEFAULT_DICE);
 	const [isRolling, setRolling] = useState(false);
+	const [subscribed, setSubscribed] = useState(false);
 	const [isModalOpen, setModalOpen] = useState(false);
+	const [diceToRoll, setDiceToRoll] = useState(DEFAULT_DICE);
 	
 	const isSpectator = currentUser?.id !== game?.player?.id;
 	const rollCount = game?.rollCount || 0;
@@ -91,10 +92,18 @@ function Game(props) {
 	const onGameUpdate = (message) => {
 		const body = JSON.parse(message.body);
 		let updatedGame = body.payload;
+		console.log("updatedGame", updatedGame);
 		setGame(updatedGame);
-		if (updatedGame.lastAction === 'ROLL') {
-			setDiceToRoll(updatedGame.latestDiceRolled);
-            initiateRollAnimation();
+		if (updatedGame.lastAction === "ROLL") {
+			// setDiceToRoll(updatedGame.latestDiceRolled);
+            // initiateRollAnimation();
+		} else if (updatedGame.lastAction === "FILL") {
+			if (updatedGame.latestColumnFilled && updatedGame.latestBoxFilled) {
+				setGlow(true);
+				setTimeout(() => {
+				  	setGlow(false);
+				}, 1500);
+			}
 		}
     };
 
@@ -223,6 +232,7 @@ function Game(props) {
 							isRolling={isRolling}
 							isSpectator={isSpectator}
 							suggestion={props.suggestion}
+							glow={glow}
 							onRoll={handleRoll}
 							onRestart={showRestartPrompt}
 							onBoxClick={handleBoxClick}

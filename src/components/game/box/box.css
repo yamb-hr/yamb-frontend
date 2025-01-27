@@ -1,15 +1,16 @@
 .box {
     color: var(--color-box);
     background: var(--background-box);
+    border-radius: var(--radius-border-box);
     border-color: var(--color-border-box);
     border-style: var(--style-border-box);
     border-width: var(--width-border-box);
     width: var(--width-box);
     height: var(--height-box);
-    border-radius: var(--radius-border-box);
 }
 
 .box:disabled {
+    border: none;
     border-color: var(--color-border-box-disabled);
     border-style: var(--style-border-box-disabled);
     border-width: var(--width-border-box-disabled);
@@ -21,10 +22,6 @@
     border-width: var(--width-border-box-alt) !important;
 }
 
-.box:enabled {
-    background-color: var(box-)
-}
-
 .box:hover:enabled {
     background-color: var(--background-box-hover);
 }
@@ -32,4 +29,30 @@
 .box:disabled {
     border-radius: 0px;
     border-style: dashed;
+}
+
+.glow {
+    z-index: 1;
+    animation: glow-animation 2s ease-in-out;
+}
+  
+@keyframes glow-animation {
+    0% {
+        box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+    }
+    20% {
+        box-shadow: 0 0 20px rgba(255, 255, 0, 1);
+    }
+    40% {
+        box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+    }
+    60% {
+        box-shadow: 0 0 20px rgba(255, 255, 0, 1);
+    }
+    80% {
+        box-shadow: 0 0 10px rgba(255, 255, 0, 0.5);
+    }
+    100% {
+        box-shadow: 0 0 20px rgba(255, 255, 0, 1);
+    }
 }

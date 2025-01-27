@@ -15,7 +15,9 @@ function Column(props) {
         isSpectator,
         topSectionSum,
         middleSectionSum,
-        bottomSectionSum
+        bottomSectionSum,
+        glow,
+        latestBoxFilled
     } = props;
 
     const handleBoxClick = (boxType) => {
@@ -56,6 +58,7 @@ function Column(props) {
                     value={box.value}
                     columnType={type}
                     announcement={announcement}
+                    glow={glow && (box.type === latestBoxFilled)}
                     disabled={isSpectator || isBoxDisabled(box)}
                     onClick={handleBoxClick}>
                 </Box>

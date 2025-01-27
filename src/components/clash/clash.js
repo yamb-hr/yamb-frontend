@@ -110,7 +110,7 @@ function Clash() {
         const reactionWithId = {
             id: Date.now(),
             reaction,
-            left: Math.random() * 80 + 10
+            left: Math.random() * 60 + 20
         };
     
         setReactions((prevReactions) => [...prevReactions, reactionWithId]);
@@ -250,7 +250,7 @@ function Clash() {
                                         {clash.status === "PENDING" && player.id !== currentUser.id && player.status !== "ACCEPTED" && clash.players.length > 2 && clash.owner.id === currentUser.id && <button className="remove-button-single" onClick={() => handleRemovePlayer(player.id)}>
                                             <span className="icon">&#10060;</span>
                                         </button>}
-                                        {clash.status === "COMPLETED" && clash.winner?.id === player.id && <div className="crown-badge" >
+                                        {clash.status === "PENDING" && clash.winner?.id === player.id && <div className="crown-badge" >
                                             <span className="icon">&#128081;</span>
                                         </div>}
                                         <PlayerIcon key={player.id} player={player} selectable={false} offline={!activePlayers.find((activePlayer) => activePlayer.id === player.id)} />

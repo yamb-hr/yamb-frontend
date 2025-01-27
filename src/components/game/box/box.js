@@ -14,7 +14,7 @@ function Box(props) {
     };
 
     const value = props.value;
-    const boxClass = "box " + (props.columnType === "ANNOUNCEMENT" && props.type === props.announcement ? "announcement" : "");
+    const boxClass = "box " + (props.columnType === "ANNOUNCEMENT" && props.type === props.announcement ? " announcement" : "") + (props.glow ? " glow" : "");
     const disabled = props.disabled || isDisabled;
 
     return (

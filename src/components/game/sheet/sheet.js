@@ -35,7 +35,8 @@ function Sheet(props) {
         type,
         // subscribed,
         isRolling,
-        isSpectator
+        isSpectator,
+        glow
     } = props;
 
     const [username, setUsername] = useState(player.name);
@@ -44,7 +45,7 @@ function Sheet(props) {
 
     const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS" || type === "CLASH";
     const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
-    const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH" || status === "COMPLETED" || status === "ARCHIVED";
+    // const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH" || status === "COMPLETED" || status === "ARCHIVED";
 
     function handleRoll() {
         props.onRoll();
@@ -200,23 +201,23 @@ function Sheet(props) {
                         <span className="icon">&#9776;</span>
                     </button> : <div></div>
                 }
-                <Label icon="ones" info={t('ones')} value="ones" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label icon="twos" info={t('twos')} value="twos" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label icon="threes" info={t('threes')} value="threes" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label icon="fours" info={t('fours')} value="fours" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label icon="fives" info={t('fives')} value="fives" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label icon="sixes" info={t('sixes')} value="sixes" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label icon="ones" info={t('ones')} value="ones" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label icon="twos" info={t('twos')} value="twos" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label icon="threes" info={t('threes')} value="threes" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label icon="fours" info={t('fours')} value="fours" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label icon="fives" info={t('fives')} value="fives" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label icon="sixes" info={t('sixes')} value="sixes" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
                 <Label variant="sum" value="Σ (1, 6)" info={t('top-section-sum')}></Label>
                 {/* MID SECTION */}
-                <Label value="max" info={t("sum-of-all-dice")} suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label value="min" info={t("sum-of-all-dice")} suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label value="max" info={t("sum-of-all-dice")} suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label value="min" info={t("sum-of-all-dice")} suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
                 <Label variant="sum" value="∆ x 1s" info={t('middle-section-sum')}></Label>
                 {/* BOTTOM SECTION */}
-                <Label info={t('trips-info')} value="trips" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label info={t('straight-info')} value="straight" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label info={t('boat-info')} value="boat" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label info={t('carriage-info')} value="carriage" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
-                <Label info={t('yamb-info')} value="yamb" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label info={t('trips-info')} value="trips" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label info={t('straight-info')} value="straight" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label info={t('boat-info')} value="boat" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label info={t('carriage-info')} value="carriage" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
+                <Label info={t('yamb-info')} value="yamb" suggestion={props.suggestion} onClick={handleSendSuggestion}></Label>
                 <Label variant="sum" value="Σ (T, J)" info={t('bottom-section-sum')}></Label>
             </div>
             {columns && columns.map((column, index) => (
@@ -227,6 +228,8 @@ function Sheet(props) {
                         rollCount={rollCount}
                         announcement={announcement}
                         isSpectator={isSpectator}
+                        latestBoxFilled={latestBoxFilled}
+                        glow={glow && (column.type === latestColumnFilled)}
                         topSectionSum={getTopSectionSumByIndex(index)}
                         middleSectionSum={getMiddleSectionSumByIndex(index)}
                         bottomSectionSum={getBottomSectionSumByIndex(index)}
@@ -251,11 +254,11 @@ function Sheet(props) {
                 </div>
                 <div className="middle-section-corner">
                     {type === "CLASH" ? 
-                        <button className="undo-button" onClick={() => handleSendReaction("?")} disabled={reactionCooldown}>
-                            ?
+                        <button className="undo-button" onClick={() => handleSendReaction("&#10067;")}>
+                            &#10067;
                         </button>
                         :
-                        <button className="undo-button" onClick={handleUndoFill} disabled={undoDisabled}>
+                        <button className="undo-button" onClick={handleUndoFill}>
                             &#9100;
                         </button>
                     }     
@@ -267,9 +270,9 @@ function Sheet(props) {
                 <div className="bottom-section-corner">
                     {type ==="CLASH" ? 
                         <div className="reaction-buttons">
-                            <button className="reaction-button" onClick={() => handleSendReaction("&#127881;")} disabled={reactionCooldown}>&#127881;</button>
-                            <button className="reaction-button" onClick={() => handleSendReaction("&#128079;")} disabled={reactionCooldown}>&#128079;</button>
-                            <button className="reaction-button" onClick={() => handleSendReaction("&#128147;")} disabled={reactionCooldown}>&#128147;</button>
+                            <button className="reaction-button" onClick={() => handleSendReaction("&#127881;")}>&#127881;</button>
+                            <button className="reaction-button" onClick={() => handleSendReaction("&#127808;")}>&#127808;</button>
+                            <button className="reaction-button" onClick={() => handleSendReaction("&#127931;")}>&#127931;</button>
                         </div>
                         :
                         <button className="restart-button" onClick={handleRestart} disabled={restartButtonDisabled}>

@@ -120,7 +120,7 @@
 .crown-badge {
     position: absolute;
     top: -35px;
-    left: 50%;
+    left: 13px;
     background: none;
     border: none;
     font-size: 40px;
@@ -200,6 +200,7 @@
     bottom: 0;
     width: 100%;
     pointer-events: none;
+    z-index: 1;
 }
 
 .reaction-item {
