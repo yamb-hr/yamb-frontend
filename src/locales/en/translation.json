@@ -65,6 +65,7 @@
     "top-section-sum": "Sum of ones to sixes + 30 for 60 or more",
     "max": "MAX",
     "min": "MIN",
+    "sum-of-all-dice": "Sum of all dice",
     "middle-section-sum": "(MAX - MIN) x ones",    
     "trips": "Trips",
     "trips-info": "Three matching dice + 10",

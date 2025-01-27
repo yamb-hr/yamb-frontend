@@ -199,13 +199,13 @@
     position: fixed;
     bottom: 0;
     width: 100%;
-    pointer-events: none; /* Disable interaction */
+    pointer-events: none;
 }
 
 .reaction-item {
     position: absolute;
     bottom: 0;
-    font-size: 2rem; /* Adjust size for better visibility */
+    font-size: 2rem;
     animation: floatUp 3s ease-out forwards, fadeOut 3s ease-out forwards;
 }
 

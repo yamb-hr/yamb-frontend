@@ -66,6 +66,7 @@
     "top-section-sum": "Zbroj od jedinica do šestica + 30 za 60 ili više",
     "max": "MAX",
     "min": "MIN",
+    "sum-of-all-dice": "Zbroj svih kockica",
     "middle-section-sum": "(MAX - MIN) x broj jedinica",    
     "trips": "Tris",
     "trips-info": "Tri iste kockice + 10",

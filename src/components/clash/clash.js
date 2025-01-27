@@ -188,10 +188,10 @@ function Clash() {
                 {reactions && 
                     <div className="reaction-list">
                         {reactions.map(({ id, reaction, left }, index) => (
-                            <div
+                            <div 
                                 key={id}
                                 className="reaction-item"
-                                style={{ left: `${left}%` }} // Set random horizontal position
+                                style={{ left: `${left}%` }}
                             >
                                 {reaction}
                             </div>
