@@ -38,8 +38,9 @@ function Sheet(props) {
         isSpectator
     } = props;
 
-    const [isUsernameModalOpen, setUsernameModalOpen] = useState(false);
     const [username, setUsername] = useState(player.name);
+    const [isUsernameModalOpen, setUsernameModalOpen] = useState(false);
+    const [reactionCooldown, setReactionCooldown] = useState(false);
 
     const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS" || type === "CLASH";
     const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
@@ -173,6 +174,24 @@ function Sheet(props) {
         });
     }
 
+    const handleSendReaction = (reaction) => {
+        if (reactionCooldown) return;
+        props.onSendReaction(reaction);
+        setReactionCooldown(true);
+        setTimeout(() => {
+            setReactionCooldown(false);
+        }, 3000);
+    };
+
+    const handleSendSuggestion = (suggestion) => {
+        if (reactionCooldown) return;
+        props.onSendSuggestion(suggestion);
+        setReactionCooldown(true);
+        setTimeout(() => {
+            setReactionCooldown(false);
+        }, 3000);
+    };
+
     return (
         <div className="sheet">
             <div className="column">
@@ -181,23 +200,23 @@ function Sheet(props) {
                         <span className="icon">&#9776;</span>
                     </button> : <div></div>
                 }
-                <Label icon="ones" info={t('ones')}></Label>
-                <Label icon="twos" info={t('twos')}></Label>
-                <Label icon="threes" info={t('threes')}></Label>
-                <Label icon="fours" info={t('fours')}></Label>
-                <Label icon="fives" info={t('fives')}></Label>
-                <Label icon="sixes" info={t('sixes')}></Label>
+                <Label icon="ones" info={t('ones')} value="ones" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label icon="twos" info={t('twos')} value="twos" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label icon="threes" info={t('threes')} value="threes" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label icon="fours" info={t('fours')} value="fours" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label icon="fives" info={t('fives')} value="fives" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label icon="sixes" info={t('sixes')} value="sixes" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
                 <Label variant="sum" value="Σ (1, 6)" info={t('top-section-sum')}></Label>
                 {/* MID SECTION */}
-                <Label value={t('max')} info="Zbroj svih kockica"></Label>
-                <Label value={t('min')} info="Zbroj svih kockica"></Label>
+                <Label value="max" info={t("sum-of-all-dice")} suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label value="min" info={t("sum-of-all-dice")} suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
                 <Label variant="sum" value="∆ x 1s" info={t('middle-section-sum')}></Label>
                 {/* BOTTOM SECTION */}
-                <Label value={t('trips')} info={t('trips-info')}></Label>
-                <Label value={t('straight')} info={t('straight-info')}></Label>
-                <Label value={t('boat')} info={t('boat-info')}></Label>
-                <Label value={t('carriage')} info={t('carriage-info')}></Label>
-                <Label value={t('yamb')} info={t('yamb-info')}></Label>
+                <Label info={t('trips-info')} value="trips" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label info={t('straight-info')} value="straight" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label info={t('boat-info')} value="boat" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label info={t('carriage-info')} value="carriage" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
+                <Label info={t('yamb-info')} value="yamb" suggestion={props.suggestion} onClick={handleSendSuggestion} disabled={reactionCooldown}></Label>
                 <Label variant="sum" value="Σ (T, J)" info={t('bottom-section-sum')}></Label>
             </div>
             {columns && columns.map((column, index) => (
@@ -216,7 +235,7 @@ function Sheet(props) {
                 </div>
             ))}
             <div className="column">
-                <button className="notification-button" onClick={() => setNotificationsModalOpen(true)}>
+                <button className="notification-button" onClick={() => setNotificationsModalOpen(true)} disabled={!notifications.length}>
                     <span className="icon">&#128276;</span>
                     {notifications?.length > 0 && (
                         <span className="notification-badge">
@@ -230,13 +249,35 @@ function Sheet(props) {
                 <div className="top-section-sum">
                     <Label variant="sum" value={getTopSectionSum()}></Label>
                 </div>
-                <button className="undo-button" onClick={handleUndoFill} disabled={undoDisabled}>&#9100;</button>
+                <div className="middle-section-corner">
+                    {type === "CLASH" ? 
+                        <button className="undo-button" onClick={() => handleSendReaction("?")} disabled={reactionCooldown}>
+                            ?
+                        </button>
+                        :
+                        <button className="undo-button" onClick={handleUndoFill} disabled={undoDisabled}>
+                            &#9100;
+                        </button>
+                    }     
+                </div>
+                
                 <div className="middle-section-sum">
                     <Label variant="sum" value={getMiddleSectionSum()}></Label>
                 </div>
-                <button className="restart-button" onClick={handleRestart} disabled={restartButtonDisabled}>
-                    <img src={"../svg/buttons/restart.svg"} alt="Restart"></img>
-                </button>
+                <div className="bottom-section-corner">
+                    {type ==="CLASH" ? 
+                        <div className="reaction-buttons">
+                            <button className="reaction-button" onClick={() => handleSendReaction("&#127881;")} disabled={reactionCooldown}>&#127881;</button>
+                            <button className="reaction-button" onClick={() => handleSendReaction("&#128079;")} disabled={reactionCooldown}>&#128079;</button>
+                            <button className="reaction-button" onClick={() => handleSendReaction("&#128147;")} disabled={reactionCooldown}>&#128147;</button>
+                        </div>
+                        :
+                        <button className="restart-button" onClick={handleRestart} disabled={restartButtonDisabled}>
+                            <img src={"../svg/buttons/restart.svg"} alt="Restart"></img>
+                        </button>
+                    }      
+                </div>
+                          
                 <div className="bottom-section-sum">
                     <Label variant="sum" value={getBottomSectionSum()}></Label>
                 </div>

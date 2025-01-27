@@ -110,7 +110,7 @@ function Navigation() {
                 <div className="top-bar">
                     <ul>
                         <li>
-                            <input type="text" className="search" placeholder="&#128269; Search.." />
+                            <input type="text" className="search" placeholder="&#128269; Search.." disabled={true} />
                         </li>
                         <li>{languageButton}</li>
                         <li>{themeButton}</li>
@@ -125,7 +125,7 @@ function Navigation() {
                     </div>
                     {isMobile && (
                         <li>
-                            <input type="text" className="search" placeholder="&#128269; Search.." />
+                            <input type="text" className="search" placeholder="&#128269; Search.." disabled={true} />
                         </li>
                     )}
                     <li>
@@ -212,7 +212,7 @@ function Navigation() {
                     </button>
                 )}
                 {isMobile && !inGame && (
-                    <button className="notification-button" onClick={() => setNotificationsModalOpen(true)}>
+                    <button className="notification-button" onClick={() => setNotificationsModalOpen(true)} disabled={!notifications.length}>
                         <span className="icon">&#128276;</span>
                         {notifications?.length > 0 && (
                             <span className="notification-badge">

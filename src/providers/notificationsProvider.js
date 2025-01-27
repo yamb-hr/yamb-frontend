@@ -5,7 +5,6 @@ import { StompClientContext } from './stompClientProvider';
 import { ToastContext } from './toastProvider';
 import notificationService from '../services/notificationService';
 import playerService from '../services/playerService';
-import Modal from '../components/modal/modal';
 
 export const NotificationsContext = createContext(null);
 

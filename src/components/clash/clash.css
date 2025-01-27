@@ -99,7 +99,17 @@
 
 .accepted-badge {
     position: absolute;
-    top: 0;
+    bottom: 10px;
+    right: 5px;
+    background: none;
+    border: none;
+    font-size: var(--font-size-title);
+    color: var(--background-save-button);
+}
+
+.declined-badge {
+    position: absolute;
+    bottom: 10px;
     right: 0;
     background: none;
     border: none;
@@ -110,7 +120,7 @@
 .crown-badge {
     position: absolute;
     top: -35px;
-    left: 13px;
+    left: 50%;
     background: none;
     border: none;
     font-size: 40px;
@@ -183,6 +193,41 @@
 .remove-button-single:hover:enabled {
     cursor: pointer;
     font-size: 16px;
+}
+
+.reaction-list {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    pointer-events: none; /* Disable interaction */
+}
+
+.reaction-item {
+    position: absolute;
+    bottom: 0;
+    font-size: 2rem; /* Adjust size for better visibility */
+    animation: floatUp 3s ease-out forwards, fadeOut 3s ease-out forwards;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0);
+    }
+    80% {
+        transform: translateY(-150px); /* Adjust this for how far up the reaction goes */
+    }
+    100% {
+        transform: translateY(-150px); /* End position */
+    }
+}
+
+@keyframes fadeOut {
+    0% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }
 
 @media (max-width: 480px) {

@@ -30,7 +30,7 @@ export const ActivePlayersProvider = ({ children }) => {
 
     const onPlayerStatusChanged = (message) => {
 		const body = JSON.parse(message.body);
-        const updatedActivePlayers = body.payload.content;
+        const updatedActivePlayers = body?.payload?.content || [];
 		setActivePlayers(updatedActivePlayers);
 	}
 

@@ -4,9 +4,9 @@
     justify-content: center;
     color: var(--color-label);
     background: var(--background-label);
-    border: var(--border-label);
+    border: none;
 	border-radius: var(--border-radius-label);
-	width: var(--width-label);
+	width: 100%;
 	height: var(--height-label);
 }
 
@@ -52,4 +52,36 @@
 
 .label:hover + .tooltip {
     visibility: visible;
+}
+
+.suggestion {
+    animation: blink 0.5s infinite;
+}
+
+@keyframes blink {
+    0% {
+        color: var(--color-red);
+    }
+    50% {
+        color: var(--color-label);
+    }
+    100% {
+        color: var(--color-red);
+    }
+}
+
+.suggestion img {
+    animation: blink-icon 0.5s infinite;
+}
+
+@keyframes blink-icon {
+    0% {
+        filter: var(--filter-red);    
+    }
+    50% {
+        filter: var(--filter-label);    
+    }
+    100% {
+        filter: var(--filter-red);    
+    }
 }

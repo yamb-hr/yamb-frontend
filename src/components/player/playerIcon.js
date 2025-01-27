@@ -55,7 +55,8 @@ function PlayerIcon({ player, offline = false, selectable = false, selected = fa
 						className={
 							"avatar " +
 							(player.status?.toLowerCase() || "") +
-							(selected ? " selected" : "") +
+							(selectable && selected ? " selected" : "") +
+							(selectable && !selected ? " not-selected" : "") +
 							(offline ? " offline" : "")
 						}
 					/>

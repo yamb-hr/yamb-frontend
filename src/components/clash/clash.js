@@ -21,9 +21,11 @@ function Clash() {
     const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
     const { activePlayers } = useContext(ActivePlayersContext);
-    const { stompClient, isConnected } = useContext(StompClientContext);
+    const { stompClient, isConnected } = useContext(StompClientContext);   
 
-    const [clash, setClash] = useState(null);
+    const [clash, setClash] = useState(null); 
+    const [reactions, setReactions] = useState([]);
+    const [suggestion, setSuggestion] = useState(null);
     const [subscribed, setSubscribed] = useState(false);
     const [playersToAdd, setPlayersToAdd] = useState([]);
 
@@ -42,10 +44,48 @@ function Clash() {
 
     useEffect(() => {
         if (id && stompClient && isConnected && subscribed) {
-            const subscription = stompClient.subscribe(`/topic/clashes/${id}`, onClashUpdate);
+            const subscription = stompClient.subscribe(`/topic/clashes/${id}`, handleClashMessage);
             return () => subscription.unsubscribe();
         }
     }, [id, stompClient, isConnected, subscribed]);
+
+    const handleClashMessage = (message) => {
+        if (message.headers.messageType === "UPDATE") {
+            onClashUpdate(message);
+        } else if (message.headers.messageType === "REACTION") {
+            onReaction(message);
+        } else if (message.headers.messageType === "SUGGESTION") {
+            onSuggestion(message);
+        }
+    }
+
+    const handleSendReaction = (reaction) => {
+        if (stompClient && isConnected) {
+            try {
+                stompClient.publish({
+                    destination: `/app/clashes/${id}/reaction`,
+                    headers: {},
+                    body: reaction
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
+
+    const handleSendSuggestion = (suggestion) => {
+        if (stompClient && isConnected) {
+            try {
+                stompClient.publish({
+                    destination: `/app/clashes/${id}/suggestion`,
+                    headers: {},
+                    body: suggestion
+                });
+            } catch (error) {
+                console.error(error);
+            }
+        }
+    }
 
     const onClashUpdate = (message) => {
 		const body = JSON.parse(message.body);
@@ -55,6 +95,40 @@ function Clash() {
             console.log("updatedClash", updatedClash);
             setClash(updatedClash);
         }, 1500);
+    };
+
+    const decodeHtmlEntity = (entity) => {
+        const textarea = document.createElement("textarea");
+        textarea.innerHTML = entity;
+        return textarea.value;
+    };    
+
+    const onReaction = (message) => {
+        const body = JSON.parse(message.body);
+        const reaction = decodeHtmlEntity(body.payload);
+    
+        const reactionWithId = {
+            id: Date.now(),
+            reaction,
+            left: Math.random() * 80 + 10
+        };
+    
+        setReactions((prevReactions) => [...prevReactions, reactionWithId]);
+    
+        setTimeout(() => {
+            setReactions((prevReactions) => prevReactions.filter((r) => r.id !== reactionWithId.id));
+        }, 3000);
+    };
+
+    const onSuggestion = (message) => {
+        const body = JSON.parse(message.body);
+        const suggestion = body.payload;
+
+        setSuggestion(suggestion);
+    
+        setTimeout(() => {
+            setSuggestion(null);
+        }, 2000);
     };
 
     const handleDelete = async () => {
@@ -75,7 +149,7 @@ function Clash() {
 
     const handleDecline = async () => {
         clashService.declineById(clash, currentUser.id).then(data => {
-            setClash(data);
+            navigate('/clashes');
         }).catch(error => {
             handleError(error);
         });
@@ -110,7 +184,22 @@ function Clash() {
 
     if (clash?.status === 'IN_PROGRESS') {
         return (
-            <Game id={clash?.players[clash?.turn]?.gameId}/>
+            <>
+                {reactions && 
+                    <div className="reaction-list">
+                        {reactions.map(({ id, reaction, left }, index) => (
+                            <div
+                                key={id}
+                                className="reaction-item"
+                                style={{ left: `${left}%` }} // Set random horizontal position
+                            >
+                                {reaction}
+                            </div>
+                        ))}
+                    </div>
+                }
+                <Game id={clash?.players[clash?.turn]?.gameId} onSendReaction={handleSendReaction} onSendSuggestion={handleSendSuggestion} suggestion={suggestion} />
+            </>
         );
     }
 
@@ -161,9 +250,6 @@ function Clash() {
                                         {clash.status === "PENDING" && player.id !== currentUser.id && player.status !== "ACCEPTED" && clash.players.length > 2 && clash.owner.id === currentUser.id && <button className="remove-button-single" onClick={() => handleRemovePlayer(player.id)}>
                                             <span className="icon">&#10060;</span>
                                         </button>}
-                                        {clash.status === "PENDING" && player.status === "ACCEPTED" && <div className="accepted-badge" >
-                                            <span className="icon">&#10004;</span>
-                                        </div>}
                                         {clash.status === "COMPLETED" && clash.winner?.id === player.id && <div className="crown-badge" >
                                             <span className="icon">&#128081;</span>
                                         </div>}

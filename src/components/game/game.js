@@ -182,6 +182,14 @@ function Game(props) {
 		}
 	}
 
+	const handleSendReaction = (reaction) => {
+		props.onSendReaction(reaction)
+	}
+
+	const handleSendSuggestion = (suggestion) => {
+		props.onSendSuggestion(suggestion)
+	}
+
 	return (
 		<div className="game-container">
 			{game && (
@@ -214,11 +222,14 @@ function Game(props) {
 							subscribed={subscribed}
 							isRolling={isRolling}
 							isSpectator={isSpectator}
+							suggestion={props.suggestion}
 							onRoll={handleRoll}
 							onRestart={showRestartPrompt}
 							onBoxClick={handleBoxClick}
 							onSubscribe={handleSubscribe}
 							onUndoFill={handleUndoFill}
+							onSendReaction={handleSendReaction}
+							onSendSuggestion={handleSendSuggestion}
 						/>
 					)}
 					<Modal isOpen={isModalOpen} onClose={() => {setModalOpen(false)}}>

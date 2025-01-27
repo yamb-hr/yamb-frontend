@@ -1,18 +1,23 @@
 .notification-list-container {
     background-color: var(--background-default);
     padding: 20px;
-    border-radius: var(--border-radius-window);
+    border-radius: var(--border-radius-window);    
+    font-size: var(--font-size-text);
+    color: var(--color-default);
 }
 
 .notification-list {
     list-style: none;
     max-height: 300px;
     overflow-y: auto;
+    margin: 0;
+    padding: 0;
 }
   
 .notification-item {
     border-bottom: 1px solid #ccc;
-    font-size: var(--font-size-text);
+    margin: 10px;
+    width: 300px;
 }
   
 .notification-item:last-child {
@@ -25,9 +30,6 @@
 
 .mark-as-read-button,
 .mark-all-as-read-button {
-    padding: 10px;
-    background-color: var(--background-default-button);
-    color: var(--color-default-button);
     display: inline-block;
     border: none;
     border-radius: var(--border-radius-button);
@@ -35,10 +37,18 @@
     cursor: pointer;
 }
 
+.mark-all-as-read-button {
+    background-color: var(--background-default-button);
+    color: var(--color-default-button);
+    padding: 10px;
+}
+
 .mark-as-read-button {
     background-color: var(--background-delete-button);
     color: var(--color-delete-button);
+    margin: 5px;
     margin-left: 10px;
+    padding: 5px 10px;
 }
 
 .mark-as-read-button:hover {
