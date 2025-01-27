@@ -207,6 +207,7 @@
     bottom: 0;
     font-size: 2rem;
     animation: floatUp 3s ease-out forwards, fadeOut 3s ease-out forwards;
+    color: var(--color-default);
 }
 
 @keyframes floatUp {
@@ -214,10 +215,10 @@
         transform: translateY(0);
     }
     80% {
-        transform: translateY(-150px); /* Adjust this for how far up the reaction goes */
+        transform: translateY(-150px);
     }
     100% {
-        transform: translateY(-150px); /* End position */
+        transform: translateY(-150px);
     }
 }
 
