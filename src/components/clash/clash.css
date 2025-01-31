@@ -154,9 +154,7 @@
 .clash-name-input {
     padding: 10px;
     font-size: var(--font-size-text);
-    border: 1px solid #ccc;
     border-radius: var(--border-radius-button);
-    flex-grow: 1;
 }
 
 .create-clash-button {
@@ -245,11 +243,20 @@
     }
 
     .create-clash-container {
-        flex-direction: column;
-        align-items: stretch;
+        padding: 0 20px;
+        margin: 0;
+    }
+
+    .create-clash-button {
+        width: 100%;
+        margin: 0;
     }
 
     .clash-name-input {
-        margin-bottom: 10px;
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-sizing: border-box;
     }
+
 }

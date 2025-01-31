@@ -242,7 +242,7 @@ function Game(props) {
 							onSendSuggestion={handleSendSuggestion}
 						/>
 					)}
-					<Modal isOpen={true} onClose={() => {setModalOpen(false)}}>
+					<Modal isOpen={isModalOpen} onClose={() => {setModalOpen(false)}}>
 						<CompletedGame value={game.totalSum} onArchive={handleArchive} onShare={handleShare}></CompletedGame>
 					</Modal>
 				</div>

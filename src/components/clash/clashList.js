@@ -6,11 +6,11 @@ import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { ActivePlayersContext } from '../../providers/activePlayersProvider'
 import playerService from '../../services/playerService';
 import clashService from '../../services/clashService';
+import Collapsible from '../collapsible/collapsible';
 import PlayerIcon from '../player/playerIcon';
 import Spinner from '../spinner/spinner';
 import Table from '../table/table';
 import './clash.css';
-import Collapsible from '../collapsible/collapsible';
 
 function ClashList() {
 
