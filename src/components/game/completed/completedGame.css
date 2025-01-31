@@ -2,6 +2,7 @@
     background-color: var(--background-default);
     padding: 40px;
     border-radius: var(--border-radius-window);
+    color: var(--color-default);
 }
 
 .completed-game h2 {

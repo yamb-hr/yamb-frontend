@@ -254,8 +254,8 @@ function Sheet(props) {
                 </div>
                 <div className="middle-section-corner">
                     {type === "CLASH" ? 
-                        <button className="undo-button" onClick={() => handleSendReaction("&#10067;")}>
-                            &#10067;
+                        <button className="undo-button" onClick={() => handleSendReaction("❓")}>
+                            ❓
                         </button>
                         :
                         <button className="undo-button" onClick={handleUndoFill}>
@@ -270,9 +270,9 @@ function Sheet(props) {
                 <div className="bottom-section-corner">
                     {type ==="CLASH" ? 
                         <div className="reaction-buttons">
-                            <button className="reaction-button" onClick={() => handleSendReaction("&#127881;")}>&#127881;</button>
-                            <button className="reaction-button" onClick={() => handleSendReaction("&#127808;")}>&#127808;</button>
-                            <button className="reaction-button" onClick={() => handleSendReaction("&#127931;")}>&#127931;</button>
+                            <button className="reaction-button" onClick={() => handleSendReaction("🎉")}>🎉</button>
+                            <button className="reaction-button" onClick={() => handleSendReaction("🍀")}>🍀</button>
+                            <button className="reaction-button" onClick={() => handleSendReaction("🎻")}>🎻</button>
                         </div>
                         :
                         <button className="restart-button" onClick={handleRestart} disabled={restartButtonDisabled}>

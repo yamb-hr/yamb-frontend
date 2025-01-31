@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import DOMPurify from 'dompurify';
 import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { StompClientContext } from '../../providers/stompClientProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
@@ -97,24 +98,18 @@ function Clash() {
         }, 1500);
     };
 
-    const decodeHtmlEntity = (entity) => {
-        const textarea = document.createElement("textarea");
-        textarea.innerHTML = entity;
-        return textarea.value;
-    };    
-
     const onReaction = (message) => {
         const body = JSON.parse(message.body);
-        const reaction = decodeHtmlEntity(body.payload);
+        const sanitizedReaction = DOMPurify.sanitize(body.payload);
     
         const reactionWithId = {
             id: Date.now(),
-            reaction,
+            reaction: sanitizedReaction,
             left: Math.random() * 60 + 20
         };
     
         setReactions((prevReactions) => [...prevReactions, reactionWithId]);
-    
+
         setTimeout(() => {
             setReactions((prevReactions) => prevReactions.filter((r) => r.id !== reactionWithId.id));
         }, 3000);
