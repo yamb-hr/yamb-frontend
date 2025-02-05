@@ -1,51 +1,25 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosResponse } from 'axios';
 import { Game, GameCollection } from '../types/Game';
-import authService from './authService';
+import axiosInstance from './httpClient';
 
-const API_BASE_URL = `${process.env.REACT_APP_API_URL}/games`;
+const ENDPOINT_PREFIX = "/games";
 
 class GameService {
 
-    private axiosInstance: AxiosInstance;
     public name: string;
 
     constructor() {
         this.name = 'GameService';
-        this.axiosInstance = axios.create({
-            baseURL: API_BASE_URL,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        this.axiosInstance.interceptors.request.use(
-            (config: InternalAxiosRequestConfig) => {
-                if (config.headers) {
-                    const language = localStorage.getItem('i18nextLng');
-                    if (language) {
-                        config.headers['Accept-Language'] = language;
-                    }
-                    const token = authService.getAccessToken();
-                    if (token) {
-                        config.headers['Authorization'] = `Bearer ${token}`;
-                    }
-                }
-                return config;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
     }
 
     async getById(gameId: string): Promise<Game> {
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.get(`/${gameId}`);
+        const { data }: AxiosResponse<Game> = await axiosInstance.get(`${ENDPOINT_PREFIX}/${gameId}`);
         console.log("GameService.getById", data);
         return data;
     }
 
     async getAll(page = 0, size = 10, sort = 'updatedAt', order: 'ASC' | 'DESC' = 'DESC'): Promise<GameCollection> {
-        const { data }: AxiosResponse<GameCollection> = await this.axiosInstance.get('/', {
+        const { data }: AxiosResponse<GameCollection> = await axiosInstance.get(`${ENDPOINT_PREFIX}/`, {
             params: {
                 page,
                 size,
@@ -59,14 +33,9 @@ class GameService {
     }
     
     async getOrCreate(playerId: string): Promise<Game> {
-        
-        if (authService.getAccessToken()) {
-            const { data }: AxiosResponse<Game> = await this.axiosInstance.put('/', { playerId: playerId });
-            console.log("GameService.getOrCreate", data);
-            return data;
-        } else {
-            throw new Error('Player not logged in');
-        }
+        const { data }: AxiosResponse<Game> = await axiosInstance.put(`${ENDPOINT_PREFIX}/`, { playerId: playerId });
+        console.log("GameService.getOrCreate", data);
+        return data;
     }
 
     async rollById(game: Game, diceToRoll: number[]): Promise<Game> {
@@ -75,7 +44,7 @@ class GameService {
             throw new Error('No roll link found for this game');
         }
 
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(rollLink, { diceToRoll });
+        const { data }: AxiosResponse<Game> = await axiosInstance.put(rollLink, { diceToRoll });
         console.log("rollById", data);
         return data;
     }
@@ -86,7 +55,7 @@ class GameService {
             throw new Error('No announce link found for this game');
         }
 
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(announceLink, { boxType });
+        const { data }: AxiosResponse<Game> = await axiosInstance.put(announceLink, { boxType });
         console.log("announceById", data);
         return data;
     }
@@ -97,7 +66,7 @@ class GameService {
             throw new Error('No fill link found for this game');
         }
 
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(fillLink, { columnType, boxType });
+        const { data }: AxiosResponse<Game> = await axiosInstance.put(fillLink, { columnType, boxType });
         console.log("fillById", data);
         return data;
     }
@@ -108,7 +77,7 @@ class GameService {
             throw new Error('No undo fill link found for this game');
         }
 
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(undoFillLink);
+        const { data }: AxiosResponse<Game> = await axiosInstance.put(undoFillLink);
         console.log("undoFillById", data);
         return data;
     }
@@ -119,7 +88,7 @@ class GameService {
             throw new Error('No restart link found for this game');
         }
 
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(restartLink);
+        const { data }: AxiosResponse<Game> = await axiosInstance.put(restartLink);
         console.log("restartById", data);
         return data;
     }
@@ -130,7 +99,7 @@ class GameService {
             throw new Error('No archive link found for this game');
         }
 
-        const { data }: AxiosResponse<Game> = await this.axiosInstance.put(archiveLink);
+        const { data }: AxiosResponse<Game> = await axiosInstance.put(archiveLink);
         console.log("archiveById", data);
         return data;
     }

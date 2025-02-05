@@ -1,7 +1,7 @@
 import { createContext, useState, useEffect, useRef, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ToastContext } from './toastProvider';
-import { CurrentUserContext } from './currentUserProvider';
+import { AuthenticationContext } from './authenticationProvider';
 import { ErrorHandlerContext } from './errorHandlerProvider';
 import i18n from '../i18n';
 import playerService from '../services/playerService';
@@ -21,8 +21,9 @@ const getCurrentTheme = () => {
 };
 
 export const PreferencesProvider = ({ children }) => {
+
     const { t } = useTranslation();
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser } = useContext(AuthenticationContext);
     const { handleError } = useContext(ErrorHandlerContext);
     const { showInfoToast } = useContext(ToastContext);
 
@@ -33,16 +34,14 @@ export const PreferencesProvider = ({ children }) => {
 
     const syncPreferences = (newLanguage, newTheme) => {
         if (currentUser) {
-            playerService.setPreferencesByPlayerId(currentUser, { language: newLanguage, theme: newTheme })
-                .then(dbPreferences => {
-                    // showSuccessToast("Preferences updated successfully.");
-                    localStorage.setItem("i18nextLng", newLanguage);
-                    localStorage.setItem("theme", newTheme);
-                    document.documentElement.setAttribute("theme", dbPreferences.theme);
-                })
-                .catch((error) => {
-                    handleError(error);
-                });
+            playerService.setPreferencesByPlayerId(currentUser, { language: newLanguage, theme: newTheme }).then(dbPreferences => {
+                // showSuccessToast("Preferences updated successfully.");
+                localStorage.setItem("i18nextLng", newLanguage);
+                localStorage.setItem("theme", newTheme);
+                document.documentElement.setAttribute("theme", dbPreferences.theme);
+            }).catch((error) => {
+                handleError(error);
+            });
         } else {
             localStorage.setItem("i18nextLng", newLanguage);
             localStorage.setItem("theme", newTheme);
@@ -51,52 +50,49 @@ export const PreferencesProvider = ({ children }) => {
 
     useEffect(() => {
         if (currentUser) {
-            playerService
-                .getPreferencesByPlayerId(currentUser)
-                .then((dbPreferences) => {
-                    if (dbPreferences) {
-                        setLanguageState(dbPreferences.language || DEFAULT_LANGUAGE);
-                        setThemeState(dbPreferences.theme || DEFAULT_THEME);
-                        localStorage.setItem("i18nextLng", dbPreferences.language || DEFAULT_LANGUAGE);
-                        localStorage.setItem("theme", dbPreferences.theme || DEFAULT_THEME);
-                        document.documentElement.setAttribute("theme", dbPreferences.theme);
-                        // showInfoToast("Preferences loaded successfully.");
-                    } else {
-                        const localLanguage = getCurrentLanguage();
-                        const localTheme = getCurrentTheme();
-                        setLanguageState(localLanguage);
-                        setThemeState(localTheme);
-                        playerService
-                            .setPreferencesByPlayerId(currentUser, { language: localLanguage, theme: localTheme })
-                            .then(dbPreferences => {
-                                localStorage.setItem("i18nextLng", dbPreferences.language || DEFAULT_LANGUAGE);
-                                localStorage.setItem("theme", dbPreferences.theme || DEFAULT_THEME);
-                                document.documentElement.setAttribute("theme", dbPreferences.theme);
-                            })
-                            .catch((error) => {
-                                handleError(error);
-                            });
-                    }
-                })
-                .catch((error) => {
-                    if (error?.response?.status === 404) {
-                        const localLanguage = getCurrentLanguage();
-                        const localTheme = getCurrentTheme();
-                        setLanguageState(localLanguage);
-                        setThemeState(localTheme);
-                        playerService
-                            .setPreferencesByPlayerId(currentUser, { language: localLanguage, theme: localTheme })
-                            .then(dbPreferences => {
-                                localStorage.setItem("i18nextLng", dbPreferences.language || DEFAULT_LANGUAGE);
-                                localStorage.setItem("theme", dbPreferences.theme || DEFAULT_THEME);
-                                document.documentElement.setAttribute("theme", dbPreferences.theme);                            })
-                            .catch((error) => {
-                                handleError(error);
-                            });
-                    } else {
-                        handleError(error);
-                    }
-                });
+            playerService.getPreferencesByPlayerId(currentUser).then((dbPreferences) => {
+                if (dbPreferences) {
+                    setLanguageState(dbPreferences.language || DEFAULT_LANGUAGE);
+                    setThemeState(dbPreferences.theme || DEFAULT_THEME);
+                    localStorage.setItem("i18nextLng", dbPreferences.language || DEFAULT_LANGUAGE);
+                    localStorage.setItem("theme", dbPreferences.theme || DEFAULT_THEME);
+                    document.documentElement.setAttribute("theme", dbPreferences.theme);
+                    // showInfoToast("Preferences loaded successfully.");
+                } else {
+                    const localLanguage = getCurrentLanguage();
+                    const localTheme = getCurrentTheme();
+                    setLanguageState(localLanguage);
+                    setThemeState(localTheme);
+                    playerService
+                        .setPreferencesByPlayerId(currentUser, { language: localLanguage, theme: localTheme })
+                        .then(dbPreferences => {
+                            localStorage.setItem("i18nextLng", dbPreferences.language || DEFAULT_LANGUAGE);
+                            localStorage.setItem("theme", dbPreferences.theme || DEFAULT_THEME);
+                            document.documentElement.setAttribute("theme", dbPreferences.theme);
+                        })
+                        .catch((error) => {
+                            handleError(error);
+                        });
+                }
+            }).catch((error) => {
+                if (error?.response?.status === 404) {
+                    const localLanguage = getCurrentLanguage();
+                    const localTheme = getCurrentTheme();
+                    setLanguageState(localLanguage);
+                    setThemeState(localTheme);
+                    playerService
+                        .setPreferencesByPlayerId(currentUser, { language: localLanguage, theme: localTheme })
+                        .then(dbPreferences => {
+                            localStorage.setItem("i18nextLng", dbPreferences.language || DEFAULT_LANGUAGE);
+                            localStorage.setItem("theme", dbPreferences.theme || DEFAULT_THEME);
+                            document.documentElement.setAttribute("theme", dbPreferences.theme);                            })
+                        .catch((error) => {
+                            handleError(error);
+                        });
+                } else {
+                    handleError(error);
+                }
+            });
         }
     }, [currentUser]);
 
@@ -110,7 +106,7 @@ export const PreferencesProvider = ({ children }) => {
         }
     };
 
-    const setTheme = (newTheme) => {
+    function setTheme(newTheme) {
         if (newTheme !== theme) {
             document.documentElement.setAttribute("theme", newTheme);
             setThemeState(newTheme);
@@ -125,4 +121,5 @@ export const PreferencesProvider = ({ children }) => {
             {children}
         </PreferencesContext.Provider>
     );
+
 };

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { LoadingContext } from '../../providers/loadingProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import ticketService from '../../services/ticketService';
 import Element from '../element/element';
@@ -13,9 +14,9 @@ function Ticket() {
     const { t } = useTranslation();
 
     const { handleError } = useContext(ErrorHandlerContext);
+    const { isLoading, setLoading } = useContext(LoadingContext);
 
     const [ data, setData ] = useState(null);
-    const [ loading, setLoading ] = useState(true);
 
     useEffect(() => {
         if (id && !data) {
@@ -23,7 +24,7 @@ function Ticket() {
         }
     }, [id]);
 
-    const fetchData = () => {
+    function fetchData() {
         setLoading(true);
         ticketService.getById(id).then(data => {
             setData(data);
@@ -43,8 +44,8 @@ function Ticket() {
         { label: t("description"), key: 'description' }
     ];
 
-    if (loading) {
-        return (<Spinner></Spinner>);
+    if (isLoading) {
+        return <Spinner/>
     }
 
     return (
@@ -54,6 +55,7 @@ function Ticket() {
             </div>
         </div>
     );
-};
+    
+}
 
 export default Ticket;

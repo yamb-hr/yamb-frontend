@@ -17,11 +17,6 @@ button {
 	box-shadow: 0px 12px 24px rgba(70, 70, 70, 0.5);
 }
 
-.column {
-	display: inline-grid;
-	grid-template-rows: repeat(17, var(--height-box));
-}
-
 .settings-button-sheet {
 	background: var(--background-settings-button);
 	color: var(--color-settings-button);

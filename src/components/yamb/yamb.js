@@ -1,5 +1,5 @@
-import { useEffect, useContext} from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { useContext} from 'react';
+import { Routes, Route } from 'react-router-dom';
 import { NotificationsContext } from '../../providers/notificationsProvider';
 import Clash from '../clash/clash';
 import Profile from '../profile/profile';
@@ -8,7 +8,6 @@ import Settings from '../settings/settings';
 import About from '../about/about';
 import Login from '../auth/login';
 import Register from '../auth/register';
-import Logout from '../auth/logout';
 import Admin from '../admin/admin';
 import Navigation from '../navigation/navigation';
 import PasswordReset from '../auth/password-reset';
@@ -26,7 +25,6 @@ import Ticket from '../ticket/ticket';
 import Home from '../home/home';
 import EmailVerification from '../auth/email-verification';
 import ForgotPassword from '../auth/forgot-password';
-import RequireAuth from '../auth/require-auth';
 import NotificationList from '../notification/notificationList';
 import Modal from '../modal/modal';
 
@@ -34,16 +32,16 @@ function Yamb() {
 
     const { isNotificationsModalOpen, setNotificationsModalOpen } = useContext(NotificationsContext);
 
-    return (<Router>
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/email-verification" element={<EmailVerification />} />
-            <Route path="/password-reset" element={<PasswordReset />} />
-            <Route path="/about" element={<About />} />
-            <Route element={<RequireAuth />}>
+    return (
+        <>
+            <Routes>
+                <Route path="/" element={<Home />} />
+                <Route path="/login" element={<Login />} />
+                <Route path="/register" element={<Register />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
+                <Route path="/email-verification" element={<EmailVerification />} />
+                <Route path="/password-reset" element={<PasswordReset />} />
+                <Route path="/about" element={<About />} />
                 <Route path="/games" element={<GameList />} />
                 <Route path="/games/:id" element={<Game />} />
                 <Route path="/players" element={<PlayerList />} />
@@ -55,19 +53,18 @@ function Yamb() {
                 <Route path="/profile" element={<Profile />} />
                 <Route path="/rankings" element={<Rankings />} />
                 <Route path="/settings" element={<Settings />} />
-                <Route path="/logout" element={<Logout />} />
                 <Route path="/admin" element={<Admin />} />
                 <Route path="/logs" element={<LogList />} />
                 <Route path="/logs/:id" element={<Log />} />
                 <Route path="/tickets" element={<TicketList />} />
                 <Route path="/tickets/:id" element={<Ticket />} />
-            </Route>
-        </Routes>
-        <Navigation/>
-        <Modal isOpen={isNotificationsModalOpen} onClose={() => setNotificationsModalOpen(false)}>
-            <NotificationList />
-        </Modal>
-    </Router>)
+            </Routes>
+            <Navigation/>
+            <Modal isOpen={isNotificationsModalOpen} onClose={() => setNotificationsModalOpen(false)}>
+                <NotificationList />
+            </Modal>
+        </>
+    )
 }
 
 export default Yamb;

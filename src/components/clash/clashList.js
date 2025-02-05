@@ -1,15 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { LoadingContext } from '../../providers/loadingProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
-import { ActivePlayersContext } from '../../providers/activePlayersProvider'
-import playerService from '../../services/playerService';
+import { ActivePlayersContext } from '../../providers/activePlayersProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import clashService from '../../services/clashService';
-import Collapsible from '../collapsible/collapsible';
-import PlayerIcon from '../player/playerIcon';
-import Spinner from '../spinner/spinner';
+import playerService from '../../services/playerService';
 import Table from '../table/table';
+import Spinner from '../spinner/spinner';
+import PlayerIcon from '../player/playerIcon';
+import Collapsible from '../collapsible/collapsible';
 import './clash.css';
 
 function ClashList() {
@@ -17,18 +18,24 @@ function ClashList() {
     const navigate = useNavigate();
     const { t } = useTranslation();
 
-    const { currentUser } = useContext(CurrentUserContext);
+    const { isLoading, setLoading } = useContext(LoadingContext);
     const { handleError } = useContext(ErrorHandlerContext);
+    const { currentUser } = useContext(AuthenticationContext);
     const { activePlayers } = useContext(ActivePlayersContext);
 
     const [clashes, setClashes] = useState(null);
-    const [loading, setLoading] = useState(true);
     const [clashName, setClashName] = useState(t("my-clash"));
     const [selectedPlayers, setSelectedPlayers] = useState([]);
 
-    const MAX_PLAYERS = 3;
+    const MAX_PLAYERS = 3;    
 
-    const fetchData = async () => {
+    useEffect(() => {
+        if (!clashes && currentUser) {
+            fetchData();
+        }
+    }, [currentUser]);
+
+    function fetchData() {
         setLoading(true);
         playerService.getClashesByPlayerId(currentUser).then(data => {
             setClashes(data?._embedded?.clashes);
@@ -39,13 +46,7 @@ function ClashList() {
         });
     };
 
-    useEffect(() => {
-        if (!clashes && currentUser) {
-            fetchData();
-        }
-    }, [currentUser]);
-
-    const createClash = () => {
+    function createClash() {
         if (selectedPlayers.length === 0 || !clashName.trim()) return;
         const players = [...selectedPlayers, currentUser.id];
         clashService.create(currentUser.id, players, "LIVE", clashName.trim()).then(data => {
@@ -58,7 +59,7 @@ function ClashList() {
         });
     };
 
-    const handleToggleSelect = (playerId) => {
+    function handleToggleSelect(playerId) {
         setSelectedPlayers((prevSelected) => {
             if (prevSelected.includes(playerId)) {
                 return prevSelected.filter((id) => id !== playerId);
@@ -79,38 +80,28 @@ function ClashList() {
     const completedClashes = clashes?.filter((clash) => clash.status === 'COMPLETED');
     const filteredPlayers = activePlayers?.filter((player) => player.id !== currentUser.id);
 
-    if (loading) {
-        return <Spinner />;
+    if (isLoading) {
+        return <Spinner/>
     }
 
     return (
         <div className="clash-list-container">
             <div className="clash-list">
                 {inProgressClashes?.length > 0 && (
-                    <>
-                        <br />
-                        <Collapsible title={`${t("in-progress")} (${inProgressClashes.length})`} defaultOpen={true}>
-                            <Table data={inProgressClashes} columns={clashColumns} paginated={false} displayHeader={false} />
-                        </Collapsible>
-                    </>
+                    <Collapsible title={`${t("in-progress")} (${inProgressClashes.length})`} defaultOpen={true}>
+                        <Table data={inProgressClashes} columns={clashColumns} paginated={false} displayHeader={false} />
+                    </Collapsible>
                 )}
                 {pendingClashes?.length > 0 && (
-                    <>
-                        <br />
-                        <Collapsible title={`${t("pending")} (${pendingClashes.length})`} defaultOpen={true}>
-                            <Table data={pendingClashes} columns={clashColumns} paginated={false} displayHeader={false} />
-                        </Collapsible>
-                    </>
+                    <Collapsible title={`${t("pending")} (${pendingClashes.length})`} defaultOpen={true}>
+                        <Table data={pendingClashes} columns={clashColumns} paginated={false} displayHeader={false} />
+                    </Collapsible>
                 )}
                 {completedClashes?.length > 0 && (
-                    <>
-                        <br />
-                        <Collapsible title={`${t("completed")} (${completedClashes.length})`} defaultOpen={false}>
-                            <Table data={completedClashes} columns={clashColumns} paginated={false} displayHeader={false} />
-                        </Collapsible>
-                    </>
+                    <Collapsible title={`${t("completed")} (${completedClashes.length})`} defaultOpen={false}>
+                        <Table data={completedClashes} columns={clashColumns} paginated={false} displayHeader={false} />
+                    </Collapsible>
                 )}
-                <br />
                 <div className="create-clash-container">
                     <input
                         type="text"
@@ -132,6 +123,7 @@ function ClashList() {
             </div>
         </div>
     );
+
 }
 
 export default ClashList;

@@ -1,51 +1,26 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
-import authService from './authService';
+import { AxiosResponse } from 'axios';
 import { Clash, ClashCollection } from '../types/Clash';
+import axiosInstance from './httpClient';
 
-const API_BASE_URL = `${process.env.REACT_APP_API_URL}/clashes`;
+const ENDPOINT_PREFIX = "/clashes";
 
 class ClashService {
 
-    private axiosInstance: AxiosInstance;
     public name: string;
-
+    
     constructor() {
         this.name = 'ClashService';
-        this.axiosInstance = axios.create({
-            baseURL: API_BASE_URL,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        this.axiosInstance.interceptors.request.use(
-            (config: InternalAxiosRequestConfig) => {
-                if (config.headers) {
-                    const language = localStorage.getItem('i18nextLng');
-                    if (language) {
-                        config.headers['Accept-Language'] = language;
-                    }
-                    const token = authService.getAccessToken();
-                    if (token) {
-                        config.headers['Authorization'] = `Bearer ${token}`;
-                    }
-                }
-                return config;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
     }
 
+
     async getById(clashId: string): Promise<Clash> {
-        const { data }: AxiosResponse<Clash> = await this.axiosInstance.get(`/${clashId}`);
+        const { data }: AxiosResponse<Clash> = await axiosInstance.get(`${ENDPOINT_PREFIX}/${clashId}`);
         console.log("ClashService.getById", data);
         return data;
     }
 
     async getAll(page = 0, size = 10, sort = 'updatedAt', order: 'ASC' | 'DESC' = 'DESC'): Promise<ClashCollection> {
-        const { data }: AxiosResponse<ClashCollection> = await this.axiosInstance.get('/', {
+        const { data }: AxiosResponse<ClashCollection> = await axiosInstance.get(`${ENDPOINT_PREFIX}/`, {
             params: {
                 page,
                 size,
@@ -64,19 +39,19 @@ class ClashService {
             throw new Error('Delete link not available for this clash');
         }
 
-        const { data }: AxiosResponse<void> = await this.axiosInstance.delete(deleteLink);
+        const { data }: AxiosResponse<void> = await axiosInstance.delete(deleteLink);
         console.log("ClashService.deleteById", data);
         return data;
     }
 
     async deleteAll(): Promise<void> {
-        const { data }: AxiosResponse<void> = await this.axiosInstance.delete('/');
+        const { data }: AxiosResponse<void> = await axiosInstance.delete(`${ENDPOINT_PREFIX}/`);
         console.log("ClashService.deleteAll", data);
         return data;
     }
 
     async create(ownerId: string, playerIds: string[], type: string, name: string): Promise<Clash> {
-        const { data }: AxiosResponse<Clash> = await this.axiosInstance.post('/', { ownerId: ownerId, playerIds: playerIds, type: type, name: name});
+        const { data }: AxiosResponse<Clash> = await axiosInstance.post(`${ENDPOINT_PREFIX}/`, { ownerId: ownerId, playerIds: playerIds, type: type, name: name});
         console.log("ClashService.create", data);
         return data;
     }
@@ -86,7 +61,7 @@ class ClashService {
         if (!acceptLink) {
             throw new Error("Accept link not available for this clash");
         }
-        const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(acceptLink, { playerId: playerId });
+        const { data }: AxiosResponse<Clash> = await axiosInstance.put(acceptLink, { playerId: playerId });
         console.log("ClashService.acceptById", data);
         return data;
     }
@@ -96,7 +71,7 @@ class ClashService {
         if (!declineLink) {
             throw new Error("Decline link not available for this clash");
         }
-        const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(declineLink, { playerId: playerId });
+        const { data }: AxiosResponse<Clash> = await axiosInstance.put(declineLink, { playerId: playerId });
         console.log("ClashService.declineById", data);
         return data;
     }
@@ -106,7 +81,7 @@ class ClashService {
         if (!addPlayersLink) {
             throw new Error("Add players link not available for this clash");
         }
-        const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(addPlayersLink, { playerIds: playerIds });
+        const { data }: AxiosResponse<Clash> = await axiosInstance.put(addPlayersLink, { playerIds: playerIds });
         console.log("ClashService.addPlayersById", data);
         return data;
     }
@@ -116,7 +91,7 @@ class ClashService {
         if (!removePlayersLink) {
             throw new Error("Remove players link not available for this clash");
         }
-        const { data }: AxiosResponse<Clash> = await this.axiosInstance.put(removePlayersLink, { playerIds: playerIds });
+        const { data }: AxiosResponse<Clash> = await axiosInstance.put(removePlayersLink, { playerIds: playerIds });
         console.log("ClashService.removePlayersById", data);
         return data;
     }

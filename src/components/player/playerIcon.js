@@ -48,7 +48,7 @@ function PlayerIcon({ player, offline = false, selectable = false, selected = fa
 			disabled={!selectable}
 		>
 			{player && (
-				<>
+				<div>
 					<img
 						src={avatarUrl}
 						alt={player.name}
@@ -61,7 +61,7 @@ function PlayerIcon({ player, offline = false, selectable = false, selected = fa
 						}
 					/>
 					<figcaption className="player-name">{player.name}</figcaption>
-				</>
+				</div>
 			)}
 		</button>
 	);

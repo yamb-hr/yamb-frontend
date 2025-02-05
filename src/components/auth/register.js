@@ -3,24 +3,26 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Slide, toast } from 'react-toastify';
 import { useTranslation } from 'react-i18next';
 import { PreferencesContext } from '../../providers/preferencesProvider';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import authService from '../../services/authService';
 import './auth.css';
 
 function Register() {
+
     const RECAPTCHA_SITE_KEY = process.env.REACT_APP_RECAPTCHA_SITE_KEY;
 
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { theme } = useContext(PreferencesContext);
-    const { currentUser } = useContext(CurrentUserContext);
-    const { handleError } = useContext(ErrorHandlerContext);
 
-    const [username, setUsername] = useState(currentUser ? currentUser.username : "");
-    const [password, setPassword] = useState('');
+    const { theme } = useContext(PreferencesContext);
+    const { handleError } = useContext(ErrorHandlerContext);
+    const { currentUser } = useContext(AuthenticationContext);
+
     const [email, setEmail] = useState('');
     const [errors, setErrors] = useState({});
+    const [password, setPassword] = useState('');
+    const [username, setUsername] = useState(currentUser ? currentUser.username : "");
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -58,7 +60,7 @@ function Register() {
                 });
             });
         });
-    };
+    }
 
     function validateForm() {
         let validationErrors = {};
@@ -153,6 +155,7 @@ function Register() {
             </div>
         </div>
     );
+    
 }
 
 export default Register;

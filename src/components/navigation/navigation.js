@@ -1,20 +1,18 @@
 import { useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useLocation, Link, useNavigate } from 'react-router-dom';
+import { useLocation, Link } from 'react-router-dom';
 import { PreferencesContext } from '../../providers/preferencesProvider';
 import { DeviceContext } from '../../providers/deviceProvider';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import { MenuContext } from '../../providers/menuProvider';
 import { ToastContext } from '../../providers/toastProvider';
 import { NotificationsContext } from '../../providers/notificationsProvider';
 import { InGameContext } from '../../providers/inGameProvider';
 import { toast } from 'react-toastify';
-import authService from '../../services/authService';
 import './navigation.css';
 
 function Navigation() {
     
-    const navigate = useNavigate();    
     const location = useLocation();
     const { t } = useTranslation();
 
@@ -22,7 +20,7 @@ function Navigation() {
     const { isMobile } = useContext(DeviceContext);
     const { showInfoToast } = useContext(ToastContext);
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
-    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+    const { currentUser, logout } = useContext(AuthenticationContext);
     const { language, setLanguage, theme, setTheme } = useContext(PreferencesContext);
     const { notifications, setNotificationsModalOpen } = useContext(NotificationsContext);
 
@@ -77,19 +75,15 @@ function Navigation() {
     }
 
     function handleLogout() {
-        showInfoToast(<div>
-            {t('confirm-logout')}
-            <div className="logout-prompt">
-                <button className="logout-prompt-button button-yes" onClick={() => logout()}>{t('yes')}</button>
-                <button className="logout-prompt-button button-no" onClick={() => toast.dismiss()}>{t('no')}</button>
-            </div>
-        </div>);
-    }
-
-    function logout() {
-        authService.logout();
-        setCurrentUser(null);
-        navigate("/login");
+        showInfoToast(
+            <>
+                {t('confirm-logout')}
+                <div className="logout-prompt">
+                    <button className="logout-prompt-button button-yes" onClick={() => logout()}>{t('yes')}</button>
+                    <button className="logout-prompt-button button-no" onClick={() => toast.dismiss()}>{t('no')}</button>
+                </div>
+            </>
+        );
     }
 
     const themeButton = (

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import './collapsible.css';
 
-const Collapsible = ({ defaultOpen = false, title, children }) => {
+function Collapsible({ defaultOpen = false, title, children }) {
     
     const [isOpen, setIsOpen] = useState(defaultOpen);
 
@@ -22,6 +22,7 @@ const Collapsible = ({ defaultOpen = false, title, children }) => {
             )}
         </div>
     );
-};
+
+}
 
 export default Collapsible;

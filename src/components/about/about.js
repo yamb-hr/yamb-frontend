@@ -2,8 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ToastContext } from '../../providers/toastProvider';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import homeService from '../../services/homeService';
 import ticketService from '../../services/ticketService';
 import './about.css';
@@ -13,12 +13,12 @@ function About() {
     const navigate = useNavigate();
     const location = useLocation();
     const { t } = useTranslation();
-    const { currentUser } = useContext(CurrentUserContext);
-    const { handleError } = useContext(ErrorHandlerContext);
+
     const { showSuccessToast } = useContext(ToastContext);
+    const { handleError } = useContext(ErrorHandlerContext);
+    const { currentUser } = useContext(AuthenticationContext);
 
     const [activeTab, setActiveTab] = useState(localStorage.getItem('tab') || 'rules');
-    const [loading, setLoading] = useState(false);
     const [cooldown, setCooldown] = useState(false);
 
     const [healthInfo, setHealthInfo] = useState(null);
@@ -42,71 +42,60 @@ function About() {
         }
     }, [isDataFetched, currentUser]);
     
-    const handleTabChange = (tab) => {
+    function handleTabChange(tab) {
         setActiveTab(tab);
         navigate(`/about#${tab}`);
         localStorage.setItem('tab', tab);
-    };
+    }
   
-    const fetchData = async () => {
-        if (loading) return;
-        setLoading(true);
-        try {
-            const health = await homeService.getHealthCheck();
-            setHealthInfo(health);
+    function fetchData() {
+        homeService.getHealthCheck().then(health => {
+            setHealthInfo(health)
             if (currentUser?.admin) {
-                const metrics = await homeService.getMetrics();
-                setMetricsInfo(metrics);
+                homeService.getMetrics().then(metrics => {
+                    setMetricsInfo(metrics);
+                }).catch(error => {
+                    handleError(error);
+                })
             }
             setIsDataFetched(true);
-        } catch (error) {
-            console.error(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+        }).catch(error => {
+            handleError(error);
+        });
+    }
 
-    const handleTicketChange = (e) => {
+    function handleTicketChange(e) {
         setTicket({
             ...ticket,
             [e.target.name]: e.target.value,
         });
-    };
+    }
 
-    const handleTicketSubmit = async (e) => {
+    function handleTicketSubmit(e) {
         e.preventDefault();
-        setLoading(true);
-
-        try {
-            const newTicket = {
-                playerId: currentUser?.externalId,
-                title: ticket.title,
-                description: ticket.description,
-                emailAddresses: ticket.emailAddresses.split(',').map((email) => email.trim()),
-            };
-            ticketService.create(newTicket)
-                .then(() => {
-                    showSuccessToast(t('ticket-submitted-successfully'));
-                    setTicket({ title: '', description: '', emailAddresses: '' });
-                }).catch(error => {
-                    handleError(error);
-                });
-        } catch (error) {
+        const newTicket = {
+            playerId: currentUser?.externalId,
+            title: ticket.title,
+            description: ticket.description,
+            emailAddresses: ticket.emailAddresses.split(',').map((email) => email.trim()),
+        };
+        ticketService.create(newTicket).then(() => {
+            showSuccessToast(t('ticket-submitted-successfully'));
+            setTicket({ title: '', description: '', emailAddresses: '' });
+        }).catch(error => {
             handleError(error);
-        } finally {
-            setLoading(false);
-        }
-    };
+        });
+    }
 
-    const handleRefresh = () => {
+    function handleRefresh() {
         if (cooldown) return;
 
         setIsDataFetched(false);
         setCooldown(true);
         setTimeout(() => setCooldown(false), 15000);
-    };
+    }
 
-    const formatUptime = (uptimeInMilliseconds) => {
+    function formatUptime(uptimeInMilliseconds) {
         const seconds = Math.floor(uptimeInMilliseconds / 1000);
         const days = Math.floor(seconds / (3600 * 24));
         const hours = Math.floor((seconds % (3600 * 24)) / 3600);
@@ -114,7 +103,7 @@ function About() {
         const remainingSeconds = seconds % 60;
 
         return `${days} days ${hours.toString().padStart(2, '0')} hours ${minutes.toString().padStart(2, '0')} minutes ${remainingSeconds.toString().padStart(2, '0')} seconds`;
-    };
+    }
 
     return (
         <div className="about-container">
@@ -149,7 +138,7 @@ function About() {
                     )}
                     {activeTab === 'project' && (
                         <section>
-                            <p><a href="https://matej-danic.from.hr"><img src="/favicon.svg" width="50"></img></a></p>
+                            <p><a href="https://matej-danic.from.hr"><img src="/favicon.svg" width="50" alt={t("yamb")}></img></a></p>
                             <p><strong>{t('yamb')}</strong></p>
                             <ul>    
                                 <li>{t("api-documentation")}:&nbsp;<a href="https://api.jamb.com.hr">yamb</a></li>
@@ -181,14 +170,14 @@ function About() {
                                     <li><strong>{t('free-space')}:</strong> {(metricsInfo.memoryUsage / (1024 ** 3)).toFixed(2)} GB</li>
                                 </ul>
                             )}
-                            <button disabled={loading || cooldown} onClick={handleRefresh} className="button-refresh">
+                            <button disabled={cooldown} onClick={handleRefresh} className="button-refresh">
                                 {cooldown ? `${t('refresh')} (${Math.ceil(15)}s)` : t('refresh')}
                             </button>
                         </section>
                     )}
                     {activeTab === 'contact' && (
                         <section>
-                            <p><a href="https://matej-danic.from.hr"><img src="/img/matej.webp" width="50"></img></a></p>
+                            <p><a href="https://matej-danic.from.hr"><img src="/img/matej.webp" width="50" alt={t("yamb")}></img></a></p>
                             <p><a href="https://matej-danic.from.hr"><strong>Matej Đanić</strong></a></p>
                             <p><a href="mailto:matej@jamb.com.hr">matej@jamb.com.hr</a></p>
                             <form onSubmit={handleTicketSubmit}>
@@ -226,8 +215,8 @@ function About() {
                                         placeholder={t('enter-email-addresses-comma-separated')}
                                     />
                                 </div>
-                                <button type="submit" disabled={loading}>
-                                    {loading ? t('submitting') : t('submit')}
+                                <button type="submit" disabled={cooldown}>
+                                    {cooldown ? t('submitting') : t('submit')}
                                 </button>
                             </form>
                         </section>
@@ -236,6 +225,7 @@ function About() {
             </div>
         </div>
     );
-};
+
+}
 
 export default About;

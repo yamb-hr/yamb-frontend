@@ -17,4 +17,5 @@ export const DeviceProvider = ({ children }) => {
             {children}
         </DeviceContext.Provider>
     );
+    
 };

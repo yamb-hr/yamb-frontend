@@ -20,4 +20,5 @@ export const ErrorHandlerProvider = ({ children }) => {
             {children}
         </ErrorHandlerContext.Provider>
     );
+    
 };

@@ -1,56 +1,30 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { Player, PlayerCollection, PlayerPreferences, GlobalPlayerStats, PlayerStats } from '../types/Player';
 import { ScoreCollection } from '../types/Score';
-import authService from './authService';
-import {  ClashCollection } from '../types/Clash';
+import { ClashCollection } from '../types/Clash';
 import { LogCollection } from '../types/Log';
 import { GameCollection } from '../types/Game';
 import { NotificationCollection } from '../types/Notification';
+import axiosInstance from './httpClient';
 
-const API_BASE_URL = `${process.env.REACT_APP_API_URL}/players`;
+const ENDPOINT_PREFIX = "/players";
 
 class PlayerService {
-    
-    private axiosInstance: AxiosInstance;
-    public name: string;
 
+    public name: string;
+    
     constructor() {
         this.name = 'PlayerService';
-        this.axiosInstance = axios.create({
-            baseURL: API_BASE_URL,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        this.axiosInstance.interceptors.request.use(
-            (config: InternalAxiosRequestConfig) => {
-                if (config.headers) {
-                    const language = localStorage.getItem('i18nextLng');
-                    if (language) {
-                        config.headers['Accept-Language'] = language;
-                    }
-                    const token = authService.getAccessToken();
-                    if (token) {
-                        config.headers['Authorization'] = `Bearer ${token}`;
-                    }
-                }
-                return config;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
     }
 
     async getById(playerId: string): Promise<Player> {
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.get(`/${playerId}`);
+        const { data }: AxiosResponse<Player> = await axiosInstance.get(`${ENDPOINT_PREFIX}/${playerId}`);
         console.log("PlayerService.getById", data);
         return data;
     }
 
     async getAll(page = 0, size = 10, sort = 'createdAt', order: 'ASC' | 'DESC' = 'DESC'): Promise<PlayerCollection> {
-        const { data }: AxiosResponse<PlayerCollection> = await this.axiosInstance.get('/', {
+        const { data }: AxiosResponse<PlayerCollection> = await axiosInstance.get(`${ENDPOINT_PREFIX}/`, {
             params: {
                 page,
                 size,
@@ -64,7 +38,7 @@ class PlayerService {
     }
 
     async getAllActive(): Promise<PlayerCollection> {
-        const { data }: AxiosResponse<PlayerCollection> = await this.axiosInstance.get('/active');
+        const { data }: AxiosResponse<PlayerCollection> = await axiosInstance.get(`${ENDPOINT_PREFIX}/active`);
         console.log("PlayerService.getAllActive", data);
         return data;
     }
@@ -75,13 +49,13 @@ class PlayerService {
             throw new Error("Stats link not available for this player");
         }
 
-        const { data }: AxiosResponse<PlayerStats> = await this.axiosInstance.get(statsLink);
+        const { data }: AxiosResponse<PlayerStats> = await axiosInstance.get(statsLink);
         console.log("PlayerService.getStatsById", data);
         return data;
     }
 
     async getStats(): Promise<GlobalPlayerStats> {
-        const { data }: AxiosResponse<GlobalPlayerStats> = await this.axiosInstance.get('/stats');
+        const { data }: AxiosResponse<GlobalPlayerStats> = await axiosInstance.get(`${ENDPOINT_PREFIX}/stats`);
         console.log("PlayerService.getStats", data);
         return data;
     }
@@ -92,7 +66,7 @@ class PlayerService {
             throw new Error("Scores link not available for this player");
         }
 
-        const { data }: AxiosResponse<ScoreCollection> = await this.axiosInstance.get(scoresLink);
+        const { data }: AxiosResponse<ScoreCollection> = await axiosInstance.get(scoresLink);
         console.log("getScoresByPlayerId", data);
         return data;
     }
@@ -103,7 +77,7 @@ class PlayerService {
             throw new Error("Games link not available for this player");
         }
 
-        const { data }: AxiosResponse<GameCollection> = await this.axiosInstance.get(gamesLink);
+        const { data }: AxiosResponse<GameCollection> = await axiosInstance.get(gamesLink);
         console.log("getGamesByPlayerId", data);
         return data;
     }
@@ -114,7 +88,7 @@ class PlayerService {
             throw new Error("Clashes link not available for this player");
         }
 
-        const { data }: AxiosResponse<ClashCollection> = await this.axiosInstance.get(clashesLink);
+        const { data }: AxiosResponse<ClashCollection> = await axiosInstance.get(clashesLink);
         console.log("getClashesByPlayerId", data);
         return data;
     }
@@ -125,7 +99,7 @@ class PlayerService {
             throw new Error("Preferences link not available for this player");
         }
 
-        const { data }: AxiosResponse<PlayerPreferences> = await this.axiosInstance.get(preferencesLink);
+        const { data }: AxiosResponse<PlayerPreferences> = await axiosInstance.get(preferencesLink);
         console.log("getPreferencesByPlayerId", data);
         return data;
     }
@@ -136,13 +110,13 @@ class PlayerService {
             throw new Error("Preferences link not available for this player");
         }
         
-        const { data }: AxiosResponse<PlayerPreferences> = await this.axiosInstance.put(preferencesLink, preferences);
+        const { data }: AxiosResponse<PlayerPreferences> = await axiosInstance.put(preferencesLink, preferences);
         console.log("setPreferencesByPlayerId", data);
         return data;
     }
 
-    async getCurrentPlayer(): Promise<Player | null> { 
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.get('/me');
+    async getCurrentPlayer(): Promise<Player | null> {
+        const { data }: AxiosResponse<Player> = await axiosInstance.get(`${ENDPOINT_PREFIX}/me`);
         console.log("getCurrentPlayer", data);
         return data;
     }
@@ -152,7 +126,7 @@ class PlayerService {
         if (!usernameLink) {
             throw new Error("Username link not available for this player");
         }
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.put(usernameLink, { username: username });
+        const { data }: AxiosResponse<Player> = await axiosInstance.put(usernameLink, { username: username });
         console.log("updateUsername", data);
         return data;
     }
@@ -162,7 +136,7 @@ class PlayerService {
         if (!emailLink) {
             throw new Error("Email link not available for this player");
         }
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.put(emailLink, { email: email });
+        const { data }: AxiosResponse<Player> = await axiosInstance.put(emailLink, { email: email });
         console.log("updateEmail", data);
         return data;
     }
@@ -173,7 +147,7 @@ class PlayerService {
             throw new Error("Logs link not available for this player");
         }
 
-        const { data }: AxiosResponse<LogCollection> = await this.axiosInstance.get(logsLink);
+        const { data }: AxiosResponse<LogCollection> = await axiosInstance.get(logsLink);
         console.log("getLogsByPlayerId", data);
         return data;
     }
@@ -191,7 +165,7 @@ class PlayerService {
         formData.append('file', file);
 
         console.log(avatarLink, formData);
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.put(avatarLink, formData, {
+        const { data }: AxiosResponse<Player> = await axiosInstance.put(avatarLink, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
@@ -207,7 +181,7 @@ class PlayerService {
             throw new Error("Notifications link not available for this player");
         }
 
-        const { data }: AxiosResponse<NotificationCollection> = await this.axiosInstance.get(notificationsLink);
+        const { data }: AxiosResponse<NotificationCollection> = await axiosInstance.get(notificationsLink);
         console.log("getNotificationsByPlayerId", data);
         return data;
     }
@@ -218,7 +192,7 @@ class PlayerService {
             throw new Error("Notifications link not available for this player");
         }
 
-        const { data }: AxiosResponse<void> = await this.axiosInstance.delete(notificationsLink);
+        const { data }: AxiosResponse<void> = await axiosInstance.delete(notificationsLink);
         console.log("deleteNotificationsByPlayerId", data);
         return data;
     }

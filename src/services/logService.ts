@@ -1,51 +1,25 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosResponse } from 'axios';
 import { Log, LogCollection } from '../types/Log';
-import authService from './authService';
+import axiosInstance from './httpClient';
 
-const API_BASE_URL = `${process.env.REACT_APP_API_URL}/logs`;
+const ENDPOINT_PREFIX = `/logs`;
 
 class LogService {
 
-    private axiosInstance: AxiosInstance;
     public name: string;
 
     constructor() {
         this.name = 'LogService';
-        this.axiosInstance = axios.create({
-            baseURL: API_BASE_URL,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        this.axiosInstance.interceptors.request.use(
-            (config: InternalAxiosRequestConfig) => {
-                if (config.headers) {
-                    const language = localStorage.getItem('i18nextLng');
-                    if (language) {
-                        config.headers['Accept-Language'] = language;
-                    }
-                    const token = authService.getAccessToken();
-                    if (token) {
-                        config.headers['Authorization'] = `Bearer ${token}`;
-                    }
-                }
-                return config;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
     }
 
     async getById(logId: string): Promise<Log> {
-        const { data }: AxiosResponse<Log> = await this.axiosInstance.get(`/${logId}`);
+        const { data }: AxiosResponse<Log> = await axiosInstance.get(`${ENDPOINT_PREFIX}/${logId}`);
         console.log("LogService.getById", data);
         return data;
     }
 
     async getAll(page = 0, size = 10, sort = 'updatedAt', order: 'ASC' | 'DESC' = 'DESC'): Promise<LogCollection> {
-        const { data }: AxiosResponse<LogCollection> = await this.axiosInstance.get('/', {
+        const { data }: AxiosResponse<LogCollection> = await axiosInstance.get(`${ENDPOINT_PREFIX}/`, {
             params: {
                 page,
                 size,
@@ -64,13 +38,13 @@ class LogService {
             throw new Error('Delete link not available for this log');
         }
 
-        const { data }: AxiosResponse<void> = await this.axiosInstance.delete(deleteLink);
+        const { data }: AxiosResponse<void> = await axiosInstance.delete(deleteLink);
         console.log("LogService.deleteById", data);
         return data;
     }
 
     async deleteAll(): Promise<void> {
-        const { data }: AxiosResponse<void> = await this.axiosInstance.delete('/');
+        const { data }: AxiosResponse<void> = await axiosInstance.delete(`${ENDPOINT_PREFIX}/`);
         console.log("LogService.deleteAll", data);
         return data;
     }

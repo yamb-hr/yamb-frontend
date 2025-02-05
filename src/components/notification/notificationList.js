@@ -22,7 +22,7 @@ const NotificationsModal = () => {
             {notifications?.length === 0 ? (
                 <p>{t("no-notifications-available")}</p>
             ) : (
-                <>
+                <div>
                     <div className="button-container">
                         <button className="mark-all-as-read-button" onClick={onMarkAllAsRead}>
                             {t("mark-all-as-read")}
@@ -38,7 +38,7 @@ const NotificationsModal = () => {
                             </li>
                         ))}
                     </ul>
-                </>
+                </div>
             )}
         </div>
     );

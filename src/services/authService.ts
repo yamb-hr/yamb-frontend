@@ -1,55 +1,28 @@
-import axios, { AxiosInstance, AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
 import { Player } from '../types/Player';
 import { PlayerCredentials } from '../types/Auth';
-import { AuthData } from '../types/Auth';
+import axiosInstance from './httpClient';
 
-const API_URL = process.env.REACT_APP_API_URL + "/auth";
+const ENDPOINT_PREFIX = "/auth";
 const LOCAL_STORAGE_KEY_TOKEN = "token";
+const AUTH_PREFIX_BEARER = "Bearer ";
 
 class AuthService {
-    
-    private axiosInstance: AxiosInstance;
-    public name: string;
 
+    public name: string;
+    
     constructor() {
         this.name = 'AuthService';
-        this.axiosInstance = axios.create({
-            baseURL: API_URL,
-            headers: {
-                'Content-Type': 'application/json',
-            },
-        });
-
-        this.axiosInstance.interceptors.request.use(
-            (config: InternalAxiosRequestConfig) => {
-                if (config.headers) {
-                    const language = localStorage.getItem('i18nextLng');
-                    if (language) {
-                        config.headers['Accept-Language'] = language;
-                    }
-                    const token = authService.getAccessToken();
-                    if (token) {
-                        config.headers['Authorization'] = `Bearer ${token}`;
-                    }
-                }
-                return config;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
     }
 
-    getAccessToken(): string | null {
-        return localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN);
+    async logout(): Promise<void> {
+        const { data }: AxiosResponse<void> = await axiosInstance.post(`${ENDPOINT_PREFIX}/logout`);
+        console.log("logout", data);
+        return data;
     }
 
-    logout(): void {
-        localStorage.removeItem(LOCAL_STORAGE_KEY_TOKEN);
-    }
-
-    async registerGuest(tempPlayerRequest: PlayerCredentials, recaptchaToken: string): Promise<AuthData> {
-        const { data }: AxiosResponse<AuthData> = await this.axiosInstance.post('/register-guest', tempPlayerRequest, {
+    async registerGuest(guestRequest: PlayerCredentials, recaptchaToken: string): Promise<Player> {
+        const { data }: AxiosResponse<Player> = await axiosInstance.post(`${ENDPOINT_PREFIX}/register-guest`, guestRequest, {
             headers: { "X-Recaptcha-Token": recaptchaToken },
         });
         console.log("registerGuest", data);
@@ -57,43 +30,55 @@ class AuthService {
     }
 
     async register(authRequest: PlayerCredentials, recaptchaToken: string): Promise<Player> {
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.post('/register', authRequest, {
+        const { data }: AxiosResponse<Player> = await axiosInstance.post(`${ENDPOINT_PREFIX}/register`, authRequest, {
             headers: { "X-Recaptcha-Token": recaptchaToken },
         });
         console.log("register", data);
         return data;
     }
 
-    async getToken(authRequest: PlayerCredentials): Promise<AuthData> {
-        const { data }: AxiosResponse<AuthData> = await this.axiosInstance.post('/token', authRequest);
+    async getToken(authRequest: PlayerCredentials): Promise<Player> {
+        const { data }: AxiosResponse<Player> = await axiosInstance.post(`${ENDPOINT_PREFIX}/token`, authRequest);
         console.log("getToken", data);
         return data;
     }
 
+    async migrateToken(): Promise<Player> {
+        axiosInstance.interceptors.request.use(
+            (config: InternalAxiosRequestConfig) => {
+                const token = localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN);
+                if (token) {
+                    config.headers["Authorization"] = AUTH_PREFIX_BEARER + token;
+                }
+                return config;
+            },
+            (error) => Promise.reject(error)
+        );
+        const { data }: AxiosResponse<Player> = await axiosInstance.post(`${ENDPOINT_PREFIX}/migrate`);
+        console.log("migrateToken", data);
+        return data;
+    }
+
     async resetPassword(oldPassword: string, newPassword: string, passwordResetToken: string): Promise<void> {
-        const resetPasswordEndpoint = '/password-reset' + (passwordResetToken ? ('?token=' + passwordResetToken) : '');
+        const resetPasswordEndpoint = `${ENDPOINT_PREFIX}/password-reset${(passwordResetToken ? ('?token=' + passwordResetToken) : '')}`;
         console.log(resetPasswordEndpoint);
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.put(resetPasswordEndpoint, { oldPassword: oldPassword, newPassword: newPassword });
+        const { data }: AxiosResponse<Player> = await axiosInstance.put(resetPasswordEndpoint, { oldPassword: oldPassword, newPassword: newPassword });
         console.log("resetPassword", data);
     }
 
     async sendPasswordResetEmail(email: string): Promise<void> {
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.post('/password-reset-token', { email: email });
+        const { data }: AxiosResponse<Player> = await axiosInstance.post(`${ENDPOINT_PREFIX}/password-reset-token`, { email: email });
         console.log("sendPasswordResetToken", data);
     }
 
     async verifyEmail(emailVerificationToken: string): Promise<void> {
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.put('/email-verification?token=' + emailVerificationToken);
+        const { data }: AxiosResponse<Player> = await axiosInstance.put(`${ENDPOINT_PREFIX}/email-verification?token=${emailVerificationToken}`);
         console.log("verifyEmail", data);
     }
 
     async sendVerificationEmail(email: string): Promise<void> {
-        const { data }: AxiosResponse<Player> = await this.axiosInstance.post('/email-verification-token', { email: email });
+        const { data }: AxiosResponse<Player> = await axiosInstance.post(`${ENDPOINT_PREFIX}/email-verification-token˛`, { email: email });
         console.log("sendVerificationEmail", data);
-    }
-
-    isAuthenticated(): boolean {
-        return this.getAccessToken() != null;
     }
 
 }

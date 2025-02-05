@@ -12,7 +12,7 @@ const localeStringFormat = {
     hour: 'numeric', minute: 'numeric', second: 'numeric'
 };
 
-const Element = ({ columns, data, service, id, displayHeaders = false }) => {
+function Element({ columns, data, service, id, displayHeaders = false }) {
 
     const { t } = useTranslation();
 
@@ -27,14 +27,14 @@ const Element = ({ columns, data, service, id, displayHeaders = false }) => {
         }
     }, [data]);
 
-    const fetchElementData = async () => {
+    async function fetchElementData() {
         const fetchedData = await service.getById(id);
         return fetchedData;
     };
 
     const { data: fetchedData, isLoading, isError, error } = useQuery(
         ['elementData', id],
-        fetchElementData,
+        fetchElementData, 
         {
             enabled: !!service && !!id,
             staleTime: 60000,
@@ -45,19 +45,15 @@ const Element = ({ columns, data, service, id, displayHeaders = false }) => {
 
     const element = fetchedData || elementData;
 
-    if (service && isLoading) {
-        return <Spinner />;
-    }
-
     if (service && isError) {
-        return <div>Error: {error.message}</div>;
+        return <>Error: {error.message}</>;
     }
 
-    const formatDate = (value) => {
+    function formatDate(value) {
         return new Date(value).toLocaleString(language, localeStringFormat);
     };
 
-    const formatValue = (value) => {
+    function formatValue(value) {
         return typeof value === 'string' && !isNaN(Date.parse(value))
             ? formatDate(value)
             : typeof value === 'boolean'
@@ -65,7 +61,7 @@ const Element = ({ columns, data, service, id, displayHeaders = false }) => {
                 : value;
     };
 
-    const getValue = (row, key) => {
+    function getValue(row, key) {
         const value = key.split('.').reduce((acc, part) => acc && acc[part], row);
 
         if (value && typeof value === 'object') {
@@ -75,7 +71,6 @@ const Element = ({ columns, data, service, id, displayHeaders = false }) => {
                 const resource = segments[segments.length - 2];
                 const id = segments[segments.length - 1];
                 const name = value.name || `View ${id}`;
-
                 return (
                     <Link to={`/${resource}/${id}`}>
                         {name}
@@ -86,9 +81,13 @@ const Element = ({ columns, data, service, id, displayHeaders = false }) => {
 
         return formatValue(value);
     };
+    
+    if (service && isLoading) {
+        return <Spinner/>
+    }
 
     if (!element) {
-        return <div>{t("no-data-available")}</div>;
+        return <>{t("no-data-available")}</>;
     }
 
     return (
@@ -101,6 +100,7 @@ const Element = ({ columns, data, service, id, displayHeaders = false }) => {
             ))}
         </div>
     );
-};
+
+}
 
 export default Element;

@@ -59,5 +59,9 @@
     .share-button, .new-game-button {
         margin: 10px;
     }
+
+    .game-container {
+        height: 90vh;
+    }
     
 }

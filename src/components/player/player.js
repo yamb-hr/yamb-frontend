@@ -1,8 +1,9 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { LoadingContext } from '../../providers/loadingProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import playerService from '../../services/playerService';
 import Collapsible from '../collapsible/collapsible';
 import Element from '../element/element';
@@ -16,14 +17,14 @@ function Player() {
     const { t } = useTranslation();
     
     const { handleError } = useContext(ErrorHandlerContext);
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser } = useContext(AuthenticationContext);
+    const { isLoading, setLoading } = useContext(LoadingContext);
 
     const [data, setData] = useState(null);
     const [scoreData, setScoreData] = useState(null);
     const [gameData, setGameData] = useState(null);
     const [clashData, setClashData] = useState(null);
     const [logData, setLogData] = useState(null);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         if (id && !data) {
@@ -35,7 +36,7 @@ function Player() {
         if (id && data && !scoreData) {
             fetchScoreData();
         }
-        if (currentUser.admin) {
+        if (currentUser?.admin) {
             if (id && data && !gameData) {
                 fetchGameData();
             }
@@ -48,49 +49,59 @@ function Player() {
         }
     }, [id, data]);
 
-    const fetchData = () => {
+    function fetchData() {
         setLoading(true);
-        playerService
-            .getById(id)
-            .then((data) => setData(data))
-            .catch(handleError)
-            .finally(() => setLoading(false));
-    };
+        playerService.getById(id).then((data) => {
+            setData(data);
+        }).catch(error => {
+            handleError(error);
+        }).finally(() => {
+            setLoading(false);
+        });
+    }
 
     const fetchScoreData = () => {
         setLoading(true);
-        playerService
-            .getScoresByPlayerId(data)
-            .then((data) => setScoreData(data))
-            .catch(handleError)
-            .finally(() => setLoading(false));
+        playerService.getScoresByPlayerId(data).then(data => {
+            setScoreData(data);
+        }).catch(error => {
+            handleError(error);
+        }).finally(() => {
+            setLoading(false);
+        });
     };
 
     const fetchGameData = () => {
         setLoading(true);
-        playerService
-            .getGamesByPlayerId(data)
-            .then((data) => setGameData(data))
-            .catch(handleError)
-            .finally(() => setLoading(false));
+        playerService.getGamesByPlayerId(data).then(data => {
+            setGameData(data);
+        }).catch(error => {
+            handleError(error);
+        }).finally(() => {
+            setLoading(false);
+        });
     };
 
     const fetchClashData = () => {
         setLoading(true);
-        playerService
-            .getClashesByPlayerId(data)
-            .then((data) => setClashData(data))
-            .catch(handleError)
-            .finally(() => setLoading(false));
+        playerService.getClashesByPlayerId(data).then(data => {
+            setClashData(data);
+        }).catch(error => {
+            handleError(error);
+        }).finally(() => {
+            setLoading(false);
+        });
     };
 
     const fetchLogData = () => {
         setLoading(true);
-        playerService
-            .getLogsByPlayerId(data)
-            .then((data) => setLogData(data))
-            .catch(handleError)
-            .finally(() => setLoading(false));
+        playerService.getLogsByPlayerId(data).then(data => {
+            setLogData(data);
+        }).catch(error => {
+            handleError(error);
+        }).finally(() => {
+            setLoading(false);
+        });
     };
 
     const handleDelete = (type, id) => {
@@ -160,7 +171,7 @@ function Player() {
             : []),
     ];
 
-    if (loading) {
+    if (isLoading) {
         return <Spinner />;
     }
 

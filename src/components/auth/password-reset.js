@@ -2,25 +2,25 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Link, useNavigate, useSearchParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
-import { ToastContext } from '../../providers/toastProvider';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import authService from '../../services/authService';
 import playerService from '../../services/playerService';
 import './auth.css';
 
 function PasswordReset() {
+
     const navigate = useNavigate();
     const { t } = useTranslation();
-    const { handleError } = useContext(ErrorHandlerContext);
-    const { showSuccessToast } = useContext(ToastContext);
-    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
 
+    const { handleError } = useContext(ErrorHandlerContext);
+    const { setCurrentUser } = useContext(AuthenticationContext);
+
+    const [errors, setErrors] = useState({});
     const [newPassword, setNewPassword] = useState('');
     const [oldPassword, setOldPassword] = useState('');
-    const [errors, setErrors] = useState({});
-    const [searchParams] = useSearchParams();
-
     const [isTokenBased, setIsTokenBased] = useState(false);
+
+    const [searchParams] = useSearchParams();
 
     useEffect(() => {
         const token = searchParams.get('token');
@@ -41,14 +41,11 @@ function PasswordReset() {
         authService.resetPassword(oldPassword, newPassword, searchParams.get('token'))
             .then(() => {
                 navigate('/profile');
-                playerService
-                    .getCurrentPlayer()
-                    .then((player) => {
-                        setCurrentUser(player);
-                    })
-                    .catch((error) => {
-                        handleError(error);
-                    });
+                playerService.getCurrentPlayer().then((player) => {
+                    setCurrentUser(player);
+                }).catch((error) => {
+                    handleError(error);
+                });
             }).catch((error) => {
                 handleError(error);
             });
@@ -116,6 +113,7 @@ function PasswordReset() {
             </div>
         </div>
     );
+    
 }
 
 export default PasswordReset;

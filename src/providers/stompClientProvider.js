@@ -1,8 +1,7 @@
 import { createContext, useState, useEffect, useContext } from 'react';
 import { Client } from '@stomp/stompjs';
 import { ErrorHandlerContext } from './errorHandlerProvider';
-import { CurrentUserContext } from './currentUserProvider';
-import authService from '../services/authService';
+import { AuthenticationContext } from './authenticationProvider';
 import SockJS from 'sockjs-client';
 
 export const StompClientContext = createContext(null);
@@ -11,7 +10,7 @@ const API_URL = process.env.REACT_APP_API_URL + '/ws';
 
 export const StompClientProvider = ({ children }) => {
 
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser } = useContext(AuthenticationContext);
     const { handleError } = useContext(ErrorHandlerContext);
 
     const [stompClient, setStompClient] = useState(null);
@@ -21,7 +20,7 @@ export const StompClientProvider = ({ children }) => {
         if (currentUser) {
             const client = new Client({
                 webSocketFactory: () =>
-                    new SockJS(API_URL + `?token=${encodeURIComponent(authService.getAccessToken())}`),
+                    new SockJS(API_URL, null, { withCredentials: true }),
                 reconnectDelay: 5000,
                 debug: function (str) {
                     // console.log(str);
@@ -56,4 +55,5 @@ export const StompClientProvider = ({ children }) => {
             {children}
         </StompClientContext.Provider>
     );
+    
 };

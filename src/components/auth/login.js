@@ -1,7 +1,7 @@
 import React, { useContext, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import authService from '../../services/authService';
 import './auth.css';
@@ -11,7 +11,7 @@ function Login() {
     const navigate = useNavigate();
     const { t } = useTranslation();
     
-    const { setCurrentUser } = useContext(CurrentUserContext);
+    const { setCurrentUser } = useContext(AuthenticationContext);
     const { handleError } = useContext(ErrorHandlerContext);
 
     const [identifier, setIdentifier] = useState('');
@@ -31,11 +31,11 @@ function Login() {
             email: identifier.includes("@") ? identifier : undefined,
             username: !identifier.includes("@") ? identifier : undefined,
             password,
-        }).then((authData) => {
-            localStorage.setItem("token", authData.token);
-            setCurrentUser(authData.player);
+        }).then(player => {
+            // localStorage.setItem("token", authData.token);
+            setCurrentUser(player);
             navigate("/");
-        }).catch((error) => {
+        }).catch(error => {
             handleError(error);
         });
     }
@@ -116,6 +116,7 @@ function Login() {
             </div>
         </div>
     );
+    
 }
 
 export default Login;

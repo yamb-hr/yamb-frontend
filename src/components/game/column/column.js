@@ -52,7 +52,7 @@ function Column(props) {
                 variant="column-symbol">
             </Label>
             {boxes.map((box) => (
-                <Box 
+                <Box
                     key={type + box.type}
                     type={box.type}
                     value={box.value}

@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { LoadingContext } from '../../providers/loadingProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import logService from '../../services/logService';
 import Element from '../element/element';
@@ -12,10 +13,11 @@ function Log() {
     const { id } = useParams();
     const { t } = useTranslation();
     
-    const { handleError } = useContext(ErrorHandlerContext);
+    const { handleError } = useContext(ErrorHandlerContext);    
+    const { loading, setLoading } = useContext(LoadingContext);
+
     
     const [ data, setData ] = useState(null);
-    const [ loading, setLoading ] = useState(true);
 
     useEffect(() => {
         if (id && !data) {
@@ -44,7 +46,7 @@ function Log() {
     ];
 
     if (loading) {
-        return (<Spinner></Spinner>);
+        return <Spinner/>
     }
 
     return (

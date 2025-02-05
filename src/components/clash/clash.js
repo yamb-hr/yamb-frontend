@@ -1,16 +1,16 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import DOMPurify from 'dompurify';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { useTranslation } from 'react-i18next';
+import { useNavigate, useParams } from 'react-router-dom';
 import { StompClientContext } from '../../providers/stompClientProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { ActivePlayersContext } from '../../providers/activePlayersProvider';
-import clashService from '../../services/clashService';
-import PlayerIcon from '../player/playerIcon';
-import Element from '../element/element';
-import Table from '../table/table';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import Game from '../game/game';
+import Table from '../table/table';
+import Element from '../element/element';
+import PlayerIcon from '../player/playerIcon';
+import clashService from '../../services/clashService';
 import './clash.css';
 
 function Clash() {
@@ -19,8 +19,8 @@ function Clash() {
     const { t } = useTranslation();
 
     const { id } = useParams();
-    const { currentUser } = useContext(CurrentUserContext);
     const { handleError } = useContext(ErrorHandlerContext);
+    const { currentUser } = useContext(AuthenticationContext);
     const { activePlayers } = useContext(ActivePlayersContext);
     const { stompClient, isConnected } = useContext(StompClientContext);   
 
@@ -50,7 +50,7 @@ function Clash() {
         }
     }, [id, stompClient, isConnected, subscribed]);
 
-    const handleClashMessage = (message) => {
+    function handleClashMessage(message) {
         if (message.headers.messageType === "UPDATE") {
             onClashUpdate(message);
         } else if (message.headers.messageType === "REACTION") {
@@ -60,7 +60,7 @@ function Clash() {
         }
     }
 
-    const handleSendReaction = (reaction) => {
+    function handleSendReaction(reaction) {
         if (stompClient && isConnected) {
             try {
                 stompClient.publish({
@@ -74,7 +74,7 @@ function Clash() {
         }
     }
 
-    const handleSendSuggestion = (suggestion) => {
+    function handleSendSuggestion(suggestion) {
         if (stompClient && isConnected) {
             try {
                 stompClient.publish({
@@ -88,7 +88,7 @@ function Clash() {
         }
     }
 
-    const onClashUpdate = (message) => {
+    function onClashUpdate(message) {
 		const body = JSON.parse(message.body);
         let updatedClash = body.payload;
         updatedClash._links = clash._links;
@@ -98,7 +98,7 @@ function Clash() {
         }, 1500);
     };
 
-    const onReaction = (message) => {
+    function onReaction(message) {
         const body = JSON.parse(message.body);
         const sanitizedReaction = DOMPurify.sanitize(body.payload);
     
@@ -115,7 +115,7 @@ function Clash() {
         }, 3000);
     };
 
-    const onSuggestion = (message) => {
+    function onSuggestion(message) {
         const body = JSON.parse(message.body);
         const suggestion = body.payload;
 
@@ -126,7 +126,7 @@ function Clash() {
         }, 2000);
     };
 
-    const handleDelete = async () => {
+    function handleDelete() {
         clashService.deleteById(clash).then(data => {
             navigate("/clashes");
         }).catch(error => {
@@ -134,7 +134,7 @@ function Clash() {
         });
     };
 
-    const handleAccept = async () => {
+    function handleAccept() {
         clashService.acceptById(clash, currentUser.id).then(data => {
             setClash(data);
         }).catch(error => {
@@ -142,7 +142,7 @@ function Clash() {
         });
     };
 
-    const handleDecline = async () => {
+    function handleDecline() {
         clashService.declineById(clash, currentUser.id).then(data => {
             navigate('/clashes');
         }).catch(error => {
@@ -150,7 +150,7 @@ function Clash() {
         });
     };
 
-    const handleAddPlayers = () => {
+    function handleAddPlayers() {
         clashService.addPlayersById(clash, playersToAdd).then(data => {
             setClash(data);
             setPlayersToAdd([])
@@ -159,7 +159,7 @@ function Clash() {
         });
     };
 
-    const handleRemovePlayer = (playerId) => {
+    function handleRemovePlayer(playerId) {
         clashService.removePlayersById(clash, [playerId]).then(data => {
             setClash(data);
         }).catch(error => {
@@ -167,7 +167,7 @@ function Clash() {
         });
     };
 
-    const togglePlayerToAdd = (playerId) => {
+    function togglePlayerToAdd(playerId) {
         setPlayersToAdd((prevSelected) =>
             prevSelected.includes(playerId)
                 ? prevSelected.filter((id) => id !== playerId)
@@ -215,27 +215,27 @@ function Clash() {
         <div className="clash-container">
             <div className="clash">
                 {clash && (
-                    <>
+                    <div>
                         <br/>
                         <Element data={clash} columns={clashColumns} />
                         <br/>
                         <div className="player-actions">
                             {clash.owner.id === currentUser.id && clash.status === "PENDING" && (
-                                <>
+                                <div>
                                     <button className="delete-button" onClick={handleDelete}>
                                         <span className="icon">&#10060;</span>&nbsp;{t("delete")}
                                     </button>
-                                </>
+                                </div>
                             )}
                             {clash.players.find(player => player.id === currentUser.id)?.status === "PENDING" && (
-                                <>
+                                <div>
                                     <button className="accept-button" onClick={handleAccept}>
                                         <span className="icon">&#10004;</span>&nbsp;{t("accept")}
                                     </button>
                                     <button className="decline-button" onClick={handleDecline}>
                                         <span className="icon">&#10060;</span>&nbsp;{t("decline")}
                                     </button>
-                                </>
+                                </div>
                             )}
                         </div>
                         <div className="active-players-container">
@@ -254,7 +254,7 @@ function Clash() {
                             ))}
                         </div>
                         {clash.status === "PENDING" && clash.owner.id === currentUser.id && (
-                            <>
+                            <div>
                                 {clash.owner.id === currentUser.id && (
                                     <button
                                         onClick={handleAddPlayers}
@@ -278,10 +278,10 @@ function Clash() {
                                         />
                                     ))}
                                 </div>
-                            </>
+                            </div>
                         )}
                         {clash.status === "COMPLETED" && (
-                            <>
+                            <div>
                                 {(() => {
                                     const sortedPlayers = [...clash.players].sort((a, b) => (b.score ?? 0) - (a.score ?? 0));
 
@@ -292,13 +292,14 @@ function Clash() {
 
                                     return <Table data={completedPlayers} columns={playerColumns} displayHeader={false} paginated={false} />;
                                 })()}
-                            </>
+                            </div>
                         )}
-                    </>
+                    </div>
                 )}
             </div>
         </div>
     );
+    
 }
 
 export default Clash;

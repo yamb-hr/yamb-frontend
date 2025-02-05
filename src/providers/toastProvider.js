@@ -6,11 +6,11 @@ export const ToastContext = createContext(null);
 
 export const ToastProvider = ({ children }) => {
 
-    const getCurrentTheme = () => {
+    function getCurrentTheme() {
         return document.documentElement.getAttribute("theme") || "light"; // Get the theme dynamically from the document
     };
 
-    const showSuccessToast = (message) => {
+    function showSuccessToast(message) {
         toast.success(message, {
             position: "top-center",
             autoClose: 3000,
@@ -25,7 +25,7 @@ export const ToastProvider = ({ children }) => {
         });
     };
 
-    const showErrorToast = (message) => {
+    function showErrorToast(message) {
         toast.error(message, {
             position: "top-center",
             autoClose: 3000,
@@ -40,7 +40,7 @@ export const ToastProvider = ({ children }) => {
         });
     };
 
-    const showInfoToast = (message, autoClose) => {
+    function showInfoToast(message, autoClose) {
         toast.info(message, {
             position: "top-center",
             autoClose: autoClose || 3000,

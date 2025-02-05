@@ -1,19 +1,22 @@
 import { createContext, useState, useEffect, useContext } from 'react';
-import { ErrorHandlerContext } from './errorHandlerProvider';
-import { CurrentUserContext } from './currentUserProvider';
-import { StompClientContext } from './stompClientProvider';
+import { useNavigate } from 'react-router-dom';
 import { ToastContext } from './toastProvider';
-import notificationService from '../services/notificationService';
+import { StompClientContext } from './stompClientProvider';
+import { ErrorHandlerContext } from './errorHandlerProvider';
+import { AuthenticationContext } from './authenticationProvider';
 import playerService from '../services/playerService';
+import notificationService from '../services/notificationService';
 
 export const NotificationsContext = createContext(null);
 
 export const NotificationsProvider = ({ children }) => {
 
-    const { stompClient, isConnected } = useContext(StompClientContext);
-    const { handleError } = useContext(ErrorHandlerContext);
-    const { currentUser } = useContext(CurrentUserContext);
+    const navigate = useNavigate();
+
     const { showInfoToast } = useContext(ToastContext);
+    const { handleError } = useContext(ErrorHandlerContext);
+    const { currentUser } = useContext(AuthenticationContext);
+    const { stompClient, isConnected } = useContext(StompClientContext);
 
     const [notifications, setNotifications] = useState([]);
     const [isNotificationsModalOpen, setNotificationsModalOpen] = useState(false);
@@ -21,7 +24,24 @@ export const NotificationsProvider = ({ children }) => {
     useEffect(() => {
         if (currentUser && stompClient && isConnected) {
             console.log(`Subscribing to /player/${currentUser.id}/private`);
-            const subscription = stompClient.subscribe(`/player/${currentUser.id}/private`, onNewNotification);
+            const subscription = stompClient.subscribe(`/player/${currentUser.id}/private`, (message) => {
+                const body = JSON.parse(message.body);
+                console.log(body);
+                const newNotification = body.payload;
+                setNotifications(prevNotifications => [
+                    ...prevNotifications,
+                    newNotification
+                ]);
+        
+                showInfoToast(
+                    <div
+                        style={{ cursor: 'pointer' }}
+                        onClick={() => navigate(newNotification.link)}
+                    >
+                        {newNotification.content}
+                    </div>
+                );
+            });
 
             playerService.getNotificationsByPlayerId(currentUser)
                 .then(data => {
@@ -32,45 +52,28 @@ export const NotificationsProvider = ({ children }) => {
     
             return () => subscription.unsubscribe();
         }
-    }, [currentUser, stompClient, isConnected, handleError]);
+    }, [currentUser, stompClient, isConnected, handleError, showInfoToast]);
 
-    const onNewNotification = (message) => {
-		const body = JSON.parse(message.body);
-        console.log(body);
-        const newNotification = body.payload;
-        setNotifications(prevNotifications => [
-            ...prevNotifications,
-            newNotification
-        ]);
-
-        showInfoToast(
-            <div
-                style={{ cursor: 'pointer' }}
-                onClick={() => window.location.href = newNotification.link}
-            >
-                {newNotification.content}
-            </div>
-        );
-	}
     
-	const onMarkAsRead = (notification) => {
+    
+	function onMarkAsRead(notification) {
 		deleteNotification(notification);
         setNotifications(prevNotifications => prevNotifications.filter(n => n.id !== notification.id));
 	}
 
-	const onMarkAllAsRead = () => {
+	function onMarkAllAsRead() {
 		deleteAllNotifications();
         setNotifications([]);
 	}
 
-	const deleteNotification = (notification) => {
+	function deleteNotification(notification) {
         notificationService.deleteById(notification).then(() => {
         }).catch(error => {
             handleError(error);
         });
     }
 
-    const deleteAllNotifications = () => {
+    function deleteAllNotifications() {
         playerService.deleteNotificationsByPlayerId(currentUser).then(() => {
         }).catch(error => {
             handleError(error);

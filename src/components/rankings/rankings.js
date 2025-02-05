@@ -1,34 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
+// import { useTranslation } from 'react-i18next';
+import { LoadingContext } from '../../providers/loadingProvider';
+import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import scoreService from '../../services/scoreService';
-import { useTranslation } from 'react-i18next';
-import './rankings.css';
-import Spinner from '../spinner/spinner';
 import ScoreList from '../scores/scoreList';
+import Spinner from '../spinner/spinner';
+import './rankings.css';
 
 function Rankings() {
 
-    const { t } = useTranslation();
-    const [ data, setData ] = useState([]);
-    const [ loading, setLoading ] = useState(false);
-    const [ globalScoreStats, setGlobalScoreStats ] = useState(undefined);
+    // const { t } = useTranslation();
 
-    const fetchData = async () => {
+    const { handleError } = useContext(ErrorHandlerContext);
+    const { isLoading, setLoading } = useContext(LoadingContext);
+
+    const [scores, setScores] = useState([]);
+    const [globalScoreStats, setGlobalScoreStats] = useState(undefined);
+
+    function fetchData() {
         setLoading(true);
-        try {
-            const scores = await scoreService.getAll(0, 9999);
-            const globalScoreStats = await scoreService.getStats();
-            setGlobalScoreStats(globalScoreStats);
-            setData(scores);
-        } catch (error) {
-            console.error('Failed to fetch scores:', error);
-        } finally {
-            setLoading(false);
-        }
+        scoreService.getAll(0, 9999).then(scores => {
+            setScores(scores);
+        }).catch(error => {
+            handleError(error);
+        }).finally(() => {
+            scoreService.getStats().then(globalScoreStats => {
+                setGlobalScoreStats(globalScoreStats);
+            }).catch(error => {
+                handleError(error);
+            }).finally(() => {
+                setLoading(false);
+            })
+        });
     };
 
     useEffect(() => {
         // fetchData();
     }, []);
+
+    if (isLoading) {
+        return <Spinner/>
+    }
     
     return (
         <div className="rankings-container">

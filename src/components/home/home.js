@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from 'react';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import Game from '../game/game';
 import Spinner from '../spinner/spinner';
 
 function Home() {
     
-    const { currentUser, registerGuest } = useContext(CurrentUserContext);
+    const { currentUser, registerGuest } = useContext(AuthenticationContext);
 
     useEffect(() => {
         if (!currentUser) {

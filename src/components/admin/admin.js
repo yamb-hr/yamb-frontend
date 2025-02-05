@@ -1,7 +1,7 @@
 import React, { useContext, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import './admin.css';
 
 function Admin() {
@@ -9,7 +9,7 @@ function Admin() {
     const navigate = useNavigate();   
     const { t } = useTranslation();
 
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser } = useContext(AuthenticationContext);
 
     useEffect(() => {
         if (currentUser && !currentUser?.admin) {
@@ -29,6 +29,7 @@ function Admin() {
             </div>
         </div>
     );
-};
+
+}
 
 export default Admin;

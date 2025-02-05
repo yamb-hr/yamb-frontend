@@ -1,34 +1,29 @@
 .box {
     color: var(--color-box);
     background: var(--background-box);
-    border-radius: var(--radius-border-box);
-    border-color: var(--color-border-box);
-    border-style: var(--style-border-box);
-    border-width: var(--width-border-box);
     width: var(--width-box);
     height: var(--height-box);
+    border: none;   
+    z-index: 1;
+}
+
+.box:enabled {
+    border-radius: var(--radius-border-box);
+    border: var(--width-border-box) var(--style-border-box) var(--color-border-box);
+    z-index: 2;
 }
 
 .box:disabled {
-    border: none;
-    border-color: var(--color-border-box-disabled);
-    border-style: var(--style-border-box-disabled);
-    border-width: var(--width-border-box-disabled);
+    border: var(--width-border-box-disabled) var(--style-border-box-disabled) var(--color-border-box-disabled);
+    z-index: 1;
 }
 
 .announcement {
-    border-color: var(--color-border-box-alt) !important;
-    border-style: var(--style-border-box-alt) !important;
-    border-width: var(--width-border-box-alt) !important;
+    border: var(--width-border-box-alt) var(--style-border-box-alt) var(--color-border-box-alt);
 }
 
 .box:hover:enabled {
     background-color: var(--background-box-hover);
-}
-
-.box:disabled {
-    border-radius: 0px;
-    border-style: dashed;
 }
 
 .glow {

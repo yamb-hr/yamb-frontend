@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { MenuContext } from '../../../providers/menuProvider';
 import { ToastContext } from '../../../providers/toastProvider';
 import { DeviceContext } from '../../../providers/deviceProvider';
-import { CurrentUserContext } from '../../../providers/currentUserProvider';
+import { AuthenticationContext } from '../../../providers/authenticationProvider';
 import { NotificationsContext } from '../../../providers/notificationsProvider';
 import playerService from '../../../services/playerService';
 import Label from '../label/label';
@@ -20,7 +20,7 @@ function Sheet(props) {
     const { showSuccessToast } = useContext(ToastContext);
     const { handleError } = useContext(ErrorHandlerContext);
     const { isMenuOpen, setMenuOpen } = useContext(MenuContext);
-    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+    const { currentUser, setCurrentUser } = useContext(AuthenticationContext);
     const { notifications, setNotificationsModalOpen } = useContext(NotificationsContext);
     const { isMobile } = useContext(DeviceContext);
     const {
@@ -45,7 +45,7 @@ function Sheet(props) {
 
     const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS" || type === "CLASH";
     const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
-    // const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH" || status === "COMPLETED" || status === "ARCHIVED";
+    const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH" || status !== "IN_PROGRESS";
 
     function handleRoll() {
         props.onRoll();
@@ -166,8 +166,8 @@ function Sheet(props) {
     }
 
     const submitUsernameChange = () => {
-        playerService.updateUsername(currentUser, username).then(data => {
-            setCurrentUser(data);
+        playerService.updateUsername(currentUser, username).then(player => {
+            setCurrentUser(player);
             showSuccessToast(t('username-updated'));
         }).catch(error => {
             handleError(error);
@@ -196,7 +196,7 @@ function Sheet(props) {
     return (
         <div className="sheet">
             <div className="column">
-                { isMobile ?
+                {isMobile ?
                     <button className="settings-button-sheet" onClick={() => {setMenuOpen(!isMenuOpen);}}>
                         <span className="icon">&#9776;</span>
                     </button> : <div></div>
@@ -221,21 +221,20 @@ function Sheet(props) {
                 <Label variant="sum" value="Σ (T, J)" info={t('bottom-section-sum')}></Label>
             </div>
             {columns && columns.map((column, index) => (
-                <div className="column" key={column.type}>
-                    <Column
-                        type={column.type} 
-                        boxes={column.boxes} 
-                        rollCount={rollCount}
-                        announcement={announcement}
-                        isSpectator={isSpectator}
-                        latestBoxFilled={latestBoxFilled}
-                        glow={glow && (column.type === latestColumnFilled)}
-                        topSectionSum={getTopSectionSumByIndex(index)}
-                        middleSectionSum={getMiddleSectionSumByIndex(index)}
-                        bottomSectionSum={getBottomSectionSumByIndex(index)}
-                        onBoxClick={handleBoxClick}>
-                    </Column> 
-                </div>
+                <Column
+                    key={column.type}
+                    type={column.type} 
+                    boxes={column.boxes} 
+                    rollCount={rollCount}
+                    announcement={announcement}
+                    isSpectator={isSpectator}
+                    latestBoxFilled={latestBoxFilled}
+                    glow={glow && (column.type === latestColumnFilled)}
+                    topSectionSum={getTopSectionSumByIndex(index)}
+                    middleSectionSum={getMiddleSectionSumByIndex(index)}
+                    bottomSectionSum={getBottomSectionSumByIndex(index)}
+                    onBoxClick={handleBoxClick}>
+                </Column> 
             ))}
             <div className="column">
                 <button className="notification-button" onClick={() => setNotificationsModalOpen(true)} disabled={!notifications.length}>
@@ -258,7 +257,7 @@ function Sheet(props) {
                             ❓
                         </button>
                         :
-                        <button className="undo-button" onClick={handleUndoFill}>
+                        <button className="undo-button" onClick={handleUndoFill} disabled={undoDisabled}>
                             &#9100;
                         </button>
                     }     

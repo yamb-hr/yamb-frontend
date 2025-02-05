@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { ToastContext } from '../../providers/toastProvider';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { useTranslation } from 'react-i18next';
 import authService from '../../services/authService';
@@ -15,7 +15,7 @@ function Profile() {
     const navigate = useNavigate();
     const { t } = useTranslation();
     
-    const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+    const { currentUser, setCurrentUser } = useContext(AuthenticationContext);
     const { handleError } = useContext(ErrorHandlerContext);
     const { showInfoToast, showSuccessToast } = useContext(ToastContext);
 
@@ -40,7 +40,7 @@ function Profile() {
         }
     }, [currentUser, navigate]);
 
-    const handleAvatarUpload = (event) => {
+    function handleAvatarUpload(event) {
         const file = event.target.files[0];
         if (!file) return;
 
@@ -52,7 +52,7 @@ function Profile() {
         reader.readAsDataURL(file);
     };
 
-    const handleCrop = async () => {
+    async function handleCrop() {
         const cropper = cropperRef.current?.cropper;
         if (cropper) {
             const canvas = cropper.getCroppedCanvas({ width: 300, height: 300 });
@@ -77,7 +77,7 @@ function Profile() {
         }
     };
 
-    const handleSave = async () => {
+    async function handleSave() {
         const validationErrors = {
             ...validateUsername(),
             ...validateEmail(),
@@ -89,16 +89,16 @@ function Profile() {
         }
 
         if (username && username !== currentUser.name) {
-            playerService.updateUsername(currentUser, username).then(data => {
-                setCurrentUser(data);
+            playerService.updateUsername(currentUser, username).then(player => {
+                setCurrentUser(player);
                 showSuccessToast(t('username-updated'));
             }).catch(error => {
                 handleError(error);
             });
         }
         if (email !== currentUser.email) {
-            playerService.updateEmail(currentUser, email).then(data => {
-                setCurrentUser(data);
+            playerService.updateEmail(currentUser, email).then(player => {
+                setCurrentUser(player);
                 showInfoToast(t('verification-email-sent', { email }));
             }).catch(error => {
                 handleError(error);
@@ -107,7 +107,7 @@ function Profile() {
         setIsEditing(false);
     };
 
-    const validateUsername = () => {
+    function validateUsername() {
         const errors = {};
         const usernameRegex = /^[a-zA-Z][a-zA-Z0-9]{2,14}$/;
         if (!usernameRegex.test(username)) {
@@ -116,7 +116,7 @@ function Profile() {
         return errors;
     };
 
-    const validateEmail = () => {
+    function validateEmail() {
         const errors = {};
         const emailRegex = /\S+@\S+\.\S+/;
         if (email && !emailRegex.test(email)) {
@@ -145,7 +145,7 @@ function Profile() {
     }
 
 
-    const handleToggleEditing = () => {
+    function handleToggleEditing() {
         if (isEditing) {
             setUsername(currentUser.name);
             setEmail(currentUser.email || '');

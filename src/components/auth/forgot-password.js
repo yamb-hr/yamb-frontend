@@ -2,25 +2,27 @@ import React, { useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { ErrorHandlerContext } from '../../providers/errorHandlerProvider';
 import { ToastContext } from '../../providers/toastProvider';
-import { CurrentUserContext } from '../../providers/currentUserProvider';
+import { AuthenticationContext } from '../../providers/authenticationProvider';
 import authService from '../../services/authService';
 import './auth.css';
 import { Link } from 'react-router-dom';
 
 function ForgotPassword() {
+
     const { t } = useTranslation();
+
     const { handleError } = useContext(ErrorHandlerContext);
     const { showSuccessToast } = useContext(ToastContext);
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser } = useContext(AuthenticationContext);
 
     const [email, setEmail] = useState('');
     const [submitted, setSubmitted] = useState(false);
 
-    const handleEmailChange = (event) => {
+    function handleEmailChange(event) {
         setEmail(event.target.value);
     };
 
-    const handleFormSubmit = (event) => {
+    function handleFormSubmit(event) {
         event.preventDefault();
         authService
             .sendPasswordResetEmail(email)
@@ -64,7 +66,7 @@ function ForgotPassword() {
                 ) : (
                     <form onSubmit={handleFormSubmit}>
                         {!submitted ? (
-                            <>
+                            <div>
                                 <label htmlFor="email" className="input-label">
                                     {t('email')}
                                 </label>
@@ -77,7 +79,7 @@ function ForgotPassword() {
                                     required
                                 />
                                 <input type="submit" value={t('send-password-reset-email')} />
-                            </>
+                            </div>
                         ) : (
                             <p className="check-email">{t('check-your-email', { email })}</p>
                         )}
@@ -90,6 +92,7 @@ function ForgotPassword() {
             </div>
         </div>
     );
+    
 }
 
 export default ForgotPassword;

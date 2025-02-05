@@ -1,7 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { ErrorHandlerContext } from './errorHandlerProvider';
 import { StompClientContext } from './stompClientProvider';
-import { CurrentUserContext } from './currentUserProvider';
+import { AuthenticationContext } from './authenticationProvider';
 import playerService from '../services/playerService';
 
 export const ActivePlayersContext = createContext(null);
@@ -9,7 +9,7 @@ export const ActivePlayersContext = createContext(null);
 export const ActivePlayersProvider = ({ children }) => {
 
     const { stompClient, isConnected } = useContext(StompClientContext);
-    const { currentUser } = useContext(CurrentUserContext);
+    const { currentUser } = useContext(AuthenticationContext);
     const { handleError } = useContext(ErrorHandlerContext);
 
     const [activePlayers, setActivePlayers] = useState([]);
@@ -28,7 +28,7 @@ export const ActivePlayersProvider = ({ children }) => {
         }
     }, [currentUser, stompClient, isConnected]);
 
-    const onPlayerStatusChanged = (message) => {
+    function onPlayerStatusChanged(message) {
 		const body = JSON.parse(message.body);
         const updatedActivePlayers = body?.payload?.content || [];
 		setActivePlayers(updatedActivePlayers);
