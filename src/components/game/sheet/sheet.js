@@ -45,7 +45,7 @@ function Sheet(props) {
 
     const restartButtonDisabled = isSpectator || status !== "IN_PROGRESS" || type === "CLASH";
     const rollDisabled = isSpectator || isRolling || rollCount === 3 || isAnnouncementRequired() || status !== "IN_PROGRESS" || diceToRoll.length === 0;
-    // const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH" || status === "COMPLETED" || status === "ARCHIVED";
+    const undoDisabled = isSpectator || !latestColumnFilled || !latestBoxFilled || type === "CLASH" || status === "COMPLETED" || status === "ARCHIVED";
 
     function handleRoll() {
         props.onRoll();
@@ -258,7 +258,7 @@ function Sheet(props) {
                             ❓
                         </button>
                         :
-                        <button className="undo-button" onClick={handleUndoFill}>
+                        <button className="undo-button" onClick={handleUndoFill} disabled={undoDisabled}>
                             &#9100;
                         </button>
                     }     
