@@ -1,21 +1,20 @@
 .box {
     color: var(--color-box);
-    background: var(--background-box);
     width: var(--width-box);
     height: var(--height-box);
     border: none;   
-    z-index: 1;
+    z-index: 1;    
 }
 
 .box:enabled {
     border-radius: var(--radius-border-box);
+    background-color: var(--background-box);   
     border: var(--width-border-box) var(--style-border-box) var(--color-border-box);
-    z-index: 2;
 }
 
 .box:disabled {
     border: var(--width-border-box-disabled) var(--style-border-box-disabled) var(--color-border-box-disabled);
-    z-index: 1;
+    background-color: var(--background-box-disabled);
 }
 
 .announcement {
@@ -23,6 +22,7 @@
 }
 
 .box:hover:enabled {
+    /* border-color: var(--color-border-box-alt); */
     background-color: var(--background-box-hover);
 }
 
