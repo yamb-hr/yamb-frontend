@@ -28,7 +28,6 @@ export const AuthenticationProvider = ({ children }) => {
 				setCurrentUser(player);
 				localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
 			}).catch(error => {
-				console.log("here1");
 				if (error?.response?.status === 400 || error?.response?.status === 401) {
 					logout();
 				} else {
@@ -39,7 +38,6 @@ export const AuthenticationProvider = ({ children }) => {
 			playerService.getCurrentPlayer().then(player => {
 				setCurrentUser(player);
 			}).catch(error => {
-				console.log("here2");
 				if (error?.response?.status === 400 || error?.response?.status === 401) {
 					logout();
 				} else {
