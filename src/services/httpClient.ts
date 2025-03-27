@@ -31,10 +31,10 @@ instance.interceptors.request.use(
 		if (language) {
 			config.headers['Accept-Language'] = language;
 		}
-		const token = localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN);
-		if (token) {
-			config.headers['Authorization'] = `Bearer ${token}`;
-		}
+		// const token = localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN);
+		// if (token) {
+		// 	config.headers['Authorization'] = `Bearer ${token}`;
+		// }
 		return config;
 	},
 	(error) => Promise.reject(error)
