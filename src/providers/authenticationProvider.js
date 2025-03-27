@@ -26,7 +26,7 @@ export const AuthenticationProvider = ({ children }) => {
 			// migrate token storage to http only cookie
 			authService.migrateToken().then(player => {
 				setCurrentUser(player);
-				localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
+				//localStorage.removeItem(LOCAL_STORAGE_TOKEN_KEY);
 			}).catch(error => {
 				if (error?.response?.status === 400 || error?.response?.status === 401) {
 					logout();

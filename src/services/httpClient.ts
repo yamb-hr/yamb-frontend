@@ -1,6 +1,7 @@
 import axios, { AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
 
 const API_URL = process.env.REACT_APP_API_URL;
+const LOCAL_STORAGE_KEY_TOKEN = "token";
 
 let isRefreshing = false;
 let failedQueue: any[] = [];
@@ -29,6 +30,10 @@ instance.interceptors.request.use(
 		const language = localStorage.getItem('i18nextLng');
 		if (language) {
 			config.headers['Accept-Language'] = language;
+		}
+		const token = localStorage.getItem(LOCAL_STORAGE_KEY_TOKEN);
+		if (token) {
+			config.headers['Authorization'] = `Bearer ${token}`;
 		}
 		return config;
 	},
