@@ -1,4 +1,4 @@
-import { AxiosResponse, InternalAxiosRequestConfig } from 'axios';
+import { AxiosResponse } from 'axios';
 import { Player, PlayerCollection, PlayerPreferences, GlobalPlayerStats, PlayerStats } from '../types/Player';
 import { ScoreCollection } from '../types/Score';
 import { ClashCollection } from '../types/Clash';

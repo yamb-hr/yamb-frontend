@@ -2,8 +2,6 @@ import { AxiosResponse } from 'axios';
 import { Ticket, TicketCollection, TicketRequest } from '../types/Ticket';
 import axiosInstance from './httpClient';
 
-const API_URL = `${process.env.REACT_APP_API_URL}/tickets`;
-
 class TicketService {
 
     public name: string;
