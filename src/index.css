@@ -512,7 +512,7 @@ a:hover {
     --width-dice: 16vw;
     --margin-dice: 1.5vw;
     --height-dice: var(--width-dice);
-    --height-box: calc((90vh - var(--height-dice) - var(--margin-dice) * 2) / 18);
+    --height-box: calc((100vh - var(--height-dice) - var(--margin-dice) * 2) / 18);
 
     --margin-register-button: 20px 0 20px 0;
     --margin-login-button: 20px 0 20px 0;
