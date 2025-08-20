@@ -72,6 +72,7 @@ export const AuthenticationProvider = ({ children }) => {
 				window.grecaptcha.execute(RECAPTCHA_SITE_KEY, { action: 'register' })
 				.then(recaptchaToken => {
 					registerGuestWithRecaptcha(recaptchaToken);
+					navigate('/');
 				})
 				.catch(error => {
 					console.error('reCAPTCHA execution error:', error);
